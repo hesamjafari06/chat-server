@@ -28,6 +28,6 @@ public class ConversationMemberEntity {
     private ConversationMemberRole role;
 
     @Column(nullable = false)
-    Boolean notificationEnabled;
+    boolean notificationEnabled;
 
 }
