@@ -29,9 +29,4 @@ public class GroupServiceImpl implements GroupService {
     public GroupEntity getGroupById(Long id) {
         return groupRepository.findById(id).orElseThrow(GroupNotFoundException::new);
     }
-
-    @Override
-    public GroupEntity getGroupByPublicId(String publicId) {
-        return groupRepository.findByPublicId(publicId).orElseThrow(GroupNotFoundException::new);
-    }
 }

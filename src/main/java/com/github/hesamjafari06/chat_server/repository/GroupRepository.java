@@ -8,8 +8,4 @@ import java.util.Optional;
 
 @Repository
 public interface GroupRepository extends JpaRepository<GroupEntity, Long> {
-
-    boolean existsByPublicId(String publicId);
-
-    Optional<GroupEntity> findByPublicId(String publicId);
 }
