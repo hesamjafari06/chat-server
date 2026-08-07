@@ -17,10 +17,10 @@ public class ConversationMemberEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     private UserEntity user;
 
-    @OneToOne
+    @ManyToOne
     private ConversationEntity conversation;
 
     @Enumerated(EnumType.STRING)
