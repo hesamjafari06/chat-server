@@ -94,4 +94,15 @@ public class GlobalExceptionHandler {
                         buildErrorResponse(exception.getMessage())
                 );
     }
+
+    @ExceptionHandler(ChannelNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleChannelNotFound(
+            ChannelNotFoundException exception){
+
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(
+                        buildErrorResponse(exception.getMessage())
+                );
+    }
 }
