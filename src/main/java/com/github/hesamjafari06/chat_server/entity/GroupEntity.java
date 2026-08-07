@@ -28,4 +28,6 @@ public class GroupEntity {
     @Column(nullable = false)
     private String description;
 
+    @Column(nullable = false)
+    private boolean isClosed;
 }
