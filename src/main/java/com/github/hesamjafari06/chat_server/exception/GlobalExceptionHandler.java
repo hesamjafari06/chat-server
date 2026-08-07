@@ -72,4 +72,26 @@ public class GlobalExceptionHandler {
                         buildErrorResponse(exception.getMessage())
                 );
     }
+
+    @ExceptionHandler(GroupNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleGroupNotFound(
+            GroupNotFoundException exception){
+
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(
+                        buildErrorResponse(exception.getMessage())
+                );
+    }
+
+    @ExceptionHandler(PublicIdAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> handlePublicIdAlreadyExists(
+            PublicIdAlreadyExistsException exception){
+
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(
+                        buildErrorResponse(exception.getMessage())
+                );
+    }
 }
