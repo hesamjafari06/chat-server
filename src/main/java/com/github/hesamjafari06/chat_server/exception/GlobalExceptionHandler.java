@@ -61,4 +61,15 @@ public class GlobalExceptionHandler {
                         buildErrorResponse(exception.getMessage())
                 );
     }
+
+    @ExceptionHandler(ConversationNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleConversationNotFound(
+            ConversationNotFoundException exception){
+
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(
+                        buildErrorResponse(exception.getMessage())
+                );
+    }
 }
