@@ -15,12 +15,12 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ChannelServiceImpl implements ChannelService {
 
-    private final ChannelRepository channelRepository;
-    private final ChannelMapper channelMapper;
+    private ChannelRepository channelRepository;
+    private ChannelMapper channelMapper;
 
     @Override
     public ChannelResponse createChannel(CreateChannelRequest request) {
-        if (channelRepository.ExistsByPublicId(request.getPublicId())){
+        if (channelRepository.existsByPublicId(request.getPublicId())){
             throw new PublicIdAlreadyExistsException();
         }
         ChannelEntity channel = channelMapper.toEntity(request);
