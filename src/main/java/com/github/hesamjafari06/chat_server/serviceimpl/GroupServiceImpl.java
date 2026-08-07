@@ -20,9 +20,6 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public GroupResponse createGroup(CreateGroupRequest request) {
-        if (groupRepository.existsByPublicId(request.getPublicId())){
-            throw new PublicIdAlreadyExistsException();
-        }
         GroupEntity group = groupMapper.toEntity(request);
         groupRepository.save(group);
         return groupMapper.toResponse(group);

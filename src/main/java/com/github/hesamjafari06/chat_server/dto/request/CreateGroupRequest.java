@@ -6,7 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CreateGroupRequest {
-    private String publicId;
     private String name;
     private String description;
 }

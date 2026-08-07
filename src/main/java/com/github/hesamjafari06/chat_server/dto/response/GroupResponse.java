@@ -9,6 +9,5 @@ import lombok.Setter;
 @Builder
 public class GroupResponse {
     private String name;
-    private String publicId;
     private String description;
 }

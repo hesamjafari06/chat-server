@@ -15,7 +15,6 @@ public class GroupMapper {
     public GroupEntity toEntity(CreateGroupRequest request){
         return GroupEntity.builder()
                 .name(request.getName())
-                .publicId(request.getPublicId())
                 .description(request.getDescription())
                 .conversation(
                         ConversationEntity.builder()
@@ -28,7 +27,6 @@ public class GroupMapper {
     public GroupResponse toResponse(GroupEntity group){
         return GroupResponse.builder()
                 .name(group.getName())
-                .publicId(group.getPublicId())
                 .description(group.getDescription())
                 .build();
     }
