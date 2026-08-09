@@ -1,12 +1,11 @@
 package com.github.hesamjafari06.chat_server.mapper;
 
 import com.github.hesamjafari06.chat_server.dto.request.CreateUserRequest;
-import com.github.hesamjafari06.chat_server.dto.response.UserResponse;
+import com.github.hesamjafari06.chat_server.dto.response.CreateUserResponse;
 import com.github.hesamjafari06.chat_server.entity.UserEntity;
 import com.github.hesamjafari06.chat_server.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -21,8 +20,8 @@ public class UserMapper {
                 .build();
     }
 
-    public UserResponse toUserResponse(UserEntity user){
-        return UserResponse.builder()
+    public CreateUserResponse toUserResponse(UserEntity user){
+        return CreateUserResponse.builder()
                 .username(user.getUsername())
                 .birthDate(user.getBirthDate())
                 .build();

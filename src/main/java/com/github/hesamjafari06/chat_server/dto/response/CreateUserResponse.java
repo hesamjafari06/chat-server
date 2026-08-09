@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Builder
-public class UserResponse {
+public class CreateUserResponse {
     private String username;
     private LocalDate birthDate;
 }
