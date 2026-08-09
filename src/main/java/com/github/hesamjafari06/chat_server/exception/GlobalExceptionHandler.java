@@ -32,14 +32,15 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleUserNotFound(
-            UserNotFoundException exception){
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiResponse<ErrorResponse> handleUserNotFound(
+            UsernameAlreadyExistsException exception){
 
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(
-                        buildErrorResponse(exception.getMessage())
-                );
+        return ApiResponse.<ErrorResponse>builder()
+                .status("NOT_FOUND")
+                .timestamp(Instant.now())
+                .data(buildErrorResponse(exception.getMessage()))
+                .build();
     }
 
     @ExceptionHandler(WrongPasswordException.class)
