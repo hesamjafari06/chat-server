@@ -2,9 +2,11 @@ package com.github.hesamjafari06.chat_server.controller;
 
 import com.github.hesamjafari06.chat_server.dto.request.LoginRequest;
 import com.github.hesamjafari06.chat_server.dto.response.LoginResponse;
+import com.github.hesamjafari06.chat_server.exception.InvalidLoginException;
 import com.github.hesamjafari06.chat_server.security.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,17 +26,19 @@ public class LoginController {
     @PostMapping
     public LoginResponse login(@RequestBody LoginRequest request) {
 
+        try {
+            Authentication authentication =
+                    authenticationManager.authenticate(
+                            new UsernamePasswordAuthenticationToken(
+                                    request.getUsername(),
+                                    request.getPassword()
+                            )
+                    );
+            String token = jwtService.generateToken((UserDetails) authentication.getPrincipal());
 
-        Authentication authentication =
-                authenticationManager.authenticate(
-                        new UsernamePasswordAuthenticationToken(
-                                request.getUsername(),
-                                request.getPassword()
-                        )
-                );
-        String token = jwtService.generateToken((UserDetails) authentication.getPrincipal());
-
-        return new LoginResponse(token);
+            return new LoginResponse(token);
+        } catch (BadCredentialsException exception) {
+            throw new InvalidLoginException();
+        }
     }
-
 }

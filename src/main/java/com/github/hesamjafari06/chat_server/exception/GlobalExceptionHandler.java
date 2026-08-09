@@ -51,17 +51,6 @@ public class GlobalExceptionHandler {
                 );
     }
 
-    @ExceptionHandler(PasswordDoNotMatchException.class)
-    public ResponseEntity<ErrorResponse> handlePasswordDoNotMatch(
-            PasswordDoNotMatchException exception){
-
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(
-                        buildErrorResponse(exception.getMessage())
-                );
-    }
-
     @ExceptionHandler(ConversationNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleConversationNotFound(
             ConversationNotFoundException exception){
@@ -101,6 +90,17 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
+                .body(
+                        buildErrorResponse(exception.getMessage())
+                );
+    }
+
+    @ExceptionHandler(InvalidLoginException.class)
+    public ResponseEntity<ErrorResponse> handleChannelNotFound(
+            InvalidLoginException exception){
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
                 .body(
                         buildErrorResponse(exception.getMessage())
                 );
