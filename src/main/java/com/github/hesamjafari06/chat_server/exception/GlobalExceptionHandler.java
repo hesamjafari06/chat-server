@@ -1,9 +1,11 @@
 package com.github.hesamjafari06.chat_server.exception;
 
+import com.github.hesamjafari06.chat_server.dto.response.ApiResponse;
 import com.github.hesamjafari06.chat_server.dto.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.Instant;
@@ -14,19 +16,19 @@ public class GlobalExceptionHandler {
     private ErrorResponse buildErrorResponse(String message){
         return ErrorResponse.builder()
                 .message(message)
-                .timestamp(Instant.now())
                 .build();
     }
 
     @ExceptionHandler(UsernameAlreadyExistsException.class)
-    public ResponseEntity<ErrorResponse> handleUserUsernameAlreadyExists(
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ApiResponse<ErrorResponse> handleUserUsernameAlreadyExists(
             UsernameAlreadyExistsException exception){
 
-        return ResponseEntity
-                .status(HttpStatus.CONFLICT)
-                .body(
-                        buildErrorResponse(exception.getMessage())
-                );
+        return ApiResponse.<ErrorResponse>builder()
+                .status("CONFLICT")
+                .timestamp(Instant.now())
+                .data(buildErrorResponse(exception.getMessage()))
+                .build();
     }
 
     @ExceptionHandler(UserNotFoundException.class)
@@ -96,13 +98,14 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(InvalidLoginException.class)
-    public ResponseEntity<ErrorResponse> handleChannelNotFound(
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiResponse<ErrorResponse> handleInvalidLogin(
             InvalidLoginException exception){
 
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(
-                        buildErrorResponse(exception.getMessage())
-                );
+        return ApiResponse.<ErrorResponse>builder()
+                .status("BAD_REQUEST")
+                .timestamp(Instant.now())
+                .data(buildErrorResponse(exception.getMessage()))
+                .build();
     }
 }
