@@ -24,6 +24,7 @@ public class LoginController {
     @PostMapping
     public LoginResponse login(@RequestBody LoginRequest request) {
 
+
         Authentication authentication =
                 authenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken(
