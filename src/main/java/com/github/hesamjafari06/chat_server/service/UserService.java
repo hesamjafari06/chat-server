@@ -5,7 +5,7 @@ import com.github.hesamjafari06.chat_server.dto.response.UserResponse;
 import com.github.hesamjafari06.chat_server.entity.UserEntity;
 
 public interface UserService {
-    public UserResponse createUser(CreateUserRequest request);
+    public void createUser(CreateUserRequest request);
 
     public UserEntity findUserById(Long id);
 

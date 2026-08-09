@@ -10,6 +10,5 @@ import java.time.LocalDate;
 public class CreateUserRequest {
     private String username;
     private String password;
-    private String confirmPassword;
     private LocalDate birthDate;
 }

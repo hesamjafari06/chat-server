@@ -43,20 +43,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserResponse createUser(CreateUserRequest request) {
+    public void createUser(CreateUserRequest request) {
 
         if (userRepository.existsByUsername(request.getUsername())){
             throw new UsernameAlreadyExistsException();
-        } else if (!request.getPassword().equals(request.getConfirmPassword())) {
-            throw new PasswordDoNotMatchException();
         }
 
         UserEntity user = userMapper.toEntity(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
         userRepository.save(user);
-
-        return userMapper.toUserResponse(user);
     }
 
     @Override
