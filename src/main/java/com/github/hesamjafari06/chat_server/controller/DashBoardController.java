@@ -3,6 +3,7 @@ package com.github.hesamjafari06.chat_server.controller;
 import com.github.hesamjafari06.chat_server.dto.request.ChangePasswordRequest;
 import com.github.hesamjafari06.chat_server.dto.request.UpdateUserRequest;
 import com.github.hesamjafari06.chat_server.dto.response.ApiResponse;
+import com.github.hesamjafari06.chat_server.dto.response.UpdateUserResponse;
 import com.github.hesamjafari06.chat_server.dto.response.UserResponse;
 import com.github.hesamjafari06.chat_server.service.UserService;
 import com.github.hesamjafari06.chat_server.serviceimpl.UserServiceImpl;
@@ -22,7 +23,7 @@ public class DashBoardController {
     }
 
     @PutMapping
-    public ApiResponse<UserResponse> changeUserInfo(@RequestBody UpdateUserRequest request){
+    public ApiResponse<UpdateUserResponse> changeUserInfo(@RequestBody UpdateUserRequest request){
         return userService.updateUser(request);
     }
 

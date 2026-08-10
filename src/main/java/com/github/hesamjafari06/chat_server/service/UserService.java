@@ -2,6 +2,7 @@ package com.github.hesamjafari06.chat_server.service;
 
 import com.github.hesamjafari06.chat_server.dto.request.*;
 import com.github.hesamjafari06.chat_server.dto.response.ApiResponse;
+import com.github.hesamjafari06.chat_server.dto.response.UpdateUserResponse;
 import com.github.hesamjafari06.chat_server.dto.response.UserResponse;
 import com.github.hesamjafari06.chat_server.entity.UserEntity;
 
@@ -14,7 +15,7 @@ public interface UserService {
 
     public ApiResponse<UserResponse> getSelfUserProfile();
 
-    public ApiResponse<UserResponse> updateUser(UpdateUserRequest request);
+    public ApiResponse<UpdateUserResponse> updateUser(UpdateUserRequest request);
 
     public ApiResponse<UserResponse> changePassword(ChangePasswordRequest request);
 }

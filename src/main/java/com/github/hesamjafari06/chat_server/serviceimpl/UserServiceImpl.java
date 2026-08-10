@@ -2,6 +2,7 @@ package com.github.hesamjafari06.chat_server.serviceimpl;
 
 import com.github.hesamjafari06.chat_server.dto.request.*;
 import com.github.hesamjafari06.chat_server.dto.response.ApiResponse;
+import com.github.hesamjafari06.chat_server.dto.response.UpdateUserResponse;
 import com.github.hesamjafari06.chat_server.dto.response.UserResponse;
 import com.github.hesamjafari06.chat_server.entity.UserEntity;
 import com.github.hesamjafari06.chat_server.exception.PasswordDoNotMatchException;
@@ -11,10 +12,12 @@ import com.github.hesamjafari06.chat_server.exception.WrongPasswordException;
 import com.github.hesamjafari06.chat_server.mapper.UserMapper;
 import com.github.hesamjafari06.chat_server.repository.UserRepository;
 import com.github.hesamjafari06.chat_server.security.CustomUserDetails;
+import com.github.hesamjafari06.chat_server.security.JwtService;
 import com.github.hesamjafari06.chat_server.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +32,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
+    private final UserDetailsService userDetailsService;
 
     public UserEntity getCurrentUser(){
         Authentication authentication =
@@ -84,7 +89,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public ApiResponse<UserResponse> updateUser(UpdateUserRequest request) {
+    public ApiResponse<UpdateUserResponse> updateUser(UpdateUserRequest request) {
 
         UserEntity user = getCurrentUser();
 
@@ -104,9 +109,14 @@ public class UserServiceImpl implements UserService {
             user.setBirthDate(request.getBirthDate());
         }
 
-        return ApiResponse.<UserResponse>builder()
+
+
+        return ApiResponse.<UpdateUserResponse>builder()
                 .status("OK")
-                .data(userMapper.toUserResponse(user))
+                .data(UpdateUserResponse.builder()
+                        .userResponse(userMapper.toUserResponse(user))
+                        .token(jwtService.generateToken(userDetailsService.loadUserByUsername(user.getUsername())))
+                        .build())
                 .build();
     }
 
