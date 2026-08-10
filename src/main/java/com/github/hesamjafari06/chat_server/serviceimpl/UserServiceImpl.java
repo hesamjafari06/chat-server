@@ -2,7 +2,7 @@ package com.github.hesamjafari06.chat_server.serviceimpl;
 
 import com.github.hesamjafari06.chat_server.dto.request.*;
 import com.github.hesamjafari06.chat_server.dto.response.ApiResponse;
-import com.github.hesamjafari06.chat_server.dto.response.CreateUserResponse;
+import com.github.hesamjafari06.chat_server.dto.response.UserResponse;
 import com.github.hesamjafari06.chat_server.entity.UserEntity;
 import com.github.hesamjafari06.chat_server.exception.PasswordDoNotMatchException;
 import com.github.hesamjafari06.chat_server.exception.UserNotFoundException;
@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public ApiResponse<CreateUserResponse> createUser(CreateUserRequest request) {
+    public ApiResponse<UserResponse> createUser(CreateUserRequest request) {
 
         if (userRepository.existsByUsername(request.getUsername())){
             throw new UsernameAlreadyExistsException();
@@ -56,8 +56,7 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(user);
 
-        return ApiResponse.<CreateUserResponse>builder()
-                .timestamp(Instant.now())
+        return ApiResponse.<UserResponse>builder()
                 .status("OK")
                 .data(userMapper.toUserResponse(user))
                 .build();
@@ -74,20 +73,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public CreateUserResponse loginUser(LoginRequest request) {
-        UserEntity user = findUserByUsername(request.getUsername());
-        if(
-                passwordEncoder.encode(request.getPassword()).equals(user.getPassword())
-        ) {
-            return userMapper.toUserResponse(user);
-        } else {
-            throw new WrongPasswordException();
-        }
+    public ApiResponse<UserResponse> getSelfUserProfile(){
+        UserEntity user = getCurrentUser();
+
+        return ApiResponse.<UserResponse>builder()
+                .status("OK")
+                .data(userMapper.toUserResponse(user))
+                .build();
     }
 
     @Override
     @Transactional
-    public CreateUserResponse updateUser(UpdateUserRequest request) {
+    public ApiResponse<UserResponse> updateUser(UpdateUserRequest request) {
 
         UserEntity user = getCurrentUser();
 
@@ -107,22 +104,24 @@ public class UserServiceImpl implements UserService {
             user.setBirthDate(request.getBirthDate());
         }
 
-        return userMapper.toUserResponse(user);
+        return ApiResponse.<UserResponse>builder()
+                .status("OK")
+                .data(userMapper.toUserResponse(user))
+                .build();
     }
 
     @Override
     @Transactional
-    public CreateUserResponse changePassword(ChangePasswordRequest request) {
-
+    public ApiResponse<UserResponse> changePassword(ChangePasswordRequest request) {
         UserEntity user = getCurrentUser();
-
-        if (!request.getNewPassword().equals(request.getConfirmNewPassword())) {
-            throw new PasswordDoNotMatchException();
-        } else if (
+        if (
                 passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())
         ) {
             user.setPassword(passwordEncoder.encode(request.getNewPassword()));
-            return userMapper.toUserResponse(user);
+            return ApiResponse.<UserResponse>builder()
+                    .status("OK")
+                    .data(userMapper.toUserResponse(user))
+                    .build();
         }
         throw new WrongPasswordException();
     }
