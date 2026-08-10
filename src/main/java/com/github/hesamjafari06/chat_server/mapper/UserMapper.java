@@ -1,7 +1,7 @@
 package com.github.hesamjafari06.chat_server.mapper;
 
 import com.github.hesamjafari06.chat_server.dto.request.CreateUserRequest;
-import com.github.hesamjafari06.chat_server.dto.response.CreateUserResponse;
+import com.github.hesamjafari06.chat_server.dto.response.UserResponse;
 import com.github.hesamjafari06.chat_server.entity.UserEntity;
 import com.github.hesamjafari06.chat_server.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +20,8 @@ public class UserMapper {
                 .build();
     }
 
-    public CreateUserResponse toUserResponse(UserEntity user){
-        return CreateUserResponse.builder()
+    public UserResponse toUserResponse(UserEntity user){
+        return UserResponse.builder()
                 .username(user.getUsername())
                 .birthDate(user.getBirthDate())
                 .build();

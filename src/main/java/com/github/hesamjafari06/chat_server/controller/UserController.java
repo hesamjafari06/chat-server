@@ -2,7 +2,7 @@ package com.github.hesamjafari06.chat_server.controller;
 
 import com.github.hesamjafari06.chat_server.dto.request.ChangePasswordRequest;
 import com.github.hesamjafari06.chat_server.dto.request.UpdateUserRequest;
-import com.github.hesamjafari06.chat_server.dto.response.CreateUserResponse;
+import com.github.hesamjafari06.chat_server.dto.response.UserResponse;
 import com.github.hesamjafari06.chat_server.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +24,8 @@ public class UserController {
 //    }
 
     @PatchMapping()
-    public ResponseEntity<CreateUserResponse> updateUser(@RequestBody UpdateUserRequest request){
-        CreateUserResponse response = userService.updateUser(request);
+    public ResponseEntity<UserResponse> updateUser(@RequestBody UpdateUserRequest request){
+        UserResponse response = userService.updateUser(request);
 
         return ResponseEntity.ok(response);
     }
@@ -35,7 +35,7 @@ public class UserController {
 
         System.out.println(SecurityContextHolder.getContext().getAuthentication());
 
-        CreateUserResponse response = userService.changePassword(request);
+        UserResponse response = userService.changePassword(request);
 
         return ResponseEntity.ok().build();
     }
