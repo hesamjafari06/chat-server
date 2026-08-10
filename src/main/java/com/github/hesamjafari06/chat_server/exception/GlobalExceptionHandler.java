@@ -26,7 +26,6 @@ public class GlobalExceptionHandler {
 
         return ApiResponse.<ErrorResponse>builder()
                 .status("CONFLICT")
-                .timestamp(Instant.now())
                 .data(buildErrorResponse(exception.getMessage()))
                 .build();
     }
@@ -38,20 +37,18 @@ public class GlobalExceptionHandler {
 
         return ApiResponse.<ErrorResponse>builder()
                 .status("NOT_FOUND")
-                .timestamp(Instant.now())
                 .data(buildErrorResponse(exception.getMessage()))
                 .build();
     }
 
     @ExceptionHandler(WrongPasswordException.class)
-    public ResponseEntity<ErrorResponse> handleWrongPassword(
+    public ApiResponse<ErrorResponse> handleWrongPassword(
             WrongPasswordException exception){
 
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(
-                        buildErrorResponse(exception.getMessage())
-                );
+        return ApiResponse.<ErrorResponse>builder()
+                .status("BAD_REQUEST")
+                .data(buildErrorResponse(exception.getMessage()))
+                .build();
     }
 
     @ExceptionHandler(ConversationNotFoundException.class)
@@ -105,7 +102,6 @@ public class GlobalExceptionHandler {
 
         return ApiResponse.<ErrorResponse>builder()
                 .status("BAD_REQUEST")
-                .timestamp(Instant.now())
                 .data(buildErrorResponse(exception.getMessage()))
                 .build();
     }
