@@ -15,11 +15,11 @@ public interface UserService {
 
     public UserEntity findUserByUsername(String username);
 
-    public UserEntity findUserByUserId(UUID userId);
+    public UserEntity findUserByUserId(String userId);
 
     public ApiResponse<UserResponse> getSelfUserProfile();
 
-    public ApiResponse<UserResponse> getUserProfile(UUID id);
+    public ApiResponse<UserResponse> getUserProfile(String uid);
 
     public ApiResponse<UpdateUserResponse> updateUser(UpdateUserRequest request);
 

@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity findUserByUserId(UUID userId) {
+    public UserEntity findUserByUserId(String userId) {
         return userRepository.findByUserId(userId).orElseThrow(UserNotFoundException::new);
     }
 
@@ -94,11 +94,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ApiResponse<UserResponse> getUserProfile(UUID id) {
+    public ApiResponse<UserResponse> getUserProfile(String uid) {
 
         return ApiResponse.<UserResponse>builder()
                 .status("OK")
-                .data(userMapper.toUserResponse(findUserByUserId(id)))
+                .data(userMapper.toUserResponse(findUserByUserId(uid)))
                 .build();
     }
 

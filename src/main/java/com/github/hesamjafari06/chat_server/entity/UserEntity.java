@@ -1,5 +1,6 @@
 package com.github.hesamjafari06.chat_server.entity;
 
+import com.aventrix.jnanoid.jnanoid.NanoIdUtils;
 import com.github.hesamjafari06.chat_server.enums.UserStatus;
 import jakarta.persistence.*;
 import lombok.*;
@@ -21,9 +22,9 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(updatable = false)
-    private UUID userId;
+    @Column(nullable = false, updatable = false,
+            unique = true, length = 21)
+    private String userId;
 
     @Column(unique = true, nullable = false)
     private String username;
@@ -54,6 +55,7 @@ public class UserEntity {
         updatedAt = now;
         lastSeen = now;
         status = UserStatus.OFFLINE;
+        userId = NanoIdUtils.randomNanoId();
     }
 
     @PreUpdate

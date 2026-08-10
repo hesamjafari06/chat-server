@@ -10,6 +10,7 @@ import java.time.LocalDate;
 @Setter
 @Builder
 public class UserResponse {
+    private String userId;
     private String username;
     private LocalDate birthDate;
 }

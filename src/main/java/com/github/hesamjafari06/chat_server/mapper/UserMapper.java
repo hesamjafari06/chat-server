@@ -22,6 +22,7 @@ public class UserMapper {
 
     public UserResponse toUserResponse(UserEntity user){
         return UserResponse.builder()
+                .userId(user.getUserId())
                 .username(user.getUsername())
                 .birthDate(user.getBirthDate())
                 .build();
