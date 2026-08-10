@@ -5,7 +5,6 @@ import com.github.hesamjafari06.chat_server.dto.response.ApiResponse;
 import com.github.hesamjafari06.chat_server.dto.response.UpdateUserResponse;
 import com.github.hesamjafari06.chat_server.dto.response.UserResponse;
 import com.github.hesamjafari06.chat_server.entity.UserEntity;
-import com.github.hesamjafari06.chat_server.exception.PasswordDoNotMatchException;
 import com.github.hesamjafari06.chat_server.exception.UserNotFoundException;
 import com.github.hesamjafari06.chat_server.exception.UsernameAlreadyExistsException;
 import com.github.hesamjafari06.chat_server.exception.WrongPasswordException;
@@ -24,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.Objects;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
 
-    public UserEntity getCurrentUser(){
+    public UserEntity getCurrentUser() {
         Authentication authentication =
                 SecurityContextHolder.getContext().getAuthentication();
 
@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public ApiResponse<UserResponse> createUser(CreateUserRequest request) {
 
-        if (userRepository.existsByUsername(request.getUsername())){
+        if (userRepository.existsByUsername(request.getUsername())) {
             throw new UsernameAlreadyExistsException();
         }
 
@@ -78,7 +78,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ApiResponse<UserResponse> getSelfUserProfile(){
+    public UserEntity findUserByUserId(UUID userId) {
+        return userRepository.findByUserId(userId).orElseThrow(UserNotFoundException::new);
+    }
+
+
+    @Override
+    public ApiResponse<UserResponse> getSelfUserProfile() {
         UserEntity user = getCurrentUser();
 
         return ApiResponse.<UserResponse>builder()
@@ -88,11 +94,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ApiResponse<UserResponse> getUserProfile(Long id){
+    public ApiResponse<UserResponse> getUserProfile(UUID id) {
 
         return ApiResponse.<UserResponse>builder()
                 .status("OK")
-                .data(userMapper.toUserResponse(findUserById(id)))
+                .data(userMapper.toUserResponse(findUserByUserId(id)))
                 .build();
     }
 
@@ -117,7 +123,6 @@ public class UserServiceImpl implements UserService {
 
             user.setBirthDate(request.getBirthDate());
         }
-
 
 
         return ApiResponse.<UpdateUserResponse>builder()

@@ -6,6 +6,8 @@ import com.github.hesamjafari06.chat_server.dto.response.UpdateUserResponse;
 import com.github.hesamjafari06.chat_server.dto.response.UserResponse;
 import com.github.hesamjafari06.chat_server.entity.UserEntity;
 
+import java.util.UUID;
+
 public interface UserService {
     public ApiResponse<UserResponse> createUser(CreateUserRequest request);
 
@@ -13,9 +15,11 @@ public interface UserService {
 
     public UserEntity findUserByUsername(String username);
 
+    public UserEntity findUserByUserId(UUID userId);
+
     public ApiResponse<UserResponse> getSelfUserProfile();
 
-    public ApiResponse<UserResponse> getUserProfile(Long id);
+    public ApiResponse<UserResponse> getUserProfile(UUID id);
 
     public ApiResponse<UpdateUserResponse> updateUser(UpdateUserRequest request);
 

@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/profile")
 @RequiredArgsConstructor
@@ -18,7 +20,7 @@ public class UserProfileController {
     private final UserService userService;
 
     @GetMapping
-    public ApiResponse<UserResponse> getProfile(@RequestParam Long uid){
+    public ApiResponse<UserResponse> getProfile(@RequestParam UUID uid){
         return userService.getUserProfile(uid);
 
     }
