@@ -15,6 +15,8 @@ public interface UserService {
 
     public ApiResponse<UserResponse> getSelfUserProfile();
 
+    public ApiResponse<UserResponse> getUserProfile(Long id);
+
     public ApiResponse<UpdateUserResponse> updateUser(UpdateUserRequest request);
 
     public ApiResponse<UserResponse> changePassword(ChangePasswordRequest request);

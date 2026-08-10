@@ -88,6 +88,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public ApiResponse<UserResponse> getUserProfile(Long id){
+
+        return ApiResponse.<UserResponse>builder()
+                .status("OK")
+                .data(userMapper.toUserResponse(findUserById(id)))
+                .build();
+    }
+
+    @Override
     @Transactional
     public ApiResponse<UpdateUserResponse> updateUser(UpdateUserRequest request) {
 
