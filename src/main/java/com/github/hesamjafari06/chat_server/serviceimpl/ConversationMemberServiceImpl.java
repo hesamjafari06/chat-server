@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 public class ConversationMemberServiceImpl implements ConversationMemberService {
 
     private final ConversationMemberRepository conversationMemberRepository;
-    private final ConversationService conversationService;
     private final UserService userService;
 
     @Override
@@ -36,13 +35,25 @@ public class ConversationMemberServiceImpl implements ConversationMemberService 
                 .orElseThrow(ConversationMemberNotFoundException::new);
     }
 
-    public boolean isConversationMemberJoined(String conversationId) {
-        UserEntity currentUser = userService.getCurrentUser();
-        ConversationEntity conversation =
-                conversationService.getConversationByConversationId(conversationId);
+//    public boolean isConversationMemberJoined(String conversationId) {
+//        UserEntity currentUser = userService.getCurrentUser();
+//        ConversationEntity conversation =
+//                conversationService.getConversationByConversationId(conversationId);
+//
+//        return conversationMemberRepository.
+//                existsByConversationIdAndUserId(
+//                        conversation.getId(), currentUser.getId());
+//    }
 
-        return conversationMemberRepository.
-                existsByConversationIdAndUserId(
-                        conversation.getId(), currentUser.getId());
+    public boolean isConversationMemberJoined(
+            ConversationEntity conversation) {
+
+        UserEntity currentUser = userService.getCurrentUser();
+
+        return conversationMemberRepository
+                .existsByConversationIdAndUserId(
+                        conversation.getId(),
+                        currentUser.getId()
+                );
     }
 }

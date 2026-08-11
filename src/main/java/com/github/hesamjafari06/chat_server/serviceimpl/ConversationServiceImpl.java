@@ -103,7 +103,7 @@ public class ConversationServiceImpl implements ConversationService {
             throw new JoinPrivateConversationException();
         }
 
-        if (conversationMemberService.isConversationMemberJoined(conversation.getConversationId())){
+        if (conversationMemberService.isConversationMemberJoined(conversation)){
             throw new MemberAlreadyJoinedException();
         }
 
