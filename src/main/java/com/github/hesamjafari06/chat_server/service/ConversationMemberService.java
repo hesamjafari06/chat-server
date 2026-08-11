@@ -11,5 +11,5 @@ public interface ConversationMemberService {
 
     public boolean isConversationMemberJoined(ConversationEntity conversation, UserEntity user);
 
-    public ConversationMemberEntity getMemberByUserIdAndConversationId(ConversationEntity conversation);
+    public ConversationMemberEntity getMemberByUserAndConversation(ConversationEntity conversation, UserEntity user);
 }

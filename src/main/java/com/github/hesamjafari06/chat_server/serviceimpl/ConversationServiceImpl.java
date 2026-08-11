@@ -1,5 +1,6 @@
 package com.github.hesamjafari06.chat_server.serviceimpl;
 
+import com.github.hesamjafari06.chat_server.dto.request.ChangeRoleRequest;
 import com.github.hesamjafari06.chat_server.dto.request.CreateConversationRequest;
 import com.github.hesamjafari06.chat_server.dto.request.JoinConversationRequest;
 import com.github.hesamjafari06.chat_server.dto.response.ApiResponse;
@@ -93,24 +94,24 @@ public class ConversationServiceImpl implements ConversationService {
 
     @Override
     @Transactional
-    public ApiResponse<ConversationMemberResponse> joinConversation(JoinConversationRequest request){
+    public ApiResponse<ConversationMemberResponse> joinConversation(JoinConversationRequest request) {
         ConversationEntity conversation =
                 getConversationByConversationId(request.getConversationId());
 
         UserEntity currentUser = userService.getCurrentUser();
 
-        if (conversation.getType().equals(ConversationType.PRIVATE)){
+        if (conversation.getType().equals(ConversationType.PRIVATE)) {
             throw new JoinPrivateConversationException();
         }
 
-        if (conversationMemberService.isConversationMemberJoined(conversation)){
+        if (conversationMemberService.isConversationMemberJoined(conversation, currentUser)) {
             throw new MemberAlreadyJoinedException();
         }
 
         ConversationMemberEntity conversationMember;
 
-        if (conversation.getType().equals(ConversationType.CHANNEL)){
-            if(channelService.getChannelByConversationId(conversation.getId()).isPrivate()){
+        if (conversation.getType().equals(ConversationType.CHANNEL)) {
+            if (channelService.getChannelByConversationId(conversation.getId()).isPrivate()) {
                 throw new ChannelIsPrivateException();
             } else {
                 conversationMember =
@@ -129,17 +130,17 @@ public class ConversationServiceImpl implements ConversationService {
             }
         }
 
-        if (conversation.getType().equals(ConversationType.GROUP)){
-            if(groupService.getGroupByConversationId(conversation.getId()).isClosed()){
+        if (conversation.getType().equals(ConversationType.GROUP)) {
+            if (groupService.getGroupByConversationId(conversation.getId()).isClosed()) {
                 throw new GroupIsClosedException();
             } else {
                 conversationMember =
                         ConversationMemberEntity.builder()
-                        .user(currentUser)
-                        .conversation(conversation)
-                        .role(ConversationMemberRole.MEMBER)
-                        .notificationEnabled(true)
-                        .build();
+                                .user(currentUser)
+                                .conversation(conversation)
+                                .role(ConversationMemberRole.MEMBER)
+                                .notificationEnabled(true)
+                                .build();
                 conversationMemberRepository.save(conversationMember);
 
                 return ApiResponse.<ConversationMemberResponse>builder()
@@ -149,5 +150,64 @@ public class ConversationServiceImpl implements ConversationService {
             }
         }
         return null;
+    }
+
+
+    @Override
+    @Transactional
+    public ApiResponse<ConversationMemberResponse> changeRole(
+            ChangeRoleRequest request) {
+
+        UserEntity currentUser = userService.getCurrentUser();
+
+        ConversationEntity conversation =
+                getConversationByConversationId(
+                        request.getConversationId()
+                );
+
+        if (conversation.getType().equals(ConversationType.PRIVATE)) {
+            throw new NoRoleInPrivateException();
+        }
+
+        if (!conversationMemberService.isConversationMemberJoined(
+                conversation, currentUser)) {
+
+            throw new MemberIsNotJoinedException();
+        }
+
+        ConversationMemberEntity currentMember =
+                conversationMemberService
+                        .getMemberByUserAndConversation(
+                                conversation,
+                                currentUser
+                        );
+
+        if (currentMember.getRole() != ConversationMemberRole.OWNER) {
+            throw new NoOwnerChangeRoleException();
+        }
+
+        ConversationMemberEntity targetMember =
+                conversationMemberService
+                        .getConversationMemberByConversationMemberId(request.getTargetMemberId());
+
+        if (currentMember.getId().equals(targetMember.getId())) {
+            throw new SelfChangeRoleException();
+        }
+
+        if (targetMember.getConversation().equals(conversation)){
+
+            if (request.getRole().equals(ConversationMemberRole.OWNER)){
+                currentMember.setRole(ConversationMemberRole.ADMIN);
+            }
+
+            targetMember.setRole(request.getRole());
+
+            return ApiResponse.<ConversationMemberResponse>builder()
+                    .status("OK")
+                    .data(conversationMemberMapper.toResponse(targetMember))
+                    .build();
+        } else {
+            throw new MemberIsNotJoinedException();
+        }
     }
 }

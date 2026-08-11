@@ -1,6 +1,7 @@
 package com.github.hesamjafari06.chat_server.service;
 
 
+import com.github.hesamjafari06.chat_server.dto.request.ChangeRoleRequest;
 import com.github.hesamjafari06.chat_server.dto.request.CreateConversationRequest;
 import com.github.hesamjafari06.chat_server.dto.request.JoinConversationRequest;
 import com.github.hesamjafari06.chat_server.dto.response.ApiResponse;
@@ -18,4 +19,8 @@ public interface ConversationService {
     public ApiResponse<ConversationMemberResponse> joinConversation(JoinConversationRequest request);
 
     public ConversationEntity getConversationByConversationId(String conversationId);
+
+    public ApiResponse<ConversationMemberResponse> changeRole(ChangeRoleRequest request);
+
+    
 }

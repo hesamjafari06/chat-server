@@ -46,15 +46,15 @@ public class ConversationMemberServiceImpl implements ConversationMemberService 
                 );
     }
 
-    public ConversationMemberEntity getMemberByUserIdAndConversationId(
-            ConversationEntity conversation) {
-
-        UserEntity currentUser = userService.getCurrentUser();
+    @Override
+    public ConversationMemberEntity getMemberByUserAndConversation(
+            ConversationEntity conversation,
+            UserEntity user) {
 
         return conversationMemberRepository
                 .findByConversationIdAndUserId(
                         conversation.getId(),
-                        currentUser.getId()
+                        user.getId()
                 ).orElseThrow(ConversationMemberNotFoundException::new);
     }
 }

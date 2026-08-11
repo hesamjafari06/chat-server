@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.time.Instant;
-
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -154,6 +152,50 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiResponse<ErrorResponse> handleMemberAlreadyJoined(
             MemberAlreadyJoinedException exception){
+
+        return ApiResponse.<ErrorResponse>builder()
+                .status("BAD_REQUEST")
+                .data(buildErrorResponse(exception.getMessage()))
+                .build();
+    }
+
+    @ExceptionHandler(NoRoleInPrivateException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiResponse<ErrorResponse> handleNoRoleInPrivate(
+            NoRoleInPrivateException exception){
+
+        return ApiResponse.<ErrorResponse>builder()
+                .status("BAD_REQUEST")
+                .data(buildErrorResponse(exception.getMessage()))
+                .build();
+    }
+
+    @ExceptionHandler(NoOwnerChangeRoleException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiResponse<ErrorResponse> handleMemberCantChangeRole(
+            NoOwnerChangeRoleException exception){
+
+        return ApiResponse.<ErrorResponse>builder()
+                .status("BAD_REQUEST")
+                .data(buildErrorResponse(exception.getMessage()))
+                .build();
+    }
+
+    @ExceptionHandler(MemberIsNotJoinedException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiResponse<ErrorResponse> handleMemberIsNotJoined(
+            MemberIsNotJoinedException exception){
+
+        return ApiResponse.<ErrorResponse>builder()
+                .status("BAD_REQUEST")
+                .data(buildErrorResponse(exception.getMessage()))
+                .build();
+    }
+
+    @ExceptionHandler(SelfChangeRoleException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiResponse<ErrorResponse> handleSelfChangeRole(
+            SelfChangeRoleException exception){
 
         return ApiResponse.<ErrorResponse>builder()
                 .status("BAD_REQUEST")
