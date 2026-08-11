@@ -25,6 +25,7 @@ public class ChannelMapper {
 
     public ChannelResponse toResponse(ChannelEntity channel){
         return ChannelResponse.builder()
+                .channelId(channel.getChannelId())
                 .name(channel.getName())
                 .publicId(channel.getPublicId())
                 .description(channel.getDescription())

@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface ChannelRepository extends JpaRepository<ChannelEntity, Long> {
     boolean existsByPublicId(String publicId);
     Optional<ChannelEntity> findByPublicId(String publicId);
+    Optional<ChannelEntity> findByChannelId(String channelId);
 }

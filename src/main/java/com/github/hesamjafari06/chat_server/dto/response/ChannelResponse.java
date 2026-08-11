@@ -9,6 +9,7 @@ import lombok.Setter;
 @Builder
 public class ChannelResponse {
     private String name;
+    private String channelId;
     private String publicId;
     private String description;
     private boolean isPrivate;

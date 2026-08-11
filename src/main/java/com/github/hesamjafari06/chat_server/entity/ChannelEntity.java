@@ -1,7 +1,11 @@
 package com.github.hesamjafari06.chat_server.entity;
 
+import com.aventrix.jnanoid.jnanoid.NanoIdUtils;
+import com.github.hesamjafari06.chat_server.enums.UserStatus;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.Instant;
 
 @Entity
 @Table(name = "Channels")
@@ -15,6 +19,10 @@ public class ChannelEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false, updatable = false,
+            unique = true, length = 21)
+    private String channelId;
 
     @OneToOne
     private ConversationEntity conversation;
@@ -30,4 +38,10 @@ public class ChannelEntity {
 
     @Column(nullable = false)
     private boolean isPrivate;
+
+    @PrePersist
+    public void onCreate(){
+        Instant now = Instant.now();
+        channelId = NanoIdUtils.randomNanoId();
+    }
 }
