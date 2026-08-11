@@ -4,9 +4,11 @@ import com.github.hesamjafari06.chat_server.dto.request.CreateGroupRequest;
 import com.github.hesamjafari06.chat_server.dto.response.ApiResponse;
 import com.github.hesamjafari06.chat_server.dto.response.ChannelResponse;
 import com.github.hesamjafari06.chat_server.dto.response.GroupResponse;
+import com.github.hesamjafari06.chat_server.entity.ChannelEntity;
 import com.github.hesamjafari06.chat_server.entity.ConversationMemberEntity;
 import com.github.hesamjafari06.chat_server.entity.GroupEntity;
 import com.github.hesamjafari06.chat_server.enums.ConversationMemberRole;
+import com.github.hesamjafari06.chat_server.exception.ChannelNotFoundException;
 import com.github.hesamjafari06.chat_server.exception.GroupNotFoundException;
 import com.github.hesamjafari06.chat_server.exception.PublicIdAlreadyExistsException;
 import com.github.hesamjafari06.chat_server.mapper.GroupMapper;
@@ -34,6 +36,11 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public GroupEntity getGroupByGroupId(String groupId) {
         return groupRepository.findByGroupId(groupId).orElseThrow(GroupNotFoundException::new);
+    }
+
+    @Override
+    public GroupEntity getGroupByConversationId(Long id) {
+        return groupRepository.findByConversationId(id).orElseThrow(GroupNotFoundException::new);
     }
 
     @Override

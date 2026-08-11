@@ -10,4 +10,5 @@ public interface ChannelService {
     public ChannelEntity getChannelById(Long id);
     public ChannelEntity getChannelByPublicId(String publicId);
     public ChannelEntity getChannelByChannelId(String channelId);
+    public ChannelEntity getChannelByConversationId(Long id);
 }

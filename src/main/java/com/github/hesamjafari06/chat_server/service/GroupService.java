@@ -11,4 +11,6 @@ public interface GroupService {
     public GroupEntity getGroupById(Long id);
 
     public GroupEntity getGroupByGroupId(String groupId);
+
+    public GroupEntity getGroupByConversationId(Long id);
 }

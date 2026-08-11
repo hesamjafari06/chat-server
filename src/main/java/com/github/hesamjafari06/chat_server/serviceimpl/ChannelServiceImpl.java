@@ -66,4 +66,9 @@ public class ChannelServiceImpl implements ChannelService {
     public ChannelEntity getChannelByChannelId(String channelId) {
         return channelRepository.findByChannelId(channelId).orElseThrow(ChannelNotFoundException::new);
     }
+
+    @Override
+    public ChannelEntity getChannelByConversationId(Long id) {
+        return channelRepository.findByConversationId(id).orElseThrow(ChannelNotFoundException::new);
+    }
 }

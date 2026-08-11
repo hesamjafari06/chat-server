@@ -116,4 +116,48 @@ public class GlobalExceptionHandler {
                 .data(buildErrorResponse(exception.getMessage()))
                 .build();
     }
+
+    @ExceptionHandler(JoinPrivateConversationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiResponse<ErrorResponse> handleJoinPrivateConversation(
+            JoinPrivateConversationException exception){
+
+        return ApiResponse.<ErrorResponse>builder()
+                .status("BAD_REQUEST")
+                .data(buildErrorResponse(exception.getMessage()))
+                .build();
+    }
+
+    @ExceptionHandler(ChannelIsPrivateException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiResponse<ErrorResponse> handleChannelPrivate(
+            ChannelIsPrivateException exception){
+
+        return ApiResponse.<ErrorResponse>builder()
+                .status("BAD_REQUEST")
+                .data(buildErrorResponse(exception.getMessage()))
+                .build();
+    }
+
+    @ExceptionHandler(GroupIsClosedException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiResponse<ErrorResponse> handleGroupIsClosed(
+            GroupIsClosedException exception){
+
+        return ApiResponse.<ErrorResponse>builder()
+                .status("BAD_REQUEST")
+                .data(buildErrorResponse(exception.getMessage()))
+                .build();
+    }
+
+    @ExceptionHandler(MemberAlreadyJoinedException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiResponse<ErrorResponse> handleMemberAlreadyJoined(
+            MemberAlreadyJoinedException exception){
+
+        return ApiResponse.<ErrorResponse>builder()
+                .status("BAD_REQUEST")
+                .data(buildErrorResponse(exception.getMessage()))
+                .build();
+    }
 }
