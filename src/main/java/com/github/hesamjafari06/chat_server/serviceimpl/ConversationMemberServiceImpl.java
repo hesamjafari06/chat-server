@@ -36,14 +36,13 @@ public class ConversationMemberServiceImpl implements ConversationMemberService 
     }
 
     public boolean isConversationMemberJoined(
-            ConversationEntity conversation) {
-
-        UserEntity currentUser = userService.getCurrentUser();
+            ConversationEntity conversation,
+            UserEntity user) {
 
         return conversationMemberRepository
                 .existsByConversationIdAndUserId(
                         conversation.getId(),
-                        currentUser.getId()
+                        user.getId()
                 );
     }
 
