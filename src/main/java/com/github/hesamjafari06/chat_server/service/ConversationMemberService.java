@@ -9,4 +9,6 @@ public interface ConversationMemberService {
     public ConversationMemberEntity getConversationMemberByConversationMemberId(String conversationMemberId);
 
     public boolean isConversationMemberJoined(ConversationEntity conversation);
+
+    public ConversationMemberEntity getMemberByUserIdAndConversationId(ConversationEntity conversation);
 }
