@@ -9,21 +9,21 @@ import com.github.hesamjafari06.chat_server.entity.UserEntity;
 import java.util.UUID;
 
 public interface UserService {
-    public ApiResponse<UserResponse> createUser(CreateUserRequest request);
+    ApiResponse<UserResponse> createUser(CreateUserRequest request);
 
-    public UserEntity getCurrentUser();
+    UserEntity getCurrentUser();
 
-    public UserEntity findUserById(Long id);
+    UserEntity findUserById(Long id);
 
-    public UserEntity findUserByUsername(String username);
+    UserEntity findUserByUsername(String username);
 
-    public UserEntity findUserByUserId(String userId);
+    UserEntity findUserByUserId(String userId);
 
-    public ApiResponse<UserResponse> getSelfUserProfile();
+    ApiResponse<UserResponse> getSelfUserProfile();
 
-    public ApiResponse<UserResponse> getUserProfile(String uid);
+    ApiResponse<UserResponse> getUserProfile(String uid);
 
-    public ApiResponse<UpdateUserResponse> updateUser(UpdateUserRequest request);
+    ApiResponse<UpdateUserResponse> updateUser(UpdateUserRequest request);
 
-    public ApiResponse<UserResponse> changePassword(ChangePasswordRequest request);
+    ApiResponse<UserResponse> changePassword(ChangePasswordRequest request);
 }

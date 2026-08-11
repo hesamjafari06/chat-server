@@ -5,11 +5,11 @@ import com.github.hesamjafari06.chat_server.entity.ConversationMemberEntity;
 import com.github.hesamjafari06.chat_server.entity.UserEntity;
 
 public interface ConversationMemberService {
-    public ConversationMemberEntity getConversationMemberById(Long id);
+    ConversationMemberEntity getConversationMemberById(Long id);
 
-    public ConversationMemberEntity getConversationMemberByConversationMemberId(String conversationMemberId);
+    ConversationMemberEntity getConversationMemberByConversationMemberId(String conversationMemberId);
 
-    public boolean isConversationMemberJoined(ConversationEntity conversation, UserEntity user);
+    boolean isConversationMemberJoined(ConversationEntity conversation, UserEntity user);
 
-    public ConversationMemberEntity getMemberByUserAndConversation(ConversationEntity conversation, UserEntity user);
+    ConversationMemberEntity getMemberByUserAndConversation(ConversationEntity conversation, UserEntity user);
 }

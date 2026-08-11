@@ -12,15 +12,15 @@ import com.github.hesamjafari06.chat_server.enums.ConversationType;
 import com.github.hesamjafari06.chat_server.exception.ConversationNotFoundException;
 
 public interface ConversationService {
-    public ApiResponse<ConversationResponse> createConversation(CreateConversationRequest request);
+    ApiResponse<ConversationResponse> createConversation(CreateConversationRequest request);
 
-    public ConversationEntity getConversationById(Long id);
+    ConversationEntity getConversationById(Long id);
 
-    public ApiResponse<ConversationMemberResponse> joinConversation(JoinConversationRequest request);
+    ApiResponse<ConversationMemberResponse> joinConversation(JoinConversationRequest request);
 
-    public ConversationEntity getConversationByConversationId(String conversationId);
+    ConversationEntity getConversationByConversationId(String conversationId);
 
-    public ApiResponse<ConversationMemberResponse> changeRole(ChangeRoleRequest request);
+    ApiResponse<ConversationMemberResponse> changeRole(ChangeRoleRequest request);
 
-    
+
 }
