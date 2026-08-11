@@ -8,4 +8,5 @@ import lombok.Setter;
 public class CreateGroupRequest {
     private String name;
     private String description;
+    private boolean isClosed;
 }

@@ -12,10 +12,11 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class GroupMapper {
 
-    public GroupEntity toEntity(CreateGroupRequest request){
+    public GroupEntity toEntity(CreateGroupRequest request) {
         return GroupEntity.builder()
                 .name(request.getName())
                 .description(request.getDescription())
+                .isClosed(request.isClosed())
                 .conversation(
                         ConversationEntity.builder()
                                 .type(ConversationType.GROUP)
@@ -24,10 +25,12 @@ public class GroupMapper {
                 .build();
     }
 
-    public GroupResponse toResponse(GroupEntity group){
+    public GroupResponse toResponse(GroupEntity group) {
         return GroupResponse.builder()
+                .groupId(group.getGroupId())
                 .name(group.getName())
                 .description(group.getDescription())
+                .isClosed(group.isClosed())
                 .build();
     }
 
