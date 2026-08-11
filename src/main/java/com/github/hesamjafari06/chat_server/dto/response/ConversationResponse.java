@@ -8,5 +8,5 @@ import lombok.Setter;
 @Setter
 @Builder
 public class ConversationResponse {
-    private Long conversationId;
+    private String conversationId;
 }

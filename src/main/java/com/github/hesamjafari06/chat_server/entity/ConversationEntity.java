@@ -20,6 +20,10 @@ public class ConversationEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, updatable = false,
+            unique = true, length = 21)
+    private String conversationId;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false,updatable = false)
     private ConversationType type;

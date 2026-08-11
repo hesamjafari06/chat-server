@@ -105,4 +105,15 @@ public class GlobalExceptionHandler {
                 .data(buildErrorResponse(exception.getMessage()))
                 .build();
     }
+
+    @ExceptionHandler(InvalidConversationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiResponse<ErrorResponse> handleInvalidConversation(
+            InvalidConversationException exception){
+
+        return ApiResponse.<ErrorResponse>builder()
+                .status("BAD_REQUEST")
+                .data(buildErrorResponse(exception.getMessage()))
+                .build();
+    }
 }

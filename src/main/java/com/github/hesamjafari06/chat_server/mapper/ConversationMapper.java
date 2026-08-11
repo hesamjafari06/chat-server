@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 public class ConversationMapper {
     public ConversationResponse toResponse(ConversationEntity conversation){
         return ConversationResponse.builder()
-                .conversationId(conversation.getId())
+                .conversationId(conversation.getConversationId())
                 .build();
     }
 }

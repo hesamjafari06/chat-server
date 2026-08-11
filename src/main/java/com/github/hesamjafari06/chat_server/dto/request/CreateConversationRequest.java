@@ -6,5 +6,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CreateConversationRequest {
-    private String username;
+    private String userId;
 }
