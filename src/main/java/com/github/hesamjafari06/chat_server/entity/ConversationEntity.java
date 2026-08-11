@@ -1,5 +1,6 @@
 package com.github.hesamjafari06.chat_server.entity;
 
+import com.aventrix.jnanoid.jnanoid.NanoIdUtils;
 import com.github.hesamjafari06.chat_server.enums.ConversationType;
 import com.github.hesamjafari06.chat_server.enums.UserStatus;
 import jakarta.persistence.*;
@@ -39,6 +40,7 @@ public class ConversationEntity {
         Instant now = Instant.now();
         createdAt = now;
         updatedAt = now;
+        conversationId = NanoIdUtils.randomNanoId();
     }
 
     @PreUpdate
