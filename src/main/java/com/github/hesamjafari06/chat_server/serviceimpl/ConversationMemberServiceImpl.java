@@ -35,16 +35,6 @@ public class ConversationMemberServiceImpl implements ConversationMemberService 
                 .orElseThrow(ConversationMemberNotFoundException::new);
     }
 
-//    public boolean isConversationMemberJoined(String conversationId) {
-//        UserEntity currentUser = userService.getCurrentUser();
-//        ConversationEntity conversation =
-//                conversationService.getConversationByConversationId(conversationId);
-//
-//        return conversationMemberRepository.
-//                existsByConversationIdAndUserId(
-//                        conversation.getId(), currentUser.getId());
-//    }
-
     public boolean isConversationMemberJoined(
             ConversationEntity conversation) {
 
