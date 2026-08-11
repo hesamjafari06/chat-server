@@ -11,6 +11,8 @@ import java.util.UUID;
 public interface UserService {
     public ApiResponse<UserResponse> createUser(CreateUserRequest request);
 
+    public UserEntity getCurrentUser();
+
     public UserEntity findUserById(Long id);
 
     public UserEntity findUserByUsername(String username);
