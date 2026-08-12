@@ -291,4 +291,49 @@ public class ConversationServiceImpl implements ConversationService {
                 .build();
     }
 
+    @Override
+    public ApiResponse<Void> deleteMember(DeleteMemberRequest request){
+
+        UserEntity user =
+                userService.getCurrentUser();
+
+        ConversationEntity conversation =
+                getConversationByConversationId(request.getConversationId());
+
+        ConversationMemberEntity currentMember =
+                conversationMemberService.getMemberByUserAndConversation(
+                        conversation,
+                        user
+                );
+
+        if (currentMember.getRole().equals(ConversationMemberRole.MEMBER)){
+            throw new MemberCanNotDeleteMemberException();
+        }
+
+        ConversationMemberEntity targetMember =
+                conversationMemberService.getConversationMemberByConversationMemberId(
+                        request.getConversationMemberId()
+                );
+
+        if (!targetMember.getConversation().equals(conversation)){
+            throw new MemberIsNotJoinedException();
+        }
+
+        if (targetMember.getRole().equals(ConversationMemberRole.OWNER)){
+            throw new CanNotDeleteOwnerException();
+        }
+
+        if (targetMember.getRole().equals(ConversationMemberRole.ADMIN) &&
+                currentMember.getRole().equals(ConversationMemberRole.ADMIN)){
+
+            throw new AdminCanNotDeleteAdminException();
+        }
+
+        conversationMemberService.deleteConversationMember(targetMember);
+
+        return ApiResponse.<Void>builder()
+                .status("OK")
+                .build();
+    }
+
 }

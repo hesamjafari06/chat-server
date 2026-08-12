@@ -23,4 +23,6 @@ public interface ConversationService {
     ApiResponse<Void> leaveConversation(LeaveConversationRequest request);
 
     ApiResponse<Void> deleteConversation(DeleteConversationRequest request);
+
+    ApiResponse<Void> deleteMember(DeleteMemberRequest request);
 }
