@@ -1,9 +1,6 @@
 package com.github.hesamjafari06.chat_server.serviceimpl;
 
-import com.github.hesamjafari06.chat_server.dto.request.ChangeRoleRequest;
-import com.github.hesamjafari06.chat_server.dto.request.CreateConversationRequest;
-import com.github.hesamjafari06.chat_server.dto.request.JoinConversationRequest;
-import com.github.hesamjafari06.chat_server.dto.request.LeaveConversationRequest;
+import com.github.hesamjafari06.chat_server.dto.request.*;
 import com.github.hesamjafari06.chat_server.dto.response.ApiResponse;
 import com.github.hesamjafari06.chat_server.dto.response.ConversationMemberResponse;
 import com.github.hesamjafari06.chat_server.dto.response.ConversationResponse;
@@ -236,4 +233,39 @@ public class ConversationServiceImpl implements ConversationService {
                 .status("OK")
                 .build();
     }
+
+    @Override
+    @Transactional
+    public ApiResponse<Void> deleteConversation(DeleteConversationRequest request){
+        UserEntity user = userService.getCurrentUser();
+
+        ConversationEntity conversation =
+                getConversationByConversationId(request.getConversationId());
+
+        ConversationMemberEntity conversationMember=
+                conversationMemberService.getMemberByUserAndConversation(
+                        conversation,
+                        user
+                );
+        if (conversation.getType().equals(ConversationType.PRIVATE) && request.isKeepConversation()){
+            conversationMemberService.deleteConversationMember(conversationMember);
+
+            return ApiResponse.<Void>builder()
+                    .status("OK")
+                    .build();
+        } else {
+            if (!conversation.getType().equals(ConversationType.PRIVATE) &&
+                    !conversationMember.getRole().equals(ConversationMemberRole.OWNER)){
+                throw new OnlyOwnerCanDeleteException();
+            }
+
+            conversationMemberService.deleteAllConversationMembers(conversation);
+            conversationRepository.delete(conversation);
+
+            return ApiResponse.<Void>builder()
+                    .status("OK")
+                    .build();
+        }
+    }
+
 }

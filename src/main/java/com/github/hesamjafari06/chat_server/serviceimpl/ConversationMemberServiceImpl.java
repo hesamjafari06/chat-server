@@ -60,9 +60,13 @@ public class ConversationMemberServiceImpl implements ConversationMemberService 
     }
 
     @Override
-    @Transactional
     public void deleteConversationMember(ConversationMemberEntity conversationMember) {
         conversationMemberRepository.
                 delete(conversationMember);
+    }
+
+    @Override
+    public void deleteAllConversationMembers(ConversationEntity conversation){
+        conversationMemberRepository.deleteAllByConversation(conversation);
     }
 }

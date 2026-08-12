@@ -1,5 +1,6 @@
 package com.github.hesamjafari06.chat_server.repository;
 
+import com.github.hesamjafari06.chat_server.entity.ConversationEntity;
 import com.github.hesamjafari06.chat_server.entity.ConversationMemberEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -14,4 +15,6 @@ public interface ConversationMemberRepository extends JpaRepository<Conversation
     boolean existsByConversationIdAndUserId(Long conversationId, Long userId);
 
     Optional<ConversationMemberEntity> findByConversationIdAndUserId(Long conversationId, Long userId);
+
+    void deleteAllByConversation(ConversationEntity conversation);
 }

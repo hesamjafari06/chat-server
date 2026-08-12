@@ -213,4 +213,15 @@ public class GlobalExceptionHandler {
                 .data(buildErrorResponse(exception.getMessage()))
                 .build();
     }
+
+    @ExceptionHandler(OnlyOwnerCanDeleteException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiResponse<ErrorResponse> handleOnlyOwnerCanDelete(
+            OnlyOwnerCanDeleteException exception){
+
+        return ApiResponse.<ErrorResponse>builder()
+                .status("BAD_REQUEST")
+                .data(buildErrorResponse(exception.getMessage()))
+                .build();
+    }
 }

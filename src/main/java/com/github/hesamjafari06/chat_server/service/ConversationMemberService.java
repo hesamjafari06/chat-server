@@ -14,4 +14,6 @@ public interface ConversationMemberService {
     ConversationMemberEntity getMemberByUserAndConversation(ConversationEntity conversation, UserEntity user);
 
     void deleteConversationMember(ConversationMemberEntity conversationMember);
+
+    void deleteAllConversationMembers(ConversationEntity conversation);
 }
