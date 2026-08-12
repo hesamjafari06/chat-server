@@ -5,9 +5,12 @@ import com.github.hesamjafari06.chat_server.dto.response.ApiResponse;
 import com.github.hesamjafari06.chat_server.dto.response.ChannelResponse;
 import com.github.hesamjafari06.chat_server.dto.response.UserResponse;
 import com.github.hesamjafari06.chat_server.entity.ChannelEntity;
+import com.github.hesamjafari06.chat_server.entity.ConversationEntity;
 import com.github.hesamjafari06.chat_server.entity.ConversationMemberEntity;
+import com.github.hesamjafari06.chat_server.entity.GroupEntity;
 import com.github.hesamjafari06.chat_server.enums.ConversationMemberRole;
 import com.github.hesamjafari06.chat_server.exception.ChannelNotFoundException;
+import com.github.hesamjafari06.chat_server.exception.GroupNotFoundException;
 import com.github.hesamjafari06.chat_server.exception.PublicIdAlreadyExistsException;
 import com.github.hesamjafari06.chat_server.mapper.ChannelMapper;
 import com.github.hesamjafari06.chat_server.repository.ChannelRepository;
@@ -70,5 +73,15 @@ public class ChannelServiceImpl implements ChannelService {
     @Override
     public ChannelEntity getChannelByConversationId(Long id) {
         return channelRepository.findByConversationId(id).orElseThrow(ChannelNotFoundException::new);
+    }
+
+    @Override
+    public ChannelEntity getChannelByConversation(ConversationEntity conversation) {
+        return channelRepository.findByConversation(conversation).orElseThrow(ChannelNotFoundException::new);
+    }
+
+    @Override
+    public void deleteChannel(ChannelEntity channel) {
+        channelRepository.delete(channel);
     }
 }

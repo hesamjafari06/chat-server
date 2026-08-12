@@ -5,6 +5,7 @@ import com.github.hesamjafari06.chat_server.dto.response.ApiResponse;
 import com.github.hesamjafari06.chat_server.dto.response.ChannelResponse;
 import com.github.hesamjafari06.chat_server.dto.response.GroupResponse;
 import com.github.hesamjafari06.chat_server.entity.ChannelEntity;
+import com.github.hesamjafari06.chat_server.entity.ConversationEntity;
 import com.github.hesamjafari06.chat_server.entity.ConversationMemberEntity;
 import com.github.hesamjafari06.chat_server.entity.GroupEntity;
 import com.github.hesamjafari06.chat_server.enums.ConversationMemberRole;
@@ -41,6 +42,16 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public GroupEntity getGroupByConversationId(Long id) {
         return groupRepository.findByConversationId(id).orElseThrow(GroupNotFoundException::new);
+    }
+
+    @Override
+    public GroupEntity getGroupByConversation(ConversationEntity conversation) {
+        return groupRepository.findByConversation(conversation).orElseThrow(GroupNotFoundException::new);
+    }
+
+    @Override
+    public void deleteGroup(GroupEntity group) {
+        groupRepository.delete(group);
     }
 
     @Override

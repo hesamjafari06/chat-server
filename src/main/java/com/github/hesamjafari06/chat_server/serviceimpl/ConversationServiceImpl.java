@@ -4,9 +4,7 @@ import com.github.hesamjafari06.chat_server.dto.request.*;
 import com.github.hesamjafari06.chat_server.dto.response.ApiResponse;
 import com.github.hesamjafari06.chat_server.dto.response.ConversationMemberResponse;
 import com.github.hesamjafari06.chat_server.dto.response.ConversationResponse;
-import com.github.hesamjafari06.chat_server.entity.ConversationEntity;
-import com.github.hesamjafari06.chat_server.entity.ConversationMemberEntity;
-import com.github.hesamjafari06.chat_server.entity.UserEntity;
+import com.github.hesamjafari06.chat_server.entity.*;
 import com.github.hesamjafari06.chat_server.enums.ConversationMemberRole;
 import com.github.hesamjafari06.chat_server.enums.ConversationType;
 import com.github.hesamjafari06.chat_server.exception.*;
@@ -236,30 +234,58 @@ public class ConversationServiceImpl implements ConversationService {
 
     @Override
     @Transactional
-    public ApiResponse<Void> deleteConversation(DeleteConversationRequest request){
+    public ApiResponse<Void> deleteConversation(
+            DeleteConversationRequest request) {
+
         UserEntity user = userService.getCurrentUser();
 
         ConversationEntity conversation =
-                getConversationByConversationId(request.getConversationId());
+                getConversationByConversationId(
+                        request.getConversationId()
+                );
 
-        ConversationMemberEntity conversationMember=
+        ConversationType type = conversation.getType();
+
+        ConversationMemberEntity member =
                 conversationMemberService.getMemberByUserAndConversation(
                         conversation,
                         user
                 );
-        if (conversation.getType().equals(ConversationType.PRIVATE) && request.isKeepConversation()){
-            conversationMemberService.deleteConversationMember(conversationMember);
+
+        if (type == ConversationType.PRIVATE
+                && request.isKeepConversation()) {
+
+            conversationMemberService.deleteConversationMember(member);
 
         } else {
-            if (!conversation.getType().equals(ConversationType.PRIVATE) &&
-                    !conversationMember.getRole().equals(ConversationMemberRole.OWNER)){
+
+            if (type != ConversationType.PRIVATE
+                    && member.getRole() != ConversationMemberRole.OWNER) {
+
                 throw new OnlyOwnerCanDeleteException();
             }
 
-            conversationMemberService.deleteAllConversationMembers(conversation);
-            conversationRepository.delete(conversation);
+            if (type == ConversationType.GROUP) {
 
+                GroupEntity group =
+                        groupService.getGroupByConversation(conversation);
+
+                groupService.deleteGroup(group);
+
+            } else if (type == ConversationType.CHANNEL) {
+
+                ChannelEntity channel =
+                        channelService.getChannelByConversation(conversation);
+
+                channelService.deleteChannel(channel);
+            }
+
+            conversationMemberService
+                    .deleteAllConversationMembers(conversation);
+
+            conversationRepository.delete(conversation);
         }
+
         return ApiResponse.<Void>builder()
                 .status("OK")
                 .build();

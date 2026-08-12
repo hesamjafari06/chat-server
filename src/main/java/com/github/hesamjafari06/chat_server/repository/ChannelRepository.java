@@ -1,6 +1,7 @@
 package com.github.hesamjafari06.chat_server.repository;
 
 import com.github.hesamjafari06.chat_server.entity.ChannelEntity;
+import com.github.hesamjafari06.chat_server.entity.ConversationEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,4 +13,5 @@ public interface ChannelRepository extends JpaRepository<ChannelEntity, Long> {
     Optional<ChannelEntity> findByPublicId(String publicId);
     Optional<ChannelEntity> findByChannelId(String channelId);
     Optional<ChannelEntity> findByConversationId(Long Id);
+    Optional<ChannelEntity> findByConversation(ConversationEntity conversation);
 }
