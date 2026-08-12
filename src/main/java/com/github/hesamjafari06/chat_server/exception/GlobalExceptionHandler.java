@@ -224,4 +224,15 @@ public class GlobalExceptionHandler {
                 .data(buildErrorResponse(exception.getMessage()))
                 .build();
     }
+
+    @ExceptionHandler(OnlyOwnerChangeGroupException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiResponse<ErrorResponse> handleMemberChangeGroup(
+            OnlyOwnerChangeGroupException exception){
+
+        return ApiResponse.<ErrorResponse>builder()
+                .status("BAD_REQUEST")
+                .data(buildErrorResponse(exception.getMessage()))
+                .build();
+    }
 }

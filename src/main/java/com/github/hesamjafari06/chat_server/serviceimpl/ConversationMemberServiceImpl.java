@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class ConversationMemberServiceImpl implements ConversationMemberService {
 
     private final ConversationMemberRepository conversationMemberRepository;
-    private final UserService userService;
 
     @Override
     public ConversationMemberEntity getConversationMemberById(Long id) {

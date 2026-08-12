@@ -1,24 +1,24 @@
 package com.github.hesamjafari06.chat_server.serviceimpl;
 
 import com.github.hesamjafari06.chat_server.dto.request.CreateGroupRequest;
+import com.github.hesamjafari06.chat_server.dto.request.UpdateGroupRequest;
 import com.github.hesamjafari06.chat_server.dto.response.ApiResponse;
-import com.github.hesamjafari06.chat_server.dto.response.ChannelResponse;
 import com.github.hesamjafari06.chat_server.dto.response.GroupResponse;
-import com.github.hesamjafari06.chat_server.entity.ChannelEntity;
-import com.github.hesamjafari06.chat_server.entity.ConversationEntity;
-import com.github.hesamjafari06.chat_server.entity.ConversationMemberEntity;
-import com.github.hesamjafari06.chat_server.entity.GroupEntity;
+import com.github.hesamjafari06.chat_server.entity.*;
 import com.github.hesamjafari06.chat_server.enums.ConversationMemberRole;
-import com.github.hesamjafari06.chat_server.exception.ChannelNotFoundException;
 import com.github.hesamjafari06.chat_server.exception.GroupNotFoundException;
-import com.github.hesamjafari06.chat_server.exception.PublicIdAlreadyExistsException;
+import com.github.hesamjafari06.chat_server.exception.OnlyOwnerChangeGroupException;
 import com.github.hesamjafari06.chat_server.mapper.GroupMapper;
 import com.github.hesamjafari06.chat_server.repository.ConversationMemberRepository;
 import com.github.hesamjafari06.chat_server.repository.GroupRepository;
+import com.github.hesamjafari06.chat_server.service.ConversationMemberService;
 import com.github.hesamjafari06.chat_server.service.GroupService;
 import com.github.hesamjafari06.chat_server.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +27,7 @@ public class GroupServiceImpl implements GroupService {
     private final GroupRepository groupRepository;
     private final GroupMapper groupMapper;
     private final ConversationMemberRepository conversationMemberRepository;
+    private final ConversationMemberService conversationMemberService;
     private final UserService userService;
 
     @Override
@@ -67,6 +68,45 @@ public class GroupServiceImpl implements GroupService {
                         .user(userService.getCurrentUser())
                         .build()
         );
+
+        return ApiResponse.<GroupResponse>builder()
+                .status("OK")
+                .data(groupMapper.toResponse(group))
+                .build();
+    }
+
+    @Transactional
+    public ApiResponse<GroupResponse> updateGroup(UpdateGroupRequest request){
+
+        UserEntity user = userService.getCurrentUser();
+
+        GroupEntity group =
+                getGroupByGroupId(request.getGroupId());
+
+        ConversationMemberEntity member =
+                conversationMemberService.getMemberByUserAndConversation(
+                        group.getConversation(),
+                        user
+                );
+
+        if (!member.getRole().equals(ConversationMemberRole.OWNER)){
+            throw new OnlyOwnerChangeGroupException();
+        }
+
+        if (!Objects.equals(group.getName(), request.getName())){
+
+            group.setName(request.getName());
+        }
+
+        if (!Objects.equals(group.getDescription(), request.getDescription())){
+
+            group.setDescription(request.getDescription());
+        }
+
+        if (request.getIsClosed() != null){
+
+            group.setClosed(request.getIsClosed());
+        }
 
         return ApiResponse.<GroupResponse>builder()
                 .status("OK")
