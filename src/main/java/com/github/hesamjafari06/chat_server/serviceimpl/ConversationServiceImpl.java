@@ -250,9 +250,6 @@ public class ConversationServiceImpl implements ConversationService {
         if (conversation.getType().equals(ConversationType.PRIVATE) && request.isKeepConversation()){
             conversationMemberService.deleteConversationMember(conversationMember);
 
-            return ApiResponse.<Void>builder()
-                    .status("OK")
-                    .build();
         } else {
             if (!conversation.getType().equals(ConversationType.PRIVATE) &&
                     !conversationMember.getRole().equals(ConversationMemberRole.OWNER)){
@@ -262,10 +259,10 @@ public class ConversationServiceImpl implements ConversationService {
             conversationMemberService.deleteAllConversationMembers(conversation);
             conversationRepository.delete(conversation);
 
-            return ApiResponse.<Void>builder()
-                    .status("OK")
-                    .build();
         }
+        return ApiResponse.<Void>builder()
+                .status("OK")
+                .build();
     }
 
 }
