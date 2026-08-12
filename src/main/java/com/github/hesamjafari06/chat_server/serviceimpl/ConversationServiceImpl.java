@@ -212,6 +212,7 @@ public class ConversationServiceImpl implements ConversationService {
         }
     }
 
+    @Override
     @Transactional
     public ApiResponse<Void> leaveConversation(LeaveConversationRequest request){
         UserEntity user = userService.getCurrentUser();
