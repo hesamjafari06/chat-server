@@ -1,6 +1,7 @@
 package com.github.hesamjafari06.chat_server.service;
 
 import com.github.hesamjafari06.chat_server.dto.request.CreateChannelRequest;
+import com.github.hesamjafari06.chat_server.dto.request.UpdateChannelRequest;
 import com.github.hesamjafari06.chat_server.dto.response.ApiResponse;
 import com.github.hesamjafari06.chat_server.dto.response.ChannelResponse;
 import com.github.hesamjafari06.chat_server.entity.ChannelEntity;
@@ -19,4 +20,6 @@ public interface ChannelService {
     ChannelEntity getChannelByConversation(ConversationEntity conversation);
 
     void deleteChannel(ChannelEntity channel);
+
+    ApiResponse<ChannelResponse> updateChannel(UpdateChannelRequest request);
 }
