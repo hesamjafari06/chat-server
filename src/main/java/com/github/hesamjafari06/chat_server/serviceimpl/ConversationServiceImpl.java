@@ -3,6 +3,7 @@ package com.github.hesamjafari06.chat_server.serviceimpl;
 import com.github.hesamjafari06.chat_server.dto.request.ChangeRoleRequest;
 import com.github.hesamjafari06.chat_server.dto.request.CreateConversationRequest;
 import com.github.hesamjafari06.chat_server.dto.request.JoinConversationRequest;
+import com.github.hesamjafari06.chat_server.dto.request.LeaveConversationRequest;
 import com.github.hesamjafari06.chat_server.dto.response.ApiResponse;
 import com.github.hesamjafari06.chat_server.dto.response.ConversationMemberResponse;
 import com.github.hesamjafari06.chat_server.dto.response.ConversationResponse;
@@ -209,5 +210,29 @@ public class ConversationServiceImpl implements ConversationService {
         } else {
             throw new MemberIsNotJoinedException();
         }
+    }
+
+    @Transactional
+    public ApiResponse<Void> leaveConversation(LeaveConversationRequest request){
+        UserEntity user = userService.getCurrentUser();
+
+        ConversationEntity conversation =
+                getConversationByConversationId(request.getConversationId());
+
+        ConversationMemberEntity conversationMember=
+            conversationMemberService.getMemberByUserAndConversation(
+                  conversation,
+                  user
+            );
+
+        if(conversationMember.getRole().equals(ConversationMemberRole.OWNER)){
+            throw new OwnerCantLeaveException();
+        }
+
+        conversationMemberService.deleteConversationMember(conversationMember);
+
+        return ApiResponse.<Void>builder()
+                .status("OK")
+                .build();
     }
 }

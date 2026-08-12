@@ -13,6 +13,7 @@ import com.github.hesamjafari06.chat_server.service.ConversationService;
 import com.github.hesamjafari06.chat_server.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -56,5 +57,12 @@ public class ConversationMemberServiceImpl implements ConversationMemberService 
                         conversation.getId(),
                         user.getId()
                 ).orElseThrow(ConversationMemberNotFoundException::new);
+    }
+
+    @Override
+    @Transactional
+    public void deleteConversationMember(ConversationMemberEntity conversationMember) {
+        conversationMemberRepository.
+                delete(conversationMember);
     }
 }
