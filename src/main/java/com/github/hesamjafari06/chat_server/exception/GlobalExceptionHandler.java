@@ -312,5 +312,27 @@ public class GlobalExceptionHandler {
                 .data(buildErrorResponse(exception.getMessage()))
                 .build();
     }
+
+    @ExceptionHandler(MemberCanNotDeleteOtherMessageException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiResponse<ErrorResponse> handleMemberCanNotDeleteMemberMessage(
+            MemberCanNotDeleteOtherMessageException exception){
+
+        return ApiResponse.<ErrorResponse>builder()
+                .status("BAD_REQUEST")
+                .data(buildErrorResponse(exception.getMessage()))
+                .build();
+    }
+
+    @ExceptionHandler(AdminCanOnlyDeleteMemberMessageException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiResponse<ErrorResponse> handleAdminCanOnlyDeleteMemberMessage(
+            AdminCanOnlyDeleteMemberMessageException exception){
+
+        return ApiResponse.<ErrorResponse>builder()
+                .status("BAD_REQUEST")
+                .data(buildErrorResponse(exception.getMessage()))
+                .build();
+    }
 }
 

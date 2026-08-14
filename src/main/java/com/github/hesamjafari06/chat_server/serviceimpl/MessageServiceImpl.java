@@ -1,9 +1,9 @@
 package com.github.hesamjafari06.chat_server.serviceimpl;
 
+import com.github.hesamjafari06.chat_server.dto.request.DeleteMessageRequest;
 import com.github.hesamjafari06.chat_server.dto.request.SendMessageRequest;
 import com.github.hesamjafari06.chat_server.dto.request.UpdateMessageRequest;
 import com.github.hesamjafari06.chat_server.dto.response.ApiResponse;
-import com.github.hesamjafari06.chat_server.dto.response.ConversationMemberResponse;
 import com.github.hesamjafari06.chat_server.dto.response.MessageResponse;
 import com.github.hesamjafari06.chat_server.entity.ConversationEntity;
 import com.github.hesamjafari06.chat_server.entity.ConversationMemberEntity;
@@ -11,10 +11,7 @@ import com.github.hesamjafari06.chat_server.entity.MessageEntity;
 import com.github.hesamjafari06.chat_server.entity.UserEntity;
 import com.github.hesamjafari06.chat_server.enums.ConversationMemberRole;
 import com.github.hesamjafari06.chat_server.enums.ConversationType;
-import com.github.hesamjafari06.chat_server.exception.MemberCanNotSendChannelException;
-import com.github.hesamjafari06.chat_server.exception.MessageNotFoundException;
-import com.github.hesamjafari06.chat_server.exception.NotMemberMessageException;
-import com.github.hesamjafari06.chat_server.exception.ReplyOtherConversationException;
+import com.github.hesamjafari06.chat_server.exception.*;
 import com.github.hesamjafari06.chat_server.mapper.MessageMapper;
 import com.github.hesamjafari06.chat_server.repository.MessageRepository;
 import com.github.hesamjafari06.chat_server.service.ConversationMemberService;
@@ -110,6 +107,44 @@ public class MessageServiceImpl implements MessageService {
         return ApiResponse.<MessageResponse>builder()
                 .status("OK")
                 .data(messageMapper.toResponse(message))
+                .build();
+    }
+
+    public  ApiResponse<Void> deleteMessage(DeleteMessageRequest request){
+        UserEntity user = userService.getCurrentUser();
+
+        MessageEntity message = getMessageByMessageId(request.getMessageId());
+
+        ConversationEntity conversation = message.getConversation();
+
+        ConversationMemberEntity currentMember =
+                conversationMemberService.getMemberByUserAndConversation(
+                        conversation,
+                        user
+                );
+
+        ConversationMemberEntity targetMember =
+                message.getSender();
+
+        if (!(targetMember.getId().equals(currentMember.getId()))){
+
+            if (conversation.getType() == ConversationType.PRIVATE ||
+                    currentMember.getRole().equals(ConversationMemberRole.MEMBER)) {
+
+                throw new MemberCanNotDeleteOtherMessageException();
+            }
+
+            if (currentMember.getRole().equals(ConversationMemberRole.ADMIN) &&
+                    !targetMember.getRole().equals(ConversationMemberRole.MEMBER)){
+
+                throw new AdminCanOnlyDeleteMemberMessageException();
+            }
+        }
+
+        messageRepository.delete(message);
+
+        return ApiResponse.<Void>builder()
+                .status("OK")
                 .build();
     }
 }
