@@ -1,0 +1,115 @@
+package com.github.hesamjafari06.chat_server.serviceimpl;
+
+import com.github.hesamjafari06.chat_server.dto.request.SendMessageRequest;
+import com.github.hesamjafari06.chat_server.dto.request.UpdateMessageRequest;
+import com.github.hesamjafari06.chat_server.dto.response.ApiResponse;
+import com.github.hesamjafari06.chat_server.dto.response.ConversationMemberResponse;
+import com.github.hesamjafari06.chat_server.dto.response.MessageResponse;
+import com.github.hesamjafari06.chat_server.entity.ConversationEntity;
+import com.github.hesamjafari06.chat_server.entity.ConversationMemberEntity;
+import com.github.hesamjafari06.chat_server.entity.MessageEntity;
+import com.github.hesamjafari06.chat_server.entity.UserEntity;
+import com.github.hesamjafari06.chat_server.enums.ConversationMemberRole;
+import com.github.hesamjafari06.chat_server.enums.ConversationType;
+import com.github.hesamjafari06.chat_server.exception.MemberCanNotSendChannelException;
+import com.github.hesamjafari06.chat_server.exception.MessageNotFoundException;
+import com.github.hesamjafari06.chat_server.exception.NotMemberMessageException;
+import com.github.hesamjafari06.chat_server.exception.ReplyOtherConversationException;
+import com.github.hesamjafari06.chat_server.mapper.MessageMapper;
+import com.github.hesamjafari06.chat_server.repository.MessageRepository;
+import com.github.hesamjafari06.chat_server.service.ConversationMemberService;
+import com.github.hesamjafari06.chat_server.service.ConversationService;
+import com.github.hesamjafari06.chat_server.service.MessageService;
+import com.github.hesamjafari06.chat_server.service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@RequiredArgsConstructor
+public class MessageServiceImpl implements MessageService {
+
+    private final UserService userService;
+    private final ConversationService conversationService;
+    private final MessageRepository messageRepository;
+    private final ConversationMemberService conversationMemberService;
+    private final MessageMapper messageMapper;
+
+    @Override
+    public MessageEntity getMessageByMessageId(String messageId) {
+        return messageRepository.findByMessageId(messageId).orElseThrow(MessageNotFoundException::new);
+    }
+
+    @Override
+    @Transactional
+    public ApiResponse<MessageResponse> sendMessage(SendMessageRequest request) {
+
+        UserEntity currentUser =
+                userService.getCurrentUser();
+
+        ConversationEntity conversation =
+                conversationService.getConversationByConversationId(
+                        request.getConversationId()
+                );
+
+        ConversationMemberEntity currentMember =
+                conversationMemberService.getMemberByUserAndConversation(
+                        conversation,
+                        currentUser
+                );
+
+        if (conversation.getType() == ConversationType.CHANNEL
+                && currentMember.getRole() == ConversationMemberRole.MEMBER) {
+
+            throw new MemberCanNotSendChannelException();
+        }
+
+        MessageEntity replyMessage = null;
+
+        if (request.getReplyTo() != null) {
+
+            replyMessage =
+                    getMessageByMessageId(request.getReplyTo());
+
+            if (!replyMessage.getConversation().equals(conversation)) {
+                throw new ReplyOtherConversationException();
+            }
+        }
+
+        MessageEntity message =
+                messageMapper.toEntity(
+                        request,
+                        conversation,
+                        currentMember,
+                        replyMessage
+                );
+
+        messageRepository.save(message);
+
+        return ApiResponse.<MessageResponse>builder()
+                .status("OK")
+                .data(messageMapper.toResponse(message))
+                .build();
+    }
+
+    @Override
+    @Transactional
+    public ApiResponse<MessageResponse> updateMessage(UpdateMessageRequest request){
+        UserEntity user = userService.getCurrentUser();
+
+        MessageEntity message = getMessageByMessageId(request.getMessageId());
+
+        ConversationMemberEntity member = message.getSender();
+
+        if (!member.getUser().equals(user)){
+            throw new NotMemberMessageException();
+        }
+
+        message.setContent(request.getNewContent());
+
+        return ApiResponse.<MessageResponse>builder()
+                .status("OK")
+                .data(messageMapper.toResponse(message))
+                .build();
+    }
+}
