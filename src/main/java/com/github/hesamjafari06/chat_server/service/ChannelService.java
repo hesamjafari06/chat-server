@@ -9,6 +9,7 @@ import com.github.hesamjafari06.chat_server.entity.ConversationEntity;
 
 public interface ChannelService {
     ApiResponse<ChannelResponse> createChannel(CreateChannelRequest request);
+
     ChannelEntity getChannelById(Long id);
 
     ChannelEntity getChannelByPublicId(String publicId);

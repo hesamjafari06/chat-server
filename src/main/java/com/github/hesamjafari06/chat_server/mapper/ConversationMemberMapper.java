@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ConversationMemberMapper {
+
     public ConversationMemberResponse toResponse(ConversationMemberEntity conversationMember){
         return ConversationMemberResponse.builder()
                 .conversationId(conversationMember.getConversation().getConversationId())

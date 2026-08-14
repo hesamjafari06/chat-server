@@ -17,11 +17,8 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class MessageMapper {
 
-    public MessageEntity toEntity(
-            SendMessageRequest request,
-            ConversationEntity conversation,
-            ConversationMemberEntity sender,
-            MessageEntity replyMessage) {
+    public MessageEntity toEntity(SendMessageRequest request, ConversationEntity conversation,
+            ConversationMemberEntity sender, MessageEntity replyMessage) {
 
         return MessageEntity.builder()
                 .conversation(conversation)

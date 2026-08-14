@@ -9,7 +9,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ChannelMapper {
+
     public ChannelEntity toEntity(CreateChannelRequest request){
+
         return ChannelEntity.builder()
                 .name(request.getName())
                 .publicId(request.getPublicId())
@@ -24,6 +26,7 @@ public class ChannelMapper {
     }
 
     public ChannelResponse toResponse(ChannelEntity channel){
+
         return ChannelResponse.builder()
                 .channelId(channel.getChannelId())
                 .name(channel.getName())

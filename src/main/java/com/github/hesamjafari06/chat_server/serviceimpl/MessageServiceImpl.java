@@ -41,8 +41,7 @@ public class MessageServiceImpl implements MessageService {
     @Transactional
     public ApiResponse<MessageResponse> sendMessage(SendMessageRequest request) {
 
-        UserEntity currentUser =
-                userService.getCurrentUser();
+        UserEntity currentUser = userService.getCurrentUser();
 
         ConversationEntity conversation =
                 conversationService.getConversationByConversationId(
@@ -65,10 +64,10 @@ public class MessageServiceImpl implements MessageService {
 
         if (request.getReplyTo() != null) {
 
-            replyMessage =
-                    getMessageByMessageId(request.getReplyTo());
+            replyMessage = getMessageByMessageId(request.getReplyTo());
 
             if (!replyMessage.getConversation().equals(conversation)) {
+
                 throw new ReplyOtherConversationException();
             }
         }
@@ -92,6 +91,7 @@ public class MessageServiceImpl implements MessageService {
     @Override
     @Transactional
     public ApiResponse<MessageResponse> updateMessage(UpdateMessageRequest request){
+
         UserEntity user = userService.getCurrentUser();
 
         MessageEntity message = getMessageByMessageId(request.getMessageId());
@@ -99,6 +99,7 @@ public class MessageServiceImpl implements MessageService {
         ConversationMemberEntity member = message.getSender();
 
         if (!member.getUser().equals(user)){
+
             throw new NotMemberMessageException();
         }
 
@@ -111,6 +112,7 @@ public class MessageServiceImpl implements MessageService {
     }
 
     public  ApiResponse<Void> deleteMessage(DeleteMessageRequest request){
+
         UserEntity user = userService.getCurrentUser();
 
         MessageEntity message = getMessageByMessageId(request.getMessageId());

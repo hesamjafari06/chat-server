@@ -42,7 +42,8 @@ public class ConversationServiceImpl implements ConversationService {
 
     @Override
     public ConversationEntity getConversationByConversationId(String conversationId) {
-        return conversationRepository.findByConversationId(conversationId).orElseThrow(ConversationNotFoundException::new);
+        return conversationRepository.findByConversationId(conversationId)
+                .orElseThrow(ConversationNotFoundException::new);
     }
 
     @Override
@@ -50,9 +51,11 @@ public class ConversationServiceImpl implements ConversationService {
     public ApiResponse<ConversationResponse> createConversation(CreateConversationRequest request) {
 
         UserEntity currentUser = userService.getCurrentUser();
+
         UserEntity targetUser = userService.findUserByUserId(request.getUserId());
 
         if (currentUser.getId().equals(targetUser.getId())) {
+
             throw new InvalidConversationException();
         }
 
@@ -91,25 +94,31 @@ public class ConversationServiceImpl implements ConversationService {
     @Override
     @Transactional
     public ApiResponse<ConversationMemberResponse> joinConversation(JoinConversationRequest request) {
-        ConversationEntity conversation =
-                getConversationByConversationId(request.getConversationId());
+
+        ConversationEntity conversation = getConversationByConversationId(request.getConversationId());
 
         UserEntity currentUser = userService.getCurrentUser();
 
         if (conversation.getType().equals(ConversationType.PRIVATE)) {
+
             throw new JoinPrivateConversationException();
         }
 
         if (conversationMemberService.isConversationMemberJoined(conversation, currentUser)) {
+
             throw new MemberAlreadyJoinedException();
         }
 
         ConversationMemberEntity conversationMember;
 
         if (conversation.getType().equals(ConversationType.CHANNEL)) {
+
             if (channelService.getChannelByConversationId(conversation.getId()).isPrivate()) {
+
                 throw new ChannelIsPrivateException();
+
             } else {
+
                 conversationMember =
                         ConversationMemberEntity.builder()
                                 .user(currentUser)
@@ -127,9 +136,13 @@ public class ConversationServiceImpl implements ConversationService {
         }
 
         if (conversation.getType().equals(ConversationType.GROUP)) {
+
             if (groupService.getGroupByConversationId(conversation.getId()).isClosed()) {
+
                 throw new GroupIsClosedException();
+
             } else {
+
                 conversationMember =
                         ConversationMemberEntity.builder()
                                 .user(currentUser)
@@ -151,8 +164,7 @@ public class ConversationServiceImpl implements ConversationService {
 
     @Override
     @Transactional
-    public ApiResponse<ConversationMemberResponse> changeRole(
-            ChangeRoleRequest request) {
+    public ApiResponse<ConversationMemberResponse> changeRole(ChangeRoleRequest request) {
 
         UserEntity currentUser = userService.getCurrentUser();
 
@@ -162,11 +174,11 @@ public class ConversationServiceImpl implements ConversationService {
                 );
 
         if (conversation.getType().equals(ConversationType.PRIVATE)) {
+
             throw new NoRoleInPrivateException();
         }
 
-        if (!conversationMemberService.isConversationMemberJoined(
-                conversation, currentUser)) {
+        if (!conversationMemberService.isConversationMemberJoined(conversation, currentUser)) {
 
             throw new MemberIsNotJoinedException();
         }
@@ -179,6 +191,7 @@ public class ConversationServiceImpl implements ConversationService {
                         );
 
         if (currentMember.getRole() != ConversationMemberRole.OWNER) {
+
             throw new NoOwnerChangeRoleException();
         }
 
@@ -187,12 +200,14 @@ public class ConversationServiceImpl implements ConversationService {
                         .getConversationMemberByConversationMemberId(request.getTargetMemberId());
 
         if (currentMember.getId().equals(targetMember.getId())) {
+
             throw new SelfChangeRoleException();
         }
 
-        if (targetMember.getConversation().equals(conversation)){
+        if (targetMember.getConversation().equals(conversation)) {
 
-            if (request.getRole().equals(ConversationMemberRole.OWNER)){
+            if (request.getRole().equals(ConversationMemberRole.OWNER)) {
+
                 currentMember.setRole(ConversationMemberRole.ADMIN);
             }
 
@@ -203,25 +218,27 @@ public class ConversationServiceImpl implements ConversationService {
                     .data(conversationMemberMapper.toResponse(targetMember))
                     .build();
         } else {
+
             throw new MemberIsNotJoinedException();
         }
     }
 
     @Override
     @Transactional
-    public ApiResponse<Void> leaveConversation(LeaveConversationRequest request){
+    public ApiResponse<Void> leaveConversation(LeaveConversationRequest request) {
+
         UserEntity user = userService.getCurrentUser();
 
-        ConversationEntity conversation =
-                getConversationByConversationId(request.getConversationId());
+        ConversationEntity conversation = getConversationByConversationId(request.getConversationId());
 
-        ConversationMemberEntity conversationMember=
-            conversationMemberService.getMemberByUserAndConversation(
-                  conversation,
-                  user
-            );
+        ConversationMemberEntity conversationMember =
+                conversationMemberService.getMemberByUserAndConversation(
+                        conversation,
+                        user
+                );
 
-        if(conversationMember.getRole().equals(ConversationMemberRole.OWNER)){
+        if (conversationMember.getRole().equals(ConversationMemberRole.OWNER)) {
+
             throw new OwnerCantLeaveException();
         }
 
@@ -252,15 +269,13 @@ public class ConversationServiceImpl implements ConversationService {
                         user
                 );
 
-        if (type == ConversationType.PRIVATE
-                && request.isKeepConversation()) {
+        if (type == ConversationType.PRIVATE && request.isKeepConversation()) {
 
             conversationMemberService.deleteConversationMember(member);
 
         } else {
 
-            if (type != ConversationType.PRIVATE
-                    && member.getRole() != ConversationMemberRole.OWNER) {
+            if (type != ConversationType.PRIVATE && member.getRole() != ConversationMemberRole.OWNER) {
 
                 throw new OnlyOwnerCanDeleteException();
             }
@@ -292,7 +307,7 @@ public class ConversationServiceImpl implements ConversationService {
     }
 
     @Override
-    public ApiResponse<Void> deleteMember(DeleteMemberRequest request){
+    public ApiResponse<Void> deleteMember(DeleteMemberRequest request) {
 
         UserEntity user =
                 userService.getCurrentUser();
@@ -306,7 +321,7 @@ public class ConversationServiceImpl implements ConversationService {
                         user
                 );
 
-        if (currentMember.getRole().equals(ConversationMemberRole.MEMBER)){
+        if (currentMember.getRole().equals(ConversationMemberRole.MEMBER)) {
             throw new MemberCanNotDeleteMemberException();
         }
 
@@ -315,16 +330,16 @@ public class ConversationServiceImpl implements ConversationService {
                         request.getConversationMemberId()
                 );
 
-        if (!targetMember.getConversation().equals(conversation)){
+        if (!targetMember.getConversation().equals(conversation)) {
             throw new MemberIsNotJoinedException();
         }
 
-        if (targetMember.getRole().equals(ConversationMemberRole.OWNER)){
+        if (targetMember.getRole().equals(ConversationMemberRole.OWNER)) {
             throw new CanNotDeleteOwnerException();
         }
 
         if (targetMember.getRole().equals(ConversationMemberRole.ADMIN) &&
-                currentMember.getRole().equals(ConversationMemberRole.ADMIN)){
+                currentMember.getRole().equals(ConversationMemberRole.ADMIN)) {
 
             throw new AdminCanNotDeleteAdminException();
         }

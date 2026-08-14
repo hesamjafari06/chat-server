@@ -21,9 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
 import java.util.Objects;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -36,11 +34,9 @@ public class UserServiceImpl implements UserService {
     private final UserDetailsService userDetailsService;
 
     public UserEntity getCurrentUser() {
-        Authentication authentication =
-                SecurityContextHolder.getContext().getAuthentication();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        CustomUserDetails userDetails =
-                (CustomUserDetails) authentication.getPrincipal();
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
         Long userId = userDetails.getUser().getId();
 
@@ -53,10 +49,12 @@ public class UserServiceImpl implements UserService {
     public ApiResponse<UserResponse> createUser(CreateUserRequest request) {
 
         if (userRepository.existsByUsername(request.getUsername())) {
+
             throw new UsernameAlreadyExistsException();
         }
 
         UserEntity user = userMapper.toEntity(request);
+
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
         userRepository.save(user);
@@ -85,6 +83,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ApiResponse<UserResponse> getSelfUserProfile() {
+
         UserEntity user = getCurrentUser();
 
         return ApiResponse.<UserResponse>builder()
@@ -108,18 +107,17 @@ public class UserServiceImpl implements UserService {
 
         UserEntity user = getCurrentUser();
 
-        if (request.getUsername() != null &&
-                !Objects.equals(user.getUsername(), request.getUsername())) {
+        if (request.getUsername() != null && !Objects.equals(user.getUsername(), request.getUsername())) {
 
             if (userRepository.existsByUsername(request.getUsername())) {
+
                 throw new UsernameAlreadyExistsException();
             }
 
             user.setUsername(request.getUsername());
         }
 
-        if (request.getBirthDate() != null &&
-                !Objects.equals(user.getBirthDate(), request.getBirthDate())) {
+        if (request.getBirthDate() != null && !Objects.equals(user.getBirthDate(), request.getBirthDate())) {
 
             user.setBirthDate(request.getBirthDate());
         }
@@ -137,16 +135,18 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public ApiResponse<UserResponse> changePassword(ChangePasswordRequest request) {
+
         UserEntity user = getCurrentUser();
-        if (
-                passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())
-        ) {
+
+        if (passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())) {
+
             user.setPassword(passwordEncoder.encode(request.getNewPassword()));
             return ApiResponse.<UserResponse>builder()
                     .status("OK")
                     .data(userMapper.toUserResponse(user))
                     .build();
         }
+
         throw new WrongPasswordException();
     }
 

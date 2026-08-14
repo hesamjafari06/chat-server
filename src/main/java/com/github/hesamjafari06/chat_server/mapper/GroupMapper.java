@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 public class GroupMapper {
 
     public GroupEntity toEntity(CreateGroupRequest request) {
+
         return GroupEntity.builder()
                 .name(request.getName())
                 .description(request.getDescription())
@@ -26,6 +27,7 @@ public class GroupMapper {
     }
 
     public GroupResponse toResponse(GroupEntity group) {
+
         return GroupResponse.builder()
                 .groupId(group.getGroupId())
                 .name(group.getName())

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 public class UserMapper {
 
     public UserEntity toEntity(CreateUserRequest request){
+
         return UserEntity.builder()
                 .username(request.getUsername())
                 .password(request.getPassword())
@@ -21,6 +22,7 @@ public class UserMapper {
     }
 
     public UserResponse toUserResponse(UserEntity user){
+
         return UserResponse.builder()
                 .userId(user.getUserId())
                 .username(user.getUsername())

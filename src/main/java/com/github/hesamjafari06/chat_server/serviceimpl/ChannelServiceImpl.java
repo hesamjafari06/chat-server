@@ -67,7 +67,9 @@ public class ChannelServiceImpl implements ChannelService {
     @Override
     @Transactional
     public ApiResponse<ChannelResponse> createChannel(CreateChannelRequest request) {
+
         if (channelRepository.existsByPublicId(request.getPublicId())){
+
             throw new PublicIdAlreadyExistsException();
         }
 
@@ -106,13 +108,12 @@ public class ChannelServiceImpl implements ChannelService {
                 );
 
         if (member.getRole() != ConversationMemberRole.OWNER) {
+
             throw new OnlyOwnerChangeChannelException();
         }
 
         if (request.getPublicId() != null &&
-                !Objects.equals(
-                        channel.getPublicId(),
-                        request.getPublicId())) {
+                !Objects.equals(channel.getPublicId(), request.getPublicId())) {
 
             if (channelRepository.existsByPublicId(
                     request.getPublicId())) {
@@ -123,21 +124,19 @@ public class ChannelServiceImpl implements ChannelService {
             channel.setPublicId(request.getPublicId());
         }
 
-        if (request.getName() != null &&
-                !Objects.equals(channel.getName(), request.getName())) {
+        if (request.getName() != null && !Objects.equals(channel.getName(), request.getName())) {
 
             channel.setName(request.getName());
         }
 
         if (request.getDescription() != null &&
-                !Objects.equals(
-                        channel.getDescription(),
-                        request.getDescription())) {
+                !Objects.equals(channel.getDescription(), request.getDescription())) {
 
             channel.setDescription(request.getDescription());
         }
 
         if (request.getIsPrivate() != null) {
+
             channel.setPrivate(request.getIsPrivate());
         }
 

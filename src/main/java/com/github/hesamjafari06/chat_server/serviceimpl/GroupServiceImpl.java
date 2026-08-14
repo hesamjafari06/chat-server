@@ -57,7 +57,9 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public ApiResponse<GroupResponse> createGroup(CreateGroupRequest request) {
+
         GroupEntity group = groupMapper.toEntity(request);
+
         groupRepository.save(group);
 
         conversationMemberRepository.save(
@@ -80,8 +82,7 @@ public class GroupServiceImpl implements GroupService {
 
         UserEntity user = userService.getCurrentUser();
 
-        GroupEntity group =
-                getGroupByGroupId(request.getGroupId());
+        GroupEntity group = getGroupByGroupId(request.getGroupId());
 
         ConversationMemberEntity member =
                 conversationMemberService.getMemberByUserAndConversation(
