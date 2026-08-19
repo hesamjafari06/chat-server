@@ -1,7 +1,9 @@
 package com.github.hesamjafari06.chat_server.controller;
 
 import com.github.hesamjafari06.chat_server.dto.response.ApiResponse;
+import com.github.hesamjafari06.chat_server.dto.response.ChannelResponse;
 import com.github.hesamjafari06.chat_server.dto.response.UserResponse;
+import com.github.hesamjafari06.chat_server.service.ChannelService;
 import com.github.hesamjafari06.chat_server.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,9 +19,15 @@ import java.util.List;
 public class SearchController {
 
     private final UserService userservice;
+    private final ChannelService channelService;
 
-    @GetMapping
-    public ApiResponse<List<UserResponse>> searchUser(@RequestParam String username){
-        return userservice.searchUser(username);
+    @GetMapping("/user")
+    public ApiResponse<List<UserResponse>> searchUser(@RequestParam String query){
+        return userservice.searchUser(query);
+    }
+
+    @GetMapping("/channel")
+    public ApiResponse<List<ChannelResponse>> searchChannel(@RequestParam String query){
+        return channelService.searchChannel(query);
     }
 }

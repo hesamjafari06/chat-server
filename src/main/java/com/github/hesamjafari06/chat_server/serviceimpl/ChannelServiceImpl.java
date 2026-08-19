@@ -4,6 +4,7 @@ import com.github.hesamjafari06.chat_server.dto.request.CreateChannelRequest;
 import com.github.hesamjafari06.chat_server.dto.request.UpdateChannelRequest;
 import com.github.hesamjafari06.chat_server.dto.response.ApiResponse;
 import com.github.hesamjafari06.chat_server.dto.response.ChannelResponse;
+import com.github.hesamjafari06.chat_server.dto.response.UserResponse;
 import com.github.hesamjafari06.chat_server.entity.ChannelEntity;
 import com.github.hesamjafari06.chat_server.entity.ConversationEntity;
 import com.github.hesamjafari06.chat_server.entity.ConversationMemberEntity;
@@ -22,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -143,6 +145,21 @@ public class ChannelServiceImpl implements ChannelService {
         return ApiResponse.<ChannelResponse>builder()
                 .status("OK")
                 .data(channelMapper.toResponse(channel))
+                .build();
+    }
+
+    @Override
+    public ApiResponse<List<ChannelResponse>> searchChannel(String publicId){
+
+        List<ChannelResponse> channels =
+                channelRepository.findByPublicIdContaining(publicId)
+                        .stream()
+                        .map(channelMapper::toResponse)
+                        .toList();
+
+        return ApiResponse.<List<ChannelResponse>>builder()
+                .status("OK")
+                .data(channels)
                 .build();
     }
 }

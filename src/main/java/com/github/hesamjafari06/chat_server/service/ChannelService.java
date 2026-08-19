@@ -7,6 +7,8 @@ import com.github.hesamjafari06.chat_server.dto.response.ChannelResponse;
 import com.github.hesamjafari06.chat_server.entity.ChannelEntity;
 import com.github.hesamjafari06.chat_server.entity.ConversationEntity;
 
+import java.util.List;
+
 public interface ChannelService {
     ApiResponse<ChannelResponse> createChannel(CreateChannelRequest request);
 
@@ -23,4 +25,6 @@ public interface ChannelService {
     void deleteChannel(ChannelEntity channel);
 
     ApiResponse<ChannelResponse> updateChannel(UpdateChannelRequest request);
+
+    ApiResponse<List<ChannelResponse>> searchChannel(String publicId);
 }
