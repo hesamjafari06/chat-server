@@ -21,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -150,4 +151,18 @@ public class UserServiceImpl implements UserService {
         throw new WrongPasswordException();
     }
 
+    @Override
+    public ApiResponse<List<UserResponse>> searchUser(String username){
+
+        List<UserResponse> users =
+                userRepository.findByUsernameContainingIgnoreCase(username)
+                        .stream()
+                        .map(userMapper::toUserResponse)
+                        .toList();
+
+        return ApiResponse.<List<UserResponse>>builder()
+                .status("OK")
+                .data(users)
+                .build();
+    }
 }
