@@ -9,4 +9,5 @@ import lombok.Setter;
 @Builder
 public class ConversationResponse {
     private String conversationId;
+    private String name;
 }

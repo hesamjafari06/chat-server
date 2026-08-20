@@ -11,6 +11,7 @@ import com.github.hesamjafari06.chat_server.entity.ConversationMemberEntity;
 import com.github.hesamjafari06.chat_server.entity.UserEntity;
 import com.github.hesamjafari06.chat_server.enums.ConversationMemberRole;
 import com.github.hesamjafari06.chat_server.exception.ChannelNotFoundException;
+import com.github.hesamjafari06.chat_server.exception.ConversationMemberNotFoundException;
 import com.github.hesamjafari06.chat_server.exception.OnlyOwnerChangeChannelException;
 import com.github.hesamjafari06.chat_server.exception.PublicIdAlreadyExistsException;
 import com.github.hesamjafari06.chat_server.mapper.ChannelMapper;
@@ -31,7 +32,6 @@ import java.util.Objects;
 public class ChannelServiceImpl implements ChannelService {
 
     private final ConversationMemberRepository conversationMemberRepository;
-    private final ConversationMemberService conversationMemberService;
     private final UserService userService;
     private final ChannelRepository channelRepository;
     private final ChannelMapper channelMapper;
@@ -104,10 +104,12 @@ public class ChannelServiceImpl implements ChannelService {
                 getChannelByChannelId(request.getChannelId());
 
         ConversationMemberEntity member =
-                conversationMemberService.getMemberByUserAndConversation(
-                        channel.getConversation(),
-                        user
-                );
+                conversationMemberRepository
+                        .findByConversationIdAndUserId(
+                                channel.getConversation().getId(),
+                                user.getId()
+                        )
+                        .orElseThrow(ConversationMemberNotFoundException::new);
 
         if (member.getRole() != ConversationMemberRole.OWNER) {
 

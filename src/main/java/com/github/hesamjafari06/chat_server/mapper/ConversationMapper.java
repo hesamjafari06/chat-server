@@ -7,9 +7,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class ConversationMapper {
 
-    public ConversationResponse toResponse(ConversationEntity conversation){
+    public ConversationResponse toResponse(ConversationEntity conversation, String name){
         return ConversationResponse.builder()
                 .conversationId(conversation.getConversationId())
+                .name(name)
                 .build();
     }
 }

@@ -18,6 +18,8 @@ public interface ConversationMemberRepository extends JpaRepository<Conversation
 
     Optional<ConversationMemberEntity> findByConversationIdAndUserId(Long conversationId, Long userId);
 
+    List<ConversationMemberEntity> findByConversation(ConversationEntity conversation);
+
     void deleteAllByConversation(ConversationEntity conversation);
 
     @Query("""

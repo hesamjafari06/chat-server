@@ -22,4 +22,6 @@ public interface ConversationMemberService {
     void deleteAllConversationMembers(ConversationEntity conversation);
 
     ApiResponse<List<ConversationResponse>> getUserConversations();
+
+    String getConversationName(ConversationEntity conversation);
 }

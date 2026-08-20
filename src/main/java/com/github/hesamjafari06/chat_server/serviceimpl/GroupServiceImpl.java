@@ -6,6 +6,7 @@ import com.github.hesamjafari06.chat_server.dto.response.ApiResponse;
 import com.github.hesamjafari06.chat_server.dto.response.GroupResponse;
 import com.github.hesamjafari06.chat_server.entity.*;
 import com.github.hesamjafari06.chat_server.enums.ConversationMemberRole;
+import com.github.hesamjafari06.chat_server.exception.ConversationMemberNotFoundException;
 import com.github.hesamjafari06.chat_server.exception.GroupNotFoundException;
 import com.github.hesamjafari06.chat_server.exception.OnlyOwnerChangeGroupException;
 import com.github.hesamjafari06.chat_server.mapper.GroupMapper;
@@ -27,7 +28,6 @@ public class GroupServiceImpl implements GroupService {
     private final GroupRepository groupRepository;
     private final GroupMapper groupMapper;
     private final ConversationMemberRepository conversationMemberRepository;
-    private final ConversationMemberService conversationMemberService;
     private final UserService userService;
 
     @Override
@@ -85,10 +85,12 @@ public class GroupServiceImpl implements GroupService {
         GroupEntity group = getGroupByGroupId(request.getGroupId());
 
         ConversationMemberEntity member =
-                conversationMemberService.getMemberByUserAndConversation(
-                        group.getConversation(),
-                        user
-                );
+                conversationMemberRepository
+                        .findByConversationIdAndUserId(
+                                group.getConversation().getId(),
+                                user.getId()
+                        )
+                        .orElseThrow(ConversationMemberNotFoundException::new);
 
         if (!member.getRole().equals(ConversationMemberRole.OWNER)){
             throw new OnlyOwnerChangeGroupException();

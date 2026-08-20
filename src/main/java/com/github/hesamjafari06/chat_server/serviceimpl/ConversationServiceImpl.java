@@ -87,7 +87,10 @@ public class ConversationServiceImpl implements ConversationService {
 
         return ApiResponse.<ConversationResponse>builder()
                 .status("OK")
-                .data(conversationMapper.toResponse(conversation))
+                .data(
+                        conversationMapper.toResponse(conversation,
+                        conversationMemberService.getConversationName(conversation))
+                )
                 .build();
     }
 
