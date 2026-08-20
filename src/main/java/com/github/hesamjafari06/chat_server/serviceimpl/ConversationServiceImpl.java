@@ -48,11 +48,11 @@ public class ConversationServiceImpl implements ConversationService {
 
     @Override
     @Transactional
-    public ApiResponse<ConversationResponse> createConversation(CreateConversationRequest request) {
+    public ApiResponse<ConversationResponse> createConversation(String userId) {
 
         UserEntity currentUser = userService.getCurrentUser();
 
-        UserEntity targetUser = userService.findUserByUserId(request.getUserId());
+        UserEntity targetUser = userService.findUserByUserId(userId);
 
         if (currentUser.getId().equals(targetUser.getId())) {
 

@@ -10,7 +10,7 @@ import com.github.hesamjafari06.chat_server.enums.ConversationType;
 import com.github.hesamjafari06.chat_server.exception.ConversationNotFoundException;
 
 public interface ConversationService {
-    ApiResponse<ConversationResponse> createConversation(CreateConversationRequest request);
+    ApiResponse<ConversationResponse> createConversation(String userId);
 
     ConversationEntity getConversationById(Long id);
 
