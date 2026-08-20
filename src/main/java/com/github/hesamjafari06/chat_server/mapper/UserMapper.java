@@ -27,6 +27,9 @@ public class UserMapper {
                 .userId(user.getUserId())
                 .username(user.getUsername())
                 .birthDate(user.getBirthDate())
+                .createdAt(
+                        user.getCreatedAt().toString().substring(0, 10)
+                )
                 .build();
     }
 

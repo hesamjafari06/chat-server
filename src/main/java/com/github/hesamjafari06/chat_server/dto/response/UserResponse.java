@@ -13,4 +13,5 @@ public class UserResponse {
     private String userId;
     private String username;
     private LocalDate birthDate;
+    private String createdAt;
 }
