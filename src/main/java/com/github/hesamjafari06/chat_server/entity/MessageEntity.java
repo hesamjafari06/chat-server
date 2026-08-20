@@ -33,6 +33,8 @@ public class MessageEntity {
     @ManyToOne
     private MessageEntity replyTo;
 
+    private Long previousMessageId = null;
+
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 

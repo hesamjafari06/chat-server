@@ -15,4 +15,6 @@ public interface MessageRepository extends JpaRepository<MessageEntity, Long> {
             WHERE m.id = :messageId
             """)
     Optional<String> findContentById(Long messageId);
+
+    Optional<MessageEntity> findByPreviousMessageId(Long id);
 }

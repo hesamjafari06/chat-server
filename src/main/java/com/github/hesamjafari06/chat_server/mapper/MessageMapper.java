@@ -18,13 +18,14 @@ import org.springframework.stereotype.Component;
 public class MessageMapper {
 
     public MessageEntity toEntity(SendMessageRequest request, ConversationEntity conversation,
-            ConversationMemberEntity sender, MessageEntity replyMessage) {
+            ConversationMemberEntity sender, MessageEntity replyMessage, Long previousMessageId) {
 
         return MessageEntity.builder()
                 .conversation(conversation)
                 .sender(sender)
                 .content(request.getContent())
                 .replyTo(replyMessage)
+                .previousMessageId(previousMessageId)
                 .build();
     }
 

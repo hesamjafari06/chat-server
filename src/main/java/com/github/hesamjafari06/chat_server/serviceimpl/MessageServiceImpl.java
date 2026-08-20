@@ -22,6 +22,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class MessageServiceImpl implements MessageService {
@@ -35,6 +38,10 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public MessageEntity getMessageByMessageId(String messageId) {
         return messageRepository.findByMessageId(messageId).orElseThrow(MessageNotFoundException::new);
+    }
+
+    public Optional<MessageEntity> getMessageByPreviousId(Long id) {
+        return messageRepository.findByPreviousMessageId(id);
     }
 
     @Override
@@ -77,15 +84,20 @@ public class MessageServiceImpl implements MessageService {
             }
         }
 
+
+
         MessageEntity message =
                 messageMapper.toEntity(
                         request,
                         conversation,
                         currentMember,
-                        replyMessage
+                        replyMessage,
+                        conversation.getLastMessageId()
                 );
 
         messageRepository.save(message);
+
+        conversation.setLastMessageId(message.getId());
 
         return ApiResponse.<MessageResponse>builder()
                 .status("OK")
@@ -146,6 +158,17 @@ public class MessageServiceImpl implements MessageService {
 
                 throw new AdminCanOnlyDeleteMemberMessageException();
             }
+        }
+
+        getMessageByPreviousId(message.getId())
+                .ifPresent(nextMessage ->
+                        nextMessage.setPreviousMessageId(
+                                message.getPreviousMessageId()
+                        )
+                );
+
+        if (Objects.equals(conversation.getLastMessageId(), message.getId())) {
+            conversation.setLastMessageId(message.getPreviousMessageId());
         }
 
         messageRepository.delete(message);
