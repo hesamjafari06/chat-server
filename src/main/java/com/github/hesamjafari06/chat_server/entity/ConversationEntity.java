@@ -29,6 +29,8 @@ public class ConversationEntity {
     @Column(nullable = false,updatable = false)
     private ConversationType type;
 
+    private Long lastMessageId;
+
     @Column(nullable = false, updatable = false)
     private Instant createdAt;
 

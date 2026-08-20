@@ -10,4 +10,5 @@ import lombok.Setter;
 public class ConversationResponse {
     private String conversationId;
     private String name;
+    private String lastMessage;
 }

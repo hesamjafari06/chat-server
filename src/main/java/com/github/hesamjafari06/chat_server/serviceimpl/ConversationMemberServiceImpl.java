@@ -88,7 +88,8 @@ public class ConversationMemberServiceImpl implements ConversationMemberService 
         List<ConversationResponse> conversations =
                 conversationMemberRepository.findConversationsByUserId(user.getId())
                         .stream()
-                        .map(conversation -> conversationMapper.toResponse(conversation, getConversationName(conversation)))
+                        .map(conversation -> conversationMapper.toResponse(conversation,
+                                getConversationName(conversation)))
                         .toList();
 
         return ApiResponse.<List<ConversationResponse>>builder()

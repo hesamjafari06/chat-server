@@ -38,6 +38,11 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
+    public String getLastMessageContent(ConversationEntity conversation) {
+        return messageRepository.findContentById(conversation.getLastMessageId()).orElse(null);
+    }
+
+    @Override
     @Transactional
     public ApiResponse<MessageResponse> sendMessage(SendMessageRequest request) {
 
