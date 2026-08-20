@@ -14,10 +14,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
 
@@ -29,8 +26,8 @@ public class LoginController {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
 
-    @PostMapping
-    public ApiResponse<LoginResponse> login(@RequestBody LoginRequest request) {
+    @GetMapping
+    public ApiResponse<Void> checkLogin(){
 
         Authentication currentAuthentication =
                 SecurityContextHolder.getContext().getAuthentication();
@@ -41,6 +38,14 @@ public class LoginController {
 
             throw new AlreadyAuthenticatedException();
         }
+
+        return ApiResponse.<Void>builder()
+                .status("OK")
+                .build();
+    }
+
+    @PostMapping
+    public ApiResponse<LoginResponse> login(@RequestBody LoginRequest request) {
 
         try {
             Authentication authentication =
