@@ -3,8 +3,10 @@ package com.github.hesamjafari06.chat_server.repository;
 import com.github.hesamjafari06.chat_server.entity.ConversationEntity;
 import com.github.hesamjafari06.chat_server.entity.ConversationMemberEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -17,4 +19,12 @@ public interface ConversationMemberRepository extends JpaRepository<Conversation
     Optional<ConversationMemberEntity> findByConversationIdAndUserId(Long conversationId, Long userId);
 
     void deleteAllByConversation(ConversationEntity conversation);
+
+    @Query("""
+                SELECT cm.conversation
+                FROM ConversationMemberEntity cm
+                WHERE cm.user.id = :userId
+            """)
+    List<ConversationEntity> findConversationsByUserId(Long userId);
 }
+
