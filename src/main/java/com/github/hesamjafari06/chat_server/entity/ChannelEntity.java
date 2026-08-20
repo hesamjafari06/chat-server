@@ -24,7 +24,8 @@ public class ChannelEntity {
             unique = true, length = 21)
     private String channelId;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "conversation_id", nullable = false, unique = true)
     private ConversationEntity conversation;
 
     @Column(nullable = false)
