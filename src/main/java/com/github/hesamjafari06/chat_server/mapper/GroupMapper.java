@@ -5,6 +5,7 @@ import com.github.hesamjafari06.chat_server.dto.response.GroupResponse;
 import com.github.hesamjafari06.chat_server.entity.ConversationEntity;
 import com.github.hesamjafari06.chat_server.entity.GroupEntity;
 import com.github.hesamjafari06.chat_server.enums.ConversationType;
+import com.github.hesamjafari06.chat_server.repository.ConversationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -12,17 +13,22 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class GroupMapper {
 
+    private final ConversationRepository conversationRepository;
+
     public GroupEntity toEntity(CreateGroupRequest request) {
+
+        ConversationEntity conversation =
+                ConversationEntity.builder()
+                        .type(ConversationType.GROUP)
+                        .build();
+
+        conversationRepository.save(conversation);
 
         return GroupEntity.builder()
                 .name(request.getName())
                 .description(request.getDescription())
                 .isClosed(request.isClosed())
-                .conversation(
-                        ConversationEntity.builder()
-                                .type(ConversationType.GROUP)
-                                .build()
-                )
+                .conversation(conversation)
                 .build();
     }
 

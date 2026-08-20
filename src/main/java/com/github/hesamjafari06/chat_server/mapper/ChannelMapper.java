@@ -5,23 +5,32 @@ import com.github.hesamjafari06.chat_server.dto.response.ChannelResponse;
 import com.github.hesamjafari06.chat_server.entity.ChannelEntity;
 import com.github.hesamjafari06.chat_server.entity.ConversationEntity;
 import com.github.hesamjafari06.chat_server.enums.ConversationType;
+import com.github.hesamjafari06.chat_server.repository.ConversationRepository;
+import com.github.hesamjafari06.chat_server.service.ConversationService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class ChannelMapper {
 
+    private final ConversationRepository conversationRepository;
+
     public ChannelEntity toEntity(CreateChannelRequest request){
+
+        ConversationEntity conversation =
+                ConversationEntity.builder()
+                .type(ConversationType.CHANNEL)
+                .build();
+
+        conversationRepository.save(conversation);
 
         return ChannelEntity.builder()
                 .name(request.getName())
                 .publicId(request.getPublicId())
                 .description(request.getDescription())
                 .isPrivate(request.isPrivate())
-                .conversation(
-                        ConversationEntity.builder()
-                                .type(ConversationType.CHANNEL)
-                                .build()
-                )
+                .conversation(conversation)
                 .build();
     }
 
