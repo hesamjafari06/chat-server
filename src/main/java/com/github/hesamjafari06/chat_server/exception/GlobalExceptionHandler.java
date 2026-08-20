@@ -337,12 +337,24 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiResponse<ErrorResponse> handleTypeMismatch(
-            MethodArgumentTypeMismatchException ex) {
+            MethodArgumentTypeMismatchException exception) {
 
         return ApiResponse.<ErrorResponse>builder()
                 .status("BAD_REQUEST")
                 .data(buildErrorResponse("Invalid search type"))
+                .build();
+    }
+
+    @ExceptionHandler(AlreadyAuthenticatedException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiResponse<ErrorResponse> handleTypeMismatch(
+            AlreadyAuthenticatedException exception) {
+
+        return ApiResponse.<ErrorResponse>builder()
+                .status("BAD_REQUEST")
+                .data(buildErrorResponse(exception.getMessage()))
                 .build();
     }
 }
