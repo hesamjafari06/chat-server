@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -332,6 +333,16 @@ public class GlobalExceptionHandler {
         return ApiResponse.<ErrorResponse>builder()
                 .status("BAD_REQUEST")
                 .data(buildErrorResponse(exception.getMessage()))
+                .build();
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ApiResponse<ErrorResponse> handleTypeMismatch(
+            MethodArgumentTypeMismatchException ex) {
+
+        return ApiResponse.<ErrorResponse>builder()
+                .status("BAD_REQUEST")
+                .data(buildErrorResponse("Invalid search type"))
                 .build();
     }
 }
