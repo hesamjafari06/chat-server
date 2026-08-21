@@ -1,10 +1,7 @@
 package com.github.hesamjafari06.chat_server.controller;
 
 import com.github.hesamjafari06.chat_server.dto.request.*;
-import com.github.hesamjafari06.chat_server.dto.response.ConversationMemberResponse;
-import com.github.hesamjafari06.chat_server.dto.response.LeaveConversationEvent;
-import com.github.hesamjafari06.chat_server.dto.response.MessageDeleteEvent;
-import com.github.hesamjafari06.chat_server.dto.response.MessageResponse;
+import com.github.hesamjafari06.chat_server.dto.response.*;
 import com.github.hesamjafari06.chat_server.service.ConversationService;
 import com.github.hesamjafari06.chat_server.service.MessageService;
 import lombok.RequiredArgsConstructor;
@@ -111,6 +108,24 @@ public class ChatWebSocketController {
 
         LeaveConversationEvent event =
                 conversationService.leaveConversation(
+                        request,
+                        principal
+                );
+
+        messagingTemplate.convertAndSend(
+                "/topic/chat/" + event.getConversationId(),
+                event
+        );
+    }
+
+    @MessageMapping("/delete.member")
+    public void deleteMember(
+            DeleteMemberRequest request,
+            Principal principal
+    ) {
+
+        DeleteMemberEvent event =
+                conversationService.deleteMember(
                         request,
                         principal
                 );

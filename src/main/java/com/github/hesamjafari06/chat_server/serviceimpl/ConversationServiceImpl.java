@@ -1,10 +1,7 @@
 package com.github.hesamjafari06.chat_server.serviceimpl;
 
 import com.github.hesamjafari06.chat_server.dto.request.*;
-import com.github.hesamjafari06.chat_server.dto.response.ApiResponse;
-import com.github.hesamjafari06.chat_server.dto.response.ConversationMemberResponse;
-import com.github.hesamjafari06.chat_server.dto.response.ConversationResponse;
-import com.github.hesamjafari06.chat_server.dto.response.LeaveConversationEvent;
+import com.github.hesamjafari06.chat_server.dto.response.*;
 import com.github.hesamjafari06.chat_server.entity.*;
 import com.github.hesamjafari06.chat_server.enums.ConversationMemberRole;
 import com.github.hesamjafari06.chat_server.enums.ConversationType;
@@ -310,10 +307,11 @@ public class ConversationServiceImpl implements ConversationService {
     }
 
     @Override
-    public ApiResponse<Void> deleteMember(DeleteMemberRequest request) {
+    @Transactional
+    public DeleteMemberEvent deleteMember(DeleteMemberRequest request, Principal principal) {
 
         UserEntity user =
-                userService.getCurrentUser();
+                userService.findUserByUsername(principal.getName());
 
         ConversationEntity conversation =
                 getConversationByConversationId(request.getConversationId());
@@ -347,11 +345,12 @@ public class ConversationServiceImpl implements ConversationService {
             throw new AdminCanNotDeleteAdminException();
         }
 
+        DeleteMemberEvent event =
+                conversationMemberMapper.toDeleteEvent(targetMember);
+
         conversationMemberService.deleteConversationMember(targetMember);
 
-        return ApiResponse.<Void>builder()
-                .status("OK")
-                .build();
+        return event;
     }
 
 }

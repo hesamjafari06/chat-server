@@ -2,10 +2,7 @@ package com.github.hesamjafari06.chat_server.service;
 
 
 import com.github.hesamjafari06.chat_server.dto.request.*;
-import com.github.hesamjafari06.chat_server.dto.response.ApiResponse;
-import com.github.hesamjafari06.chat_server.dto.response.ConversationMemberResponse;
-import com.github.hesamjafari06.chat_server.dto.response.ConversationResponse;
-import com.github.hesamjafari06.chat_server.dto.response.LeaveConversationEvent;
+import com.github.hesamjafari06.chat_server.dto.response.*;
 import com.github.hesamjafari06.chat_server.entity.ConversationEntity;
 import com.github.hesamjafari06.chat_server.enums.ConversationType;
 import com.github.hesamjafari06.chat_server.exception.ConversationNotFoundException;
@@ -27,5 +24,5 @@ public interface ConversationService {
 
     ApiResponse<Void> deleteConversation(DeleteConversationRequest request);
 
-    ApiResponse<Void> deleteMember(DeleteMemberRequest request);
+    DeleteMemberEvent deleteMember(DeleteMemberRequest request, Principal principal);
 }
