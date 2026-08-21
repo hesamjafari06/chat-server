@@ -20,6 +20,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
+
 
 @Service
 @RequiredArgsConstructor
@@ -96,11 +98,12 @@ public class ConversationServiceImpl implements ConversationService {
 
     @Override
     @Transactional
-    public ApiResponse<ConversationMemberResponse> joinConversation(JoinConversationRequest request) {
+    public ConversationMemberResponse joinConversation(JoinConversationRequest request, Principal principal) {
 
         ConversationEntity conversation = getConversationByConversationId(request.getConversationId());
 
-        UserEntity currentUser = userService.getCurrentUser();
+        UserEntity currentUser =
+                userService.findUserByUsername(principal.getName());
 
         if (conversation.getType().equals(ConversationType.PRIVATE)) {
 
@@ -131,10 +134,7 @@ public class ConversationServiceImpl implements ConversationService {
                                 .build();
                 conversationMemberRepository.save(conversationMember);
 
-                return ApiResponse.<ConversationMemberResponse>builder()
-                        .status("Ok")
-                        .data(conversationMemberMapper.toResponse(conversationMember))
-                        .build();
+                return conversationMemberMapper.toResponse(conversationMember);
             }
         }
 
@@ -155,10 +155,7 @@ public class ConversationServiceImpl implements ConversationService {
                                 .build();
                 conversationMemberRepository.save(conversationMember);
 
-                return ApiResponse.<ConversationMemberResponse>builder()
-                        .status("Ok")
-                        .data(conversationMemberMapper.toResponse(conversationMember))
-                        .build();
+                return conversationMemberMapper.toResponse(conversationMember);
             }
         }
         return null;

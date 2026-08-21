@@ -9,12 +9,14 @@ import com.github.hesamjafari06.chat_server.entity.ConversationEntity;
 import com.github.hesamjafari06.chat_server.enums.ConversationType;
 import com.github.hesamjafari06.chat_server.exception.ConversationNotFoundException;
 
+import java.security.Principal;
+
 public interface ConversationService {
     ApiResponse<ConversationResponse> createConversation(String userId);
 
     ConversationEntity getConversationById(Long id);
 
-    ApiResponse<ConversationMemberResponse> joinConversation(JoinConversationRequest request);
+    ConversationMemberResponse joinConversation(JoinConversationRequest request, Principal principal);
 
     ConversationEntity getConversationByConversationId(String conversationId);
 

@@ -11,6 +11,7 @@ import lombok.Setter;
 public class ConversationMemberResponse {
     private String conversationId;
     private String conversationMemberId;
+    private String username;
     private ConversationMemberRole role;
     boolean notificationEnabled;
 }

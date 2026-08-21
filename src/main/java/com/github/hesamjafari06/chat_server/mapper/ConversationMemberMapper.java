@@ -13,6 +13,7 @@ public class ConversationMemberMapper {
                 .conversationMemberId(conversationMember.getConversationMemberId())
                 .role(conversationMember.getRole())
                 .notificationEnabled(conversationMember.isNotificationEnabled())
+                .username(conversationMember.getUser().getUsername())
                 .build();
     }
 }
