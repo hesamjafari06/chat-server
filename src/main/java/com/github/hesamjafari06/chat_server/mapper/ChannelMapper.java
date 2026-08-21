@@ -42,6 +42,7 @@ public class ChannelMapper {
                 .publicId(channel.getPublicId())
                 .description(channel.getDescription())
                 .isPrivate(channel.isPrivate())
+                .conversationId(channel.getConversation().getConversationId())
                 .build();
     }
 }

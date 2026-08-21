@@ -39,6 +39,7 @@ public class GroupMapper {
                 .name(group.getName())
                 .description(group.getDescription())
                 .isClosed(group.isClosed())
+                .conversationId(group.getConversation().getConversationId())
                 .build();
     }
 

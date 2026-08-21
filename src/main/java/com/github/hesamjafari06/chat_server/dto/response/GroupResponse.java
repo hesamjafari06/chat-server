@@ -9,6 +9,7 @@ import lombok.Setter;
 @Builder
 public class GroupResponse {
     private String groupId;
+    private String conversationId;
     private String name;
     private String description;
     private boolean isClosed;

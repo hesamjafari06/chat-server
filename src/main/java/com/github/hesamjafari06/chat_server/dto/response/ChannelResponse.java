@@ -10,6 +10,7 @@ import lombok.Setter;
 public class ChannelResponse {
     private String name;
     private String channelId;
+    private String conversationId;
     private String publicId;
     private String description;
     private boolean isPrivate;
