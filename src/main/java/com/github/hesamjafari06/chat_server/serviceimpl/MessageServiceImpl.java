@@ -22,6 +22,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -49,11 +51,76 @@ public class MessageServiceImpl implements MessageService {
         return messageRepository.findContentById(conversation.getLastMessageId()).orElse(null);
     }
 
+    public List<MessageResponse> getConversationMessages(ConversationEntity conversation) {
+        return messageRepository.findByConversationOrderBySendAtAsc(conversation)
+                .stream().map(messageMapper::toResponse).toList();
+    }
+
+//    @Override
+//    @Transactional
+//    public ApiResponse<MessageResponse> sendMessage(SendMessageRequest request) {
+//
+//        UserEntity currentUser = userService.getCurrentUser();
+//
+//        ConversationEntity conversation =
+//                conversationService.getConversationByConversationId(
+//                        request.getConversationId()
+//                );
+//
+//        ConversationMemberEntity currentMember =
+//                conversationMemberService.getMemberByUserAndConversation(
+//                        conversation,
+//                        currentUser
+//                );
+//
+//        if (conversation.getType() == ConversationType.CHANNEL
+//                && currentMember.getRole() == ConversationMemberRole.MEMBER) {
+//
+//            throw new MemberCanNotSendChannelException();
+//        }
+//
+//        MessageEntity replyMessage = null;
+//
+//        if (request.getReplyTo() != null) {
+//
+//            replyMessage = getMessageByMessageId(request.getReplyTo());
+//
+//            if (!replyMessage.getConversation().equals(conversation)) {
+//
+//                throw new ReplyOtherConversationException();
+//            }
+//        }
+//
+//
+//
+//        MessageEntity message =
+//                messageMapper.toEntity(
+//                        request,
+//                        conversation,
+//                        currentMember,
+//                        replyMessage,
+//                        conversation.getLastMessageId()
+//                );
+//
+//        messageRepository.save(message);
+//
+//        conversation.setLastMessageId(message.getId());
+//
+//        return ApiResponse.<MessageResponse>builder()
+//                .status("OK")
+//                .data(messageMapper.toResponse(message))
+//                .build();
+//    }
+
     @Override
     @Transactional
-    public ApiResponse<MessageResponse> sendMessage(SendMessageRequest request) {
+    public MessageResponse sendMessage(
+            SendMessageRequest request,
+            Principal principal
+    ) {
 
-        UserEntity currentUser = userService.getCurrentUser();
+        UserEntity currentUser =
+                userService.findUserByUsername(principal.getName());
 
         ConversationEntity conversation =
                 conversationService.getConversationByConversationId(
@@ -79,12 +146,9 @@ public class MessageServiceImpl implements MessageService {
             replyMessage = getMessageByMessageId(request.getReplyTo());
 
             if (!replyMessage.getConversation().equals(conversation)) {
-
                 throw new ReplyOtherConversationException();
             }
         }
-
-
 
         MessageEntity message =
                 messageMapper.toEntity(
@@ -99,10 +163,7 @@ public class MessageServiceImpl implements MessageService {
 
         conversation.setLastMessageId(message.getId());
 
-        return ApiResponse.<MessageResponse>builder()
-                .status("OK")
-                .data(messageMapper.toResponse(message))
-                .build();
+        return messageMapper.toResponse(message);
     }
 
     @Override

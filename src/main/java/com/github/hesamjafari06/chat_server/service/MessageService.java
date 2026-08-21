@@ -8,12 +8,15 @@ import com.github.hesamjafari06.chat_server.dto.response.MessageResponse;
 import com.github.hesamjafari06.chat_server.entity.ConversationEntity;
 import com.github.hesamjafari06.chat_server.entity.MessageEntity;
 
+import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
 
 public interface MessageService {
     MessageEntity getMessageByMessageId(String messageId);
 
-    ApiResponse<MessageResponse> sendMessage(SendMessageRequest request);
+    MessageResponse sendMessage(SendMessageRequest request, Principal principal);
+//    ApiResponse<MessageResponse> sendMessage(SendMessageRequest request);
 
     ApiResponse<MessageResponse> updateMessage(UpdateMessageRequest request);
 
@@ -22,4 +25,6 @@ public interface MessageService {
     Optional<MessageEntity> getMessageByPreviousId(Long id);
 
     ApiResponse<Void> deleteMessage(DeleteMessageRequest request);
+
+    List<MessageResponse> getConversationMessages(ConversationEntity conversation);
 }

@@ -1,9 +1,12 @@
 package com.github.hesamjafari06.chat_server.repository;
 
+import com.github.hesamjafari06.chat_server.dto.response.MessageResponse;
+import com.github.hesamjafari06.chat_server.entity.ConversationEntity;
 import com.github.hesamjafari06.chat_server.entity.MessageEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface MessageRepository extends JpaRepository<MessageEntity, Long> {
@@ -17,4 +20,6 @@ public interface MessageRepository extends JpaRepository<MessageEntity, Long> {
     Optional<String> findContentById(Long messageId);
 
     Optional<MessageEntity> findByPreviousMessageId(Long id);
+
+    List<MessageEntity> findByConversationOrderBySendAtAsc(ConversationEntity conversation);
 }

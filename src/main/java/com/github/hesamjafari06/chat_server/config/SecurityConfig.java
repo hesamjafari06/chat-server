@@ -35,7 +35,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/register", "/login", "/home").permitAll()
+                        .requestMatchers("/register", "/login", "/home", "/test", "/ws").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session ->
@@ -53,8 +53,8 @@ public class SecurityConfig {
 
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(
-                List.of("http://localhost:5173")
+        configuration.setAllowedOriginPatterns(
+                List.of("*")
         );
 
         configuration.setAllowedMethods(
