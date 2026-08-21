@@ -45,6 +45,7 @@ public class MessageMapper {
                 .content(message.getContent())
                 .isEdited(message.isEdited())
                 .editedAt(message.getEditedAt())
+                .senderRole(message.getSender().getRole())
                 .build();
     }
 
