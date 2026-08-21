@@ -56,62 +56,6 @@ public class MessageServiceImpl implements MessageService {
                 .stream().map(messageMapper::toResponse).toList();
     }
 
-//    @Override
-//    @Transactional
-//    public ApiResponse<MessageResponse> sendMessage(SendMessageRequest request) {
-//
-//        UserEntity currentUser = userService.getCurrentUser();
-//
-//        ConversationEntity conversation =
-//                conversationService.getConversationByConversationId(
-//                        request.getConversationId()
-//                );
-//
-//        ConversationMemberEntity currentMember =
-//                conversationMemberService.getMemberByUserAndConversation(
-//                        conversation,
-//                        currentUser
-//                );
-//
-//        if (conversation.getType() == ConversationType.CHANNEL
-//                && currentMember.getRole() == ConversationMemberRole.MEMBER) {
-//
-//            throw new MemberCanNotSendChannelException();
-//        }
-//
-//        MessageEntity replyMessage = null;
-//
-//        if (request.getReplyTo() != null) {
-//
-//            replyMessage = getMessageByMessageId(request.getReplyTo());
-//
-//            if (!replyMessage.getConversation().equals(conversation)) {
-//
-//                throw new ReplyOtherConversationException();
-//            }
-//        }
-//
-//
-//
-//        MessageEntity message =
-//                messageMapper.toEntity(
-//                        request,
-//                        conversation,
-//                        currentMember,
-//                        replyMessage,
-//                        conversation.getLastMessageId()
-//                );
-//
-//        messageRepository.save(message);
-//
-//        conversation.setLastMessageId(message.getId());
-//
-//        return ApiResponse.<MessageResponse>builder()
-//                .status("OK")
-//                .data(messageMapper.toResponse(message))
-//                .build();
-//    }
-
     @Override
     @Transactional
     public MessageResponse sendMessage(
