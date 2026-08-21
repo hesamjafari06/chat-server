@@ -1,10 +1,8 @@
 package com.github.hesamjafari06.chat_server.controller;
 
-import com.github.hesamjafari06.chat_server.dto.request.DeleteMessageRequest;
-import com.github.hesamjafari06.chat_server.dto.request.JoinConversationRequest;
-import com.github.hesamjafari06.chat_server.dto.request.SendMessageRequest;
-import com.github.hesamjafari06.chat_server.dto.request.UpdateMessageRequest;
+import com.github.hesamjafari06.chat_server.dto.request.*;
 import com.github.hesamjafari06.chat_server.dto.response.ConversationMemberResponse;
+import com.github.hesamjafari06.chat_server.dto.response.LeaveConversationEvent;
 import com.github.hesamjafari06.chat_server.dto.response.MessageDeleteEvent;
 import com.github.hesamjafari06.chat_server.dto.response.MessageResponse;
 import com.github.hesamjafari06.chat_server.service.ConversationService;
@@ -102,6 +100,24 @@ public class ChatWebSocketController {
                 "/topic/chat/" +
                         request.getConversationId(),
                 response
+        );
+    }
+
+    @MessageMapping("/leave.conversation")
+    public void leaveConversation(
+            LeaveConversationRequest request,
+            Principal principal
+    ) {
+
+        LeaveConversationEvent event =
+                conversationService.leaveConversation(
+                        request,
+                        principal
+                );
+
+        messagingTemplate.convertAndSend(
+                "/topic/chat/" + event.getConversationId(),
+                event
         );
     }
 }

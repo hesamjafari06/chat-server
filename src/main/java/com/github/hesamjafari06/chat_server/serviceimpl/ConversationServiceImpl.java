@@ -4,6 +4,7 @@ import com.github.hesamjafari06.chat_server.dto.request.*;
 import com.github.hesamjafari06.chat_server.dto.response.ApiResponse;
 import com.github.hesamjafari06.chat_server.dto.response.ConversationMemberResponse;
 import com.github.hesamjafari06.chat_server.dto.response.ConversationResponse;
+import com.github.hesamjafari06.chat_server.dto.response.LeaveConversationEvent;
 import com.github.hesamjafari06.chat_server.entity.*;
 import com.github.hesamjafari06.chat_server.enums.ConversationMemberRole;
 import com.github.hesamjafari06.chat_server.enums.ConversationType;
@@ -225,9 +226,10 @@ public class ConversationServiceImpl implements ConversationService {
 
     @Override
     @Transactional
-    public ApiResponse<Void> leaveConversation(LeaveConversationRequest request) {
+    public LeaveConversationEvent leaveConversation(LeaveConversationRequest request, Principal principal) {
 
-        UserEntity user = userService.getCurrentUser();
+        UserEntity user =
+                userService.findUserByUsername(principal.getName());
 
         ConversationEntity conversation = getConversationByConversationId(request.getConversationId());
 
@@ -242,11 +244,12 @@ public class ConversationServiceImpl implements ConversationService {
             throw new OwnerCantLeaveException();
         }
 
+        LeaveConversationEvent event =
+                conversationMemberMapper.toLeaveEvent(conversationMember);
+
         conversationMemberService.deleteConversationMember(conversationMember);
 
-        return ApiResponse.<Void>builder()
-                .status("OK")
-                .build();
+        return event;
     }
 
     @Override
