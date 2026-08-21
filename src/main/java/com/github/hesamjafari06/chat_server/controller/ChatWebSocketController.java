@@ -135,4 +135,22 @@ public class ChatWebSocketController {
                 event
         );
     }
+
+    @MessageMapping("/delete.conversation")
+    public void deleteConversation(
+            DeleteConversationRequest request,
+            Principal principal
+    ) {
+
+        DeleteConversationEvent event =
+                conversationService.deleteConversation(
+                        request,
+                        principal
+                );
+
+        messagingTemplate.convertAndSend(
+                "/topic/chat/" + event.getConversationId(),
+                event
+        );
+    }
 }

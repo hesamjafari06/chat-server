@@ -24,4 +24,6 @@ public interface MessageRepository extends JpaRepository<MessageEntity, Long> {
     List<MessageEntity> findByConversationOrderBySendAtAsc(ConversationEntity conversation);
 
     List<MessageEntity> findByReplyTo(MessageEntity message);
+
+    void deleteAllByConversation(ConversationEntity conversation);
 }

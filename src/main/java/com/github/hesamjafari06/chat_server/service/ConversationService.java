@@ -22,7 +22,7 @@ public interface ConversationService {
 
     LeaveConversationEvent leaveConversation(LeaveConversationRequest request, Principal principal);
 
-    ApiResponse<Void> deleteConversation(DeleteConversationRequest request);
+    DeleteConversationEvent deleteConversation(DeleteConversationRequest request, Principal principal);
 
     DeleteMemberEvent deleteMember(DeleteMemberRequest request, Principal principal);
 }

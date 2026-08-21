@@ -10,6 +10,7 @@ import com.github.hesamjafari06.chat_server.mapper.ConversationMapper;
 import com.github.hesamjafari06.chat_server.mapper.ConversationMemberMapper;
 import com.github.hesamjafari06.chat_server.repository.ConversationMemberRepository;
 import com.github.hesamjafari06.chat_server.repository.ConversationRepository;
+import com.github.hesamjafari06.chat_server.repository.MessageRepository;
 import com.github.hesamjafari06.chat_server.service.ChannelService;
 import com.github.hesamjafari06.chat_server.service.ConversationMemberService;
 import com.github.hesamjafari06.chat_server.service.ConversationService;
@@ -29,6 +30,7 @@ public class ConversationServiceImpl implements ConversationService {
     private final ConversationMemberService conversationMemberService;
     private final ConversationMemberRepository conversationMemberRepository;
     private final ConversationMemberMapper conversationMemberMapper;
+    private final MessageRepository messageRepository;
     private final ConversationMapper conversationMapper;
     private final ChannelService channelService;
     private final UserServiceImpl userService;
@@ -251,10 +253,10 @@ public class ConversationServiceImpl implements ConversationService {
 
     @Override
     @Transactional
-    public ApiResponse<Void> deleteConversation(
-            DeleteConversationRequest request) {
+    public DeleteConversationEvent deleteConversation(DeleteConversationRequest request, Principal principal) {
 
-        UserEntity user = userService.getCurrentUser();
+        UserEntity user =
+                userService.findUserByUsername(principal.getName());
 
         ConversationEntity conversation =
                 getConversationByConversationId(
@@ -264,46 +266,46 @@ public class ConversationServiceImpl implements ConversationService {
         ConversationType type = conversation.getType();
 
         ConversationMemberEntity member =
-                conversationMemberService.getMemberByUserAndConversation(
-                        conversation,
-                        user
-                );
+                conversationMemberService.getMemberByUserAndConversation(conversation, user);
 
         if (type == ConversationType.PRIVATE && request.isKeepConversation()) {
 
+            DeleteConversationEvent event = conversationMapper.toDeleteEvent(conversation, true, member);
+
             conversationMemberService.deleteConversationMember(member);
 
-        } else {
-
-            if (type != ConversationType.PRIVATE && member.getRole() != ConversationMemberRole.OWNER) {
-
-                throw new OnlyOwnerCanDeleteException();
-            }
-
-            if (type == ConversationType.GROUP) {
-
-                GroupEntity group =
-                        groupService.getGroupByConversation(conversation);
-
-                groupService.deleteGroup(group);
-
-            } else if (type == ConversationType.CHANNEL) {
-
-                ChannelEntity channel =
-                        channelService.getChannelByConversation(conversation);
-
-                channelService.deleteChannel(channel);
-            }
-
-            conversationMemberService
-                    .deleteAllConversationMembers(conversation);
-
-            conversationRepository.delete(conversation);
+            return event;
         }
 
-        return ApiResponse.<Void>builder()
-                .status("OK")
-                .build();
+        if (type != ConversationType.PRIVATE && member.getRole() != ConversationMemberRole.OWNER) {
+
+            throw new OnlyOwnerCanDeleteException();
+        }
+
+        if (type == ConversationType.GROUP) {
+
+            GroupEntity group = groupService.getGroupByConversation(conversation);
+
+            groupService.deleteGroup(group);
+
+        } else if (type == ConversationType.CHANNEL) {
+
+            ChannelEntity channel = channelService.getChannelByConversation(conversation);
+
+            channelService.deleteChannel(channel);
+        }
+
+
+        DeleteConversationEvent event = conversationMapper.toDeleteEvent(conversation, false, member);
+
+        messageRepository.deleteAllByConversation(conversation);
+
+        conversationMemberService.deleteAllConversationMembers(conversation);
+
+        conversationRepository.delete(conversation);
+
+
+        return event;
     }
 
     @Override
