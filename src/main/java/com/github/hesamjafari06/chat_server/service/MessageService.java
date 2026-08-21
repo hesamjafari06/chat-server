@@ -18,7 +18,7 @@ public interface MessageService {
 
     MessageResponse sendMessage(SendMessageRequest request, Principal principal);
 
-    ApiResponse<MessageResponse> updateMessage(UpdateMessageRequest request);
+    MessageResponse updateMessage(UpdateMessageRequest request, Principal principal);
 
     String getLastMessageContent(ConversationEntity conversation);
 

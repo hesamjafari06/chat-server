@@ -113,9 +113,10 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     @Transactional
-    public ApiResponse<MessageResponse> updateMessage(UpdateMessageRequest request){
+    public MessageResponse updateMessage(UpdateMessageRequest request, Principal principal){
 
-        UserEntity user = userService.getCurrentUser();
+        UserEntity user =
+                userService.findUserByUsername(principal.getName());
 
         MessageEntity message = getMessageByMessageId(request.getMessageId());
 
@@ -128,10 +129,7 @@ public class MessageServiceImpl implements MessageService {
 
         message.setContent(request.getNewContent());
 
-        return ApiResponse.<MessageResponse>builder()
-                .status("OK")
-                .data(messageMapper.toResponse(message))
-                .build();
+        return messageMapper.toResponse(message);
     }
 
     @Override

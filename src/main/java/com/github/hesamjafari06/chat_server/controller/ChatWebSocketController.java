@@ -2,6 +2,7 @@ package com.github.hesamjafari06.chat_server.controller;
 
 import com.github.hesamjafari06.chat_server.dto.request.DeleteMessageRequest;
 import com.github.hesamjafari06.chat_server.dto.request.SendMessageRequest;
+import com.github.hesamjafari06.chat_server.dto.request.UpdateMessageRequest;
 import com.github.hesamjafari06.chat_server.dto.response.MessageDeleteEvent;
 import com.github.hesamjafari06.chat_server.dto.response.MessageResponse;
 import com.github.hesamjafari06.chat_server.service.MessageService;
@@ -53,6 +54,31 @@ public class ChatWebSocketController {
         messagingTemplate.convertAndSend(
                 "/topic/chat/" + event.getConversationId(),
                 event
+        );
+    }
+
+    @MessageMapping("/edit.message")
+    public void editMessage(
+            UpdateMessageRequest request,
+            Principal principal
+    ) {
+
+        System.out.println("EDIT REQUEST: "
+                + request.getMessageId());
+
+        MessageResponse response =
+                messageService.updateMessage(
+                        request,
+                        principal
+                );
+
+        System.out.println("EDIT RESPONSE: "
+                + response);
+
+        messagingTemplate.convertAndSend(
+                "/topic/chat/" +
+                        response.getConversationId(),
+                response
         );
     }
 }
