@@ -13,5 +13,5 @@ public class ConversationMemberResponse {
     private String conversationMemberId;
     private String username;
     private ConversationMemberRole role;
-    boolean notificationEnabled;
+    private boolean notificationEnabled;
 }
