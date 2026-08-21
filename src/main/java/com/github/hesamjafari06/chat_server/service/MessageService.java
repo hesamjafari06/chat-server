@@ -4,6 +4,7 @@ import com.github.hesamjafari06.chat_server.dto.request.DeleteMessageRequest;
 import com.github.hesamjafari06.chat_server.dto.request.SendMessageRequest;
 import com.github.hesamjafari06.chat_server.dto.request.UpdateMessageRequest;
 import com.github.hesamjafari06.chat_server.dto.response.ApiResponse;
+import com.github.hesamjafari06.chat_server.dto.response.MessageDeleteEvent;
 import com.github.hesamjafari06.chat_server.dto.response.MessageResponse;
 import com.github.hesamjafari06.chat_server.entity.ConversationEntity;
 import com.github.hesamjafari06.chat_server.entity.MessageEntity;
@@ -16,7 +17,6 @@ public interface MessageService {
     MessageEntity getMessageByMessageId(String messageId);
 
     MessageResponse sendMessage(SendMessageRequest request, Principal principal);
-//    ApiResponse<MessageResponse> sendMessage(SendMessageRequest request);
 
     ApiResponse<MessageResponse> updateMessage(UpdateMessageRequest request);
 
@@ -24,7 +24,7 @@ public interface MessageService {
 
     Optional<MessageEntity> getMessageByPreviousId(Long id);
 
-    ApiResponse<Void> deleteMessage(DeleteMessageRequest request);
+    MessageDeleteEvent deleteMessage(DeleteMessageRequest request, Principal principal);
 
     List<MessageResponse> getConversationMessages(ConversationEntity conversation);
 }

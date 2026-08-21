@@ -1,6 +1,7 @@
 package com.github.hesamjafari06.chat_server.mapper;
 
 import com.github.hesamjafari06.chat_server.dto.request.SendMessageRequest;
+import com.github.hesamjafari06.chat_server.dto.response.MessageDeleteEvent;
 import com.github.hesamjafari06.chat_server.dto.response.MessageResponse;
 import com.github.hesamjafari06.chat_server.entity.ConversationEntity;
 import com.github.hesamjafari06.chat_server.entity.ConversationMemberEntity;
@@ -44,6 +45,13 @@ public class MessageMapper {
                 .content(message.getContent())
                 .isEdited(message.isEdited())
                 .editedAt(message.getEditedAt())
+                .build();
+    }
+
+    public MessageDeleteEvent toDeleteEvent(MessageEntity message) {
+        return MessageDeleteEvent.builder()
+                .conversationId(message.getConversation().getConversationId())
+                .messageId(message.getMessageId())
                 .build();
     }
 

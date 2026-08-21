@@ -1,6 +1,8 @@
 package com.github.hesamjafari06.chat_server.controller;
 
+import com.github.hesamjafari06.chat_server.dto.request.DeleteMessageRequest;
 import com.github.hesamjafari06.chat_server.dto.request.SendMessageRequest;
+import com.github.hesamjafari06.chat_server.dto.response.MessageDeleteEvent;
 import com.github.hesamjafari06.chat_server.dto.response.MessageResponse;
 import com.github.hesamjafari06.chat_server.service.MessageService;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +35,24 @@ public class ChatWebSocketController {
                 "/topic/chat/"
                         + request.getConversationId(),
                 response
+        );
+    }
+
+    @MessageMapping("/delete.message")
+    public void deleteMessage(
+            DeleteMessageRequest request,
+            Principal principal
+    ) {
+
+        MessageDeleteEvent event =
+                messageService.deleteMessage(
+                        request,
+                        principal
+                );
+
+        messagingTemplate.convertAndSend(
+                "/topic/chat/" + event.getConversationId(),
+                event
         );
     }
 }

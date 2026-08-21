@@ -4,6 +4,7 @@ import com.github.hesamjafari06.chat_server.dto.request.DeleteMessageRequest;
 import com.github.hesamjafari06.chat_server.dto.request.SendMessageRequest;
 import com.github.hesamjafari06.chat_server.dto.request.UpdateMessageRequest;
 import com.github.hesamjafari06.chat_server.dto.response.ApiResponse;
+import com.github.hesamjafari06.chat_server.dto.response.MessageDeleteEvent;
 import com.github.hesamjafari06.chat_server.dto.response.MessageResponse;
 import com.github.hesamjafari06.chat_server.entity.ConversationEntity;
 import com.github.hesamjafari06.chat_server.entity.ConversationMemberEntity;
@@ -133,9 +134,12 @@ public class MessageServiceImpl implements MessageService {
                 .build();
     }
 
-    public  ApiResponse<Void> deleteMessage(DeleteMessageRequest request){
+    @Override
+    @Transactional
+    public MessageDeleteEvent deleteMessage(DeleteMessageRequest request, Principal principal){
 
-        UserEntity user = userService.getCurrentUser();
+        UserEntity user =
+                userService.findUserByUsername(principal.getName());
 
         MessageEntity message = getMessageByMessageId(request.getMessageId());
 
@@ -176,10 +180,11 @@ public class MessageServiceImpl implements MessageService {
             conversation.setLastMessageId(message.getPreviousMessageId());
         }
 
+        messageRepository.findByReplyTo(message)
+                .forEach(reply -> reply.setReplyTo(null));
+
         messageRepository.delete(message);
 
-        return ApiResponse.<Void>builder()
-                .status("OK")
-                .build();
+        return messageMapper.toDeleteEvent(message);
     }
 }

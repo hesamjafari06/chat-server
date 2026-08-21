@@ -22,4 +22,6 @@ public interface MessageRepository extends JpaRepository<MessageEntity, Long> {
     Optional<MessageEntity> findByPreviousMessageId(Long id);
 
     List<MessageEntity> findByConversationOrderBySendAtAsc(ConversationEntity conversation);
+
+    List<MessageEntity> findByReplyTo(MessageEntity message);
 }
