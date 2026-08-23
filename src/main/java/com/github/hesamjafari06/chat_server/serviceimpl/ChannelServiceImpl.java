@@ -14,6 +14,7 @@ import com.github.hesamjafari06.chat_server.exception.ChannelNotFoundException;
 import com.github.hesamjafari06.chat_server.exception.ConversationMemberNotFoundException;
 import com.github.hesamjafari06.chat_server.exception.OnlyOwnerChangeChannelException;
 import com.github.hesamjafari06.chat_server.exception.PublicIdAlreadyExistsException;
+import com.github.hesamjafari06.chat_server.helper.ChannelHelper;
 import com.github.hesamjafari06.chat_server.helper.UserHelper;
 import com.github.hesamjafari06.chat_server.mapper.ChannelMapper;
 import com.github.hesamjafari06.chat_server.repository.ChannelRepository;
@@ -35,32 +36,8 @@ public class ChannelServiceImpl implements ChannelService {
     private final ConversationMemberRepository conversationMemberRepository;
     private final UserHelper userHelper;
     private final ChannelRepository channelRepository;
+    private final ChannelHelper channelHelper;
     private final ChannelMapper channelMapper;
-
-    @Override
-    public ChannelEntity getChannelById(Long id) {
-        return channelRepository.findById(id).orElseThrow(ChannelNotFoundException::new);
-    }
-
-    @Override
-    public ChannelEntity getChannelByPublicId(String publicId) {
-        return channelRepository.findByPublicId(publicId).orElseThrow(ChannelNotFoundException::new);
-    }
-
-    @Override
-    public ChannelEntity getChannelByChannelId(String channelId) {
-        return channelRepository.findByChannelId(channelId).orElseThrow(ChannelNotFoundException::new);
-    }
-
-    @Override
-    public ChannelEntity getChannelByConversationId(Long id) {
-        return channelRepository.findByConversationId(id).orElseThrow(ChannelNotFoundException::new);
-    }
-
-    @Override
-    public ChannelEntity getChannelByConversation(ConversationEntity conversation) {
-        return channelRepository.findByConversation(conversation).orElseThrow(ChannelNotFoundException::new);
-    }
 
     @Override
     public void deleteChannel(ChannelEntity channel) {
@@ -101,8 +78,7 @@ public class ChannelServiceImpl implements ChannelService {
 
         UserEntity user = userHelper.getCurrentUser();
 
-        ChannelEntity channel =
-                getChannelByChannelId(request.getChannelId());
+        ChannelEntity channel = channelHelper.getChannelByChannelId(request.getChannelId());
 
         ConversationMemberEntity member =
                 conversationMemberRepository

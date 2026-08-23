@@ -6,6 +6,7 @@ import com.github.hesamjafari06.chat_server.entity.*;
 import com.github.hesamjafari06.chat_server.enums.ConversationMemberRole;
 import com.github.hesamjafari06.chat_server.enums.ConversationType;
 import com.github.hesamjafari06.chat_server.exception.*;
+import com.github.hesamjafari06.chat_server.helper.ChannelHelper;
 import com.github.hesamjafari06.chat_server.helper.ConversationHelper;
 import com.github.hesamjafari06.chat_server.helper.ConversationMemberHelper;
 import com.github.hesamjafari06.chat_server.helper.UserHelper;
@@ -37,7 +38,7 @@ public class ConversationServiceImpl implements ConversationService {
     private final ConversationMemberMapper conversationMemberMapper;
     private final MessageRepository messageRepository;
     private final ConversationMapper conversationMapper;
-    private final ChannelService channelService;
+    private final ChannelHelper channelHelper;
     private final UserHelper userHelper;
     private final GroupService groupService;
 
@@ -119,7 +120,7 @@ public class ConversationServiceImpl implements ConversationService {
 
         if (conversation.getType().equals(ConversationType.CHANNEL)) {
 
-            if (channelService.getChannelByConversationId(conversation.getId()).isPrivate()) {
+            if (channelHelper.getChannelByConversationId(conversation.getId()).isPrivate()) {
 
                 throw new ChannelIsPrivateException();
 
@@ -288,9 +289,9 @@ public class ConversationServiceImpl implements ConversationService {
 
         } else if (type == ConversationType.CHANNEL) {
 
-            ChannelEntity channel = channelService.getChannelByConversation(conversation);
+            ChannelEntity channel = channelHelper.getChannelByConversation(conversation);
 
-            channelService.deleteChannel(channel);
+            channelHelper.deleteChannel(channel);
         }
 
 

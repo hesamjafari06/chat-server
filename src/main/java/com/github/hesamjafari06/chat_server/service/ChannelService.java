@@ -12,16 +12,6 @@ import java.util.List;
 public interface ChannelService {
     ApiResponse<ChannelResponse> createChannel(CreateChannelRequest request);
 
-    ChannelEntity getChannelById(Long id);
-
-    ChannelEntity getChannelByPublicId(String publicId);
-
-    ChannelEntity getChannelByChannelId(String channelId);
-
-    ChannelEntity getChannelByConversationId(Long id);
-
-    ChannelEntity getChannelByConversation(ConversationEntity conversation);
-
     void deleteChannel(ChannelEntity channel);
 
     ApiResponse<ChannelResponse> updateChannel(UpdateChannelRequest request);
