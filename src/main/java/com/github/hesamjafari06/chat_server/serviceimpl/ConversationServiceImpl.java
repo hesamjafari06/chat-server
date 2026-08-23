@@ -53,7 +53,7 @@ public class ConversationServiceImpl implements ConversationService {
 
         UserEntity currentUser = userHelper.getCurrentUser();
 
-        UserEntity targetUser = userService.findUserByUserId(userId);
+        UserEntity targetUser = userHelper.findUserByUserId(userId);
 
         if (currentUser.getId().equals(targetUser.getId())) {
 
@@ -102,8 +102,7 @@ public class ConversationServiceImpl implements ConversationService {
         ConversationEntity conversation =
                 conversationHelper.getConversationByConversationId(request.getConversationId());
 
-        UserEntity currentUser =
-                userService.findUserByUsername(principal.getName());
+        UserEntity currentUser = userHelper.findUserByUsername(principal.getName());
 
         if (conversation.getType().equals(ConversationType.PRIVATE)) {
 
@@ -227,8 +226,7 @@ public class ConversationServiceImpl implements ConversationService {
     @Transactional
     public LeaveConversationEvent leaveConversation(LeaveConversationRequest request, Principal principal) {
 
-        UserEntity user =
-                userService.findUserByUsername(principal.getName());
+        UserEntity user = userHelper.findUserByUsername(principal.getName());
 
         ConversationEntity conversation =
                 conversationHelper.getConversationByConversationId(request.getConversationId());
@@ -256,8 +254,7 @@ public class ConversationServiceImpl implements ConversationService {
     @Transactional
     public DeleteConversationEvent deleteConversation(DeleteConversationRequest request, Principal principal) {
 
-        UserEntity user =
-                userService.findUserByUsername(principal.getName());
+        UserEntity user = userHelper.findUserByUsername(principal.getName());
 
         ConversationEntity conversation =
                 conversationHelper.getConversationByConversationId(
@@ -313,8 +310,7 @@ public class ConversationServiceImpl implements ConversationService {
     @Transactional
     public DeleteMemberEvent deleteMember(DeleteMemberRequest request, Principal principal) {
 
-        UserEntity user =
-                userService.findUserByUsername(principal.getName());
+        UserEntity user = userHelper.findUserByUsername(principal.getName());
 
         ConversationEntity conversation =
                 conversationHelper.getConversationByConversationId(request.getConversationId());

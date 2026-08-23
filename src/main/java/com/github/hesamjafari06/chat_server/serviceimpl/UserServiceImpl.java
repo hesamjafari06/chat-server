@@ -36,16 +36,6 @@ public class UserServiceImpl implements UserService {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
 
-    public UserEntity getCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-
-        Long userId = userDetails.getUser().getId();
-
-        return userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-    }
-
 
     @Override
     @Transactional
@@ -68,26 +58,10 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
-    @Override
-    public UserEntity findUserById(Long id) {
-        return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
-    }
-
-    @Override
-    public UserEntity findUserByUsername(String username) {
-        return userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
-    }
-
-    @Override
-    public UserEntity findUserByUserId(String userId) {
-        return userRepository.findByUserId(userId).orElseThrow(UserNotFoundException::new);
-    }
-
 
     @Override
     public ApiResponse<UserResponse> getSelfUserProfile() {
 
-//        UserEntity user = getCurrentUser();
         UserEntity user = userHelper.getCurrentUser();
 
         return ApiResponse.<UserResponse>builder()
@@ -101,7 +75,7 @@ public class UserServiceImpl implements UserService {
 
         return ApiResponse.<UserResponse>builder()
                 .status("OK")
-                .data(userMapper.toUserResponse(findUserByUserId(uid)))
+                .data(userMapper.toUserResponse(userHelper.findUserByUserId(uid)))
                 .build();
     }
 

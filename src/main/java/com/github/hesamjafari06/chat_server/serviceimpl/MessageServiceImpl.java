@@ -14,6 +14,7 @@ import com.github.hesamjafari06.chat_server.enums.ConversationMemberRole;
 import com.github.hesamjafari06.chat_server.enums.ConversationType;
 import com.github.hesamjafari06.chat_server.exception.*;
 import com.github.hesamjafari06.chat_server.helper.ConversationHelper;
+import com.github.hesamjafari06.chat_server.helper.UserHelper;
 import com.github.hesamjafari06.chat_server.mapper.MessageMapper;
 import com.github.hesamjafari06.chat_server.repository.MessageRepository;
 import com.github.hesamjafari06.chat_server.service.ConversationMemberService;
@@ -33,7 +34,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MessageServiceImpl implements MessageService {
 
-    private final UserService userService;
+    private final UserHelper userHelper;
     private final ConversationHelper conversationHelper;
     private final MessageRepository messageRepository;
     private final ConversationMemberService conversationMemberService;
@@ -65,13 +66,8 @@ public class MessageServiceImpl implements MessageService {
             Principal principal
     ) {
 
-        UserEntity currentUser =
-                userService.findUserByUsername(principal.getName());
+        UserEntity currentUser = userHelper.findUserByUsername(principal.getName());
 
-//        ConversationEntity conversation =
-//                conversationService.getConversationByConversationId(
-//                        request.getConversationId()
-//                );
         ConversationEntity conversation =
                 conversationHelper.getConversationByConversationId(
                         request.getConversationId()
@@ -120,8 +116,7 @@ public class MessageServiceImpl implements MessageService {
     @Transactional
     public MessageResponse updateMessage(UpdateMessageRequest request, Principal principal){
 
-        UserEntity user =
-                userService.findUserByUsername(principal.getName());
+        UserEntity user = userHelper.findUserByUsername(principal.getName());
 
         MessageEntity message = getMessageByMessageId(request.getMessageId());
 
@@ -141,8 +136,7 @@ public class MessageServiceImpl implements MessageService {
     @Transactional
     public MessageDeleteEvent deleteMessage(DeleteMessageRequest request, Principal principal){
 
-        UserEntity user =
-                userService.findUserByUsername(principal.getName());
+        UserEntity user = userHelper.findUserByUsername(principal.getName());
 
         MessageEntity message = getMessageByMessageId(request.getMessageId());
 

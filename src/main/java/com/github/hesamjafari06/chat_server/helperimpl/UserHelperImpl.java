@@ -25,4 +25,14 @@ public class UserHelperImpl implements UserHelper {
 
         return userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
     }
+
+    @Override
+    public UserEntity findUserByUsername(String username) {
+        return userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
+    }
+
+    @Override
+    public UserEntity findUserByUserId(String userId) {
+        return userRepository.findByUserId(userId).orElseThrow(UserNotFoundException::new);
+    }
 }
