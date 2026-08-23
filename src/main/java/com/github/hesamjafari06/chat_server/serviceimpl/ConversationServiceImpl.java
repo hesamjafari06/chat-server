@@ -203,7 +203,7 @@ public class ConversationServiceImpl implements ConversationService {
         LeaveConversationEvent event =
                 conversationMemberMapper.toLeaveEvent(conversationMember);
 
-        conversationMemberService.deleteConversationMember(conversationMember);
+        conversationMemberHelper.deleteConversationMember(conversationMember);
 
         return event;
     }
@@ -228,7 +228,7 @@ public class ConversationServiceImpl implements ConversationService {
 
             DeleteConversationEvent event = conversationMapper.toDeleteEvent(conversation, true, member);
 
-            conversationMemberService.deleteConversationMember(member);
+            conversationMemberHelper.deleteConversationMember(member);
 
             return event;
         }
@@ -256,7 +256,7 @@ public class ConversationServiceImpl implements ConversationService {
 
         messageHelper.deleteAllByConversation(conversation);
 
-        conversationMemberService.deleteAllConversationMembers(conversation);
+        conversationMemberHelper.deleteAllConversationMembers(conversation);
 
         conversationHelper.delete(conversation);
 
@@ -302,7 +302,7 @@ public class ConversationServiceImpl implements ConversationService {
         DeleteMemberEvent event =
                 conversationMemberMapper.toDeleteEvent(targetMember);
 
-        conversationMemberService.deleteConversationMember(targetMember);
+        conversationMemberHelper.deleteConversationMember(targetMember);
 
         return event;
     }

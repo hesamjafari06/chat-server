@@ -10,10 +10,6 @@ import java.util.List;
 
 public interface ConversationMemberService {
 
-    void deleteConversationMember(ConversationMemberEntity conversationMember);
-
-    void deleteAllConversationMembers(ConversationEntity conversation);
-
     ApiResponse<List<ConversationResponse>> getUserConversations();
 
     String getConversationName(ConversationEntity conversation);

@@ -1,5 +1,6 @@
 package com.github.hesamjafari06.chat_server.helperimpl;
 
+import com.github.hesamjafari06.chat_server.dto.response.ConversationResponse;
 import com.github.hesamjafari06.chat_server.entity.ConversationEntity;
 import com.github.hesamjafari06.chat_server.entity.ConversationMemberEntity;
 import com.github.hesamjafari06.chat_server.entity.UserEntity;
@@ -9,6 +10,8 @@ import com.github.hesamjafari06.chat_server.helper.ConversationMemberHelper;
 import com.github.hesamjafari06.chat_server.repository.ConversationMemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -71,5 +74,27 @@ public class ConversationMemberHelperImpl implements ConversationMemberHelper {
                         conversation.getId(),
                         user.getId()
                 ).orElseThrow(ConversationMemberNotFoundException::new);
+    }
+
+    @Override
+    public void deleteConversationMember(ConversationMemberEntity conversationMember) {
+
+        conversationMemberRepository.delete(conversationMember);
+    }
+
+    @Override
+    public List<ConversationMemberEntity> getMembersByConversation(ConversationEntity conversation){
+        return conversationMemberRepository.findByConversation(conversation);
+    }
+
+    @Override
+    public void deleteAllConversationMembers(ConversationEntity conversation) {
+
+        conversationMemberRepository.deleteAllByConversation(conversation);
+    }
+
+    @Override
+    public List<ConversationEntity> findConversationsByUserId(Long userId) {
+        return conversationMemberRepository.findConversationsByUserId(userId);
     }
 }

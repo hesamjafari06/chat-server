@@ -7,6 +7,7 @@ import com.github.hesamjafari06.chat_server.entity.*;
 import com.github.hesamjafari06.chat_server.enums.ConversationType;
 import com.github.hesamjafari06.chat_server.exception.ConversationMemberNotFoundException;
 import com.github.hesamjafari06.chat_server.helper.ChannelHelper;
+import com.github.hesamjafari06.chat_server.helper.ConversationMemberHelper;
 import com.github.hesamjafari06.chat_server.helper.GroupHelper;
 import com.github.hesamjafari06.chat_server.helper.UserHelper;
 import com.github.hesamjafari06.chat_server.mapper.ConversationMapper;
@@ -25,35 +26,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ConversationMemberServiceImpl implements ConversationMemberService {
 
-    private final ConversationMemberRepository conversationMemberRepository;
+    private final ConversationMemberHelper conversationMemberHelper;
     private final ConversationMapper conversationMapper;
     private final GroupHelper groupHelper;
     private final ChannelHelper channelHelper;
     private final UserHelper userHelper;
-
-    public List<ConversationMemberEntity> getMembersByConversation(ConversationEntity conversation){
-        return conversationMemberRepository.findByConversation(conversation);
-    }
-
-
-    @Override
-    public void deleteConversationMember(ConversationMemberEntity conversationMember) {
-
-        conversationMemberRepository.delete(conversationMember);
-    }
-
-    @Override
-    public void deleteAllConversationMembers(ConversationEntity conversation) {
-
-        conversationMemberRepository.deleteAllByConversation(conversation);
-    }
 
     @Override
     public ApiResponse<List<ConversationResponse>> getUserConversations() {
         UserEntity user = userHelper.getCurrentUser();
 
         List<ConversationResponse> conversations =
-                conversationMemberRepository.findConversationsByUserId(user.getId())
+                conversationMemberHelper.findConversationsByUserId(user.getId())
                         .stream()
                         .map(conversation -> conversationMapper.toResponse(conversation,
                                 getConversationName(conversation)))
@@ -82,7 +66,7 @@ public class ConversationMemberServiceImpl implements ConversationMemberService 
 
             UserEntity currentUser = userHelper.getCurrentUser();
 
-            return getMembersByConversation(conversation)
+            return conversationMemberHelper.getMembersByConversation(conversation)
                     .stream()
                     .filter(member ->
                             !member.getUser().getId().equals(currentUser.getId())
