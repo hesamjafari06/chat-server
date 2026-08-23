@@ -29,7 +29,6 @@ public class ConversationServiceImpl implements ConversationService {
 
     private final ConversationHelper conversationHelper;
     private final ConversationMemberService conversationMemberService;
-    private final ConversationMemberRepository conversationMemberRepository;
     private final ConversationMemberHelper conversationMemberHelper;
     private final ConversationMemberMapper conversationMemberMapper;
     private final MessageRepository messageRepository;
@@ -58,24 +57,9 @@ public class ConversationServiceImpl implements ConversationService {
 
         conversationHelper.save(conversation);
 
+        conversationMemberHelper.save(currentUser, conversation, ConversationMemberRole.MEMBER, true);
 
-        conversationMemberRepository.save(
-                ConversationMemberEntity.builder()
-                        .user(currentUser)
-                        .conversation(conversation)
-                        .role(ConversationMemberRole.MEMBER)
-                        .notificationEnabled(true)
-                        .build()
-        );
-
-        conversationMemberRepository.save(
-                ConversationMemberEntity.builder()
-                        .user(targetUser)
-                        .conversation(conversation)
-                        .role(ConversationMemberRole.MEMBER)
-                        .notificationEnabled(true)
-                        .build()
-        );
+        conversationMemberHelper.save(targetUser, conversation, ConversationMemberRole.MEMBER, true);
 
         return ApiResponse.<ConversationResponse>builder()
                 .status("OK")
@@ -116,13 +100,9 @@ public class ConversationServiceImpl implements ConversationService {
             } else {
 
                 conversationMember =
-                        ConversationMemberEntity.builder()
-                                .user(currentUser)
-                                .conversation(conversation)
-                                .role(ConversationMemberRole.MEMBER)
-                                .notificationEnabled(true)
-                                .build();
-                conversationMemberRepository.save(conversationMember);
+                        conversationMemberHelper
+                                .saveAndReturn(currentUser, conversation, ConversationMemberRole.MEMBER, true);
+
 
                 return conversationMemberMapper.toResponse(conversationMember);
             }
@@ -137,13 +117,8 @@ public class ConversationServiceImpl implements ConversationService {
             } else {
 
                 conversationMember =
-                        ConversationMemberEntity.builder()
-                                .user(currentUser)
-                                .conversation(conversation)
-                                .role(ConversationMemberRole.MEMBER)
-                                .notificationEnabled(true)
-                                .build();
-                conversationMemberRepository.save(conversationMember);
+                        conversationMemberHelper
+                                .saveAndReturn(currentUser, conversation, ConversationMemberRole.MEMBER, true);
 
                 return conversationMemberMapper.toResponse(conversationMember);
             }
