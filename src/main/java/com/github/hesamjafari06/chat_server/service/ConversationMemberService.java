@@ -9,9 +9,6 @@ import com.github.hesamjafari06.chat_server.entity.UserEntity;
 import java.util.List;
 
 public interface ConversationMemberService {
-    ConversationMemberEntity getConversationMemberById(Long id);
-
-    ConversationMemberEntity getConversationMemberByConversationMemberId(String conversationMemberId);
 
     boolean isConversationMemberJoined(ConversationEntity conversation, UserEntity user);
 

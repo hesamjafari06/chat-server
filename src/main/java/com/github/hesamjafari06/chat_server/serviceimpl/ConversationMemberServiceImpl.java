@@ -29,21 +29,6 @@ public class ConversationMemberServiceImpl implements ConversationMemberService 
     private final ChannelService channelService;
     private final UserHelper userHelper;
 
-    @Override
-    public ConversationMemberEntity getConversationMemberById(Long id) {
-        return conversationMemberRepository.
-                findById(id)
-                .orElseThrow(ConversationMemberNotFoundException::new);
-    }
-
-    @Override
-    public ConversationMemberEntity getConversationMemberByConversationMemberId(String conversationMemberId) {
-
-        return conversationMemberRepository
-                .findByConversationMemberId(conversationMemberId)
-                .orElseThrow(ConversationMemberNotFoundException::new);
-    }
-
     public boolean isConversationMemberJoined(
             ConversationEntity conversation, UserEntity user) {
 

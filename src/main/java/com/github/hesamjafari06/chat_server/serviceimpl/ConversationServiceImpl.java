@@ -7,6 +7,7 @@ import com.github.hesamjafari06.chat_server.enums.ConversationMemberRole;
 import com.github.hesamjafari06.chat_server.enums.ConversationType;
 import com.github.hesamjafari06.chat_server.exception.*;
 import com.github.hesamjafari06.chat_server.helper.ConversationHelper;
+import com.github.hesamjafari06.chat_server.helper.ConversationMemberHelper;
 import com.github.hesamjafari06.chat_server.helper.UserHelper;
 import com.github.hesamjafari06.chat_server.mapper.ConversationMapper;
 import com.github.hesamjafari06.chat_server.mapper.ConversationMemberMapper;
@@ -32,11 +33,11 @@ public class ConversationServiceImpl implements ConversationService {
     private final ConversationHelper conversationHelper;
     private final ConversationMemberService conversationMemberService;
     private final ConversationMemberRepository conversationMemberRepository;
+    private final ConversationMemberHelper conversationMemberHelper;
     private final ConversationMemberMapper conversationMemberMapper;
     private final MessageRepository messageRepository;
     private final ConversationMapper conversationMapper;
     private final ChannelService channelService;
-    private final UserServiceImpl userService;
     private final UserHelper userHelper;
     private final GroupService groupService;
 
@@ -195,8 +196,7 @@ public class ConversationServiceImpl implements ConversationService {
         }
 
         ConversationMemberEntity targetMember =
-                conversationMemberService
-                        .getConversationMemberByConversationMemberId(request.getTargetMemberId());
+                conversationMemberHelper.getConversationMemberByConversationMemberId(request.getTargetMemberId());
 
         if (currentMember.getId().equals(targetMember.getId())) {
 
@@ -326,7 +326,7 @@ public class ConversationServiceImpl implements ConversationService {
         }
 
         ConversationMemberEntity targetMember =
-                conversationMemberService.getConversationMemberByConversationMemberId(
+                conversationMemberHelper.getConversationMemberByConversationMemberId(
                         request.getConversationMemberId()
                 );
 
