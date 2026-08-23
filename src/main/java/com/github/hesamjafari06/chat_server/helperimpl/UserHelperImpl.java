@@ -10,12 +10,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserHelperImpl implements UserHelper {
 
     private final UserRepository userRepository;
 
+    @Override
     public UserEntity getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -34,5 +37,19 @@ public class UserHelperImpl implements UserHelper {
     @Override
     public UserEntity findUserByUserId(String userId) {
         return userRepository.findByUserId(userId).orElseThrow(UserNotFoundException::new);
+    }
+
+    @Override
+    public boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
+    }
+
+    @Override
+    public void save(UserEntity user) {
+        userRepository.save(user);
+    }
+
+    public List<UserEntity> findByUsernameContainingIgnoreCase(String query) {
+        return userRepository.findByUsernameContainingIgnoreCase(query);
     }
 }

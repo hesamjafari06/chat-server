@@ -29,7 +29,6 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
     private final UserHelper userHelper;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
@@ -41,7 +40,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public ApiResponse<UserResponse> createUser(CreateUserRequest request) {
 
-        if (userRepository.existsByUsername(request.getUsername())) {
+        if (userHelper.existsByUsername(request.getUsername())) {
 
             throw new UsernameAlreadyExistsException();
         }
@@ -50,7 +49,7 @@ public class UserServiceImpl implements UserService {
 
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        userRepository.save(user);
+        userHelper.save(user);
 
         return ApiResponse.<UserResponse>builder()
                 .status("OK")
@@ -83,12 +82,11 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public ApiResponse<UpdateUserResponse> updateUser(UpdateUserRequest request) {
 
-//        UserEntity user = getCurrentUser();
         UserEntity user = userHelper.getCurrentUser();
 
         if (request.getUsername() != null && !Objects.equals(user.getUsername(), request.getUsername())) {
 
-            if (userRepository.existsByUsername(request.getUsername())) {
+            if (userHelper.existsByUsername(request.getUsername())) {
 
                 throw new UsernameAlreadyExistsException();
             }
@@ -134,7 +132,7 @@ public class UserServiceImpl implements UserService {
     public ApiResponse<List<UserResponse>> searchUser(String username){
 
         List<UserResponse> users =
-                userRepository.findByUsernameContainingIgnoreCase(username)
+                userHelper.findByUsernameContainingIgnoreCase(username)
                         .stream()
                         .map(userMapper::toUserResponse)
                         .toList();
