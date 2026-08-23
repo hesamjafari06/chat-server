@@ -15,4 +15,10 @@ public interface MessageHelper {
     List<MessageEntity> getConversationMessages(ConversationEntity conversation);
 
     void deleteAllByConversation(ConversationEntity conversation);
+
+    void save(MessageEntity message);
+
+    List<MessageEntity> findByReplyTo(MessageEntity message);
+
+    void delete(MessageEntity message);
 }

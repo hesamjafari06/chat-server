@@ -34,7 +34,22 @@ public class MessageHelperImpl implements MessageHelper {
     }
 
     @Override
+    public void delete(MessageEntity message) {
+        messageRepository.delete(message);
+    }
+
+    @Override
     public void deleteAllByConversation(ConversationEntity conversation) {
         messageRepository.deleteAllByConversation(conversation);
+    }
+
+    @Override
+    public void save(MessageEntity message) {
+        messageRepository.save(message);
+    }
+
+    @Override
+    public List<MessageEntity> findByReplyTo(MessageEntity message) {
+        return messageRepository.findByReplyTo(message);
     }
 }

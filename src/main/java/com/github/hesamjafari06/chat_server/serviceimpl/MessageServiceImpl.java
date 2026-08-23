@@ -39,8 +39,6 @@ public class MessageServiceImpl implements MessageService {
     private final UserHelper userHelper;
     private final ConversationHelper conversationHelper;
     private final ConversationMemberHelper conversationMemberHelper;
-    private final MessageRepository messageRepository;
-    private final ConversationMemberService conversationMemberService;
     private final MessageMapper messageMapper;
     private final MessageHelper messageHelper;
 
@@ -93,7 +91,7 @@ public class MessageServiceImpl implements MessageService {
                         conversation.getLastMessageId()
                 );
 
-        messageRepository.save(message);
+        messageHelper.save(message);
 
         conversation.setLastMessageId(message.getId());
 
@@ -162,10 +160,10 @@ public class MessageServiceImpl implements MessageService {
             conversation.setLastMessageId(message.getPreviousMessageId());
         }
 
-        messageRepository.findByReplyTo(message)
+        messageHelper.findByReplyTo(message)
                 .forEach(reply -> reply.setReplyTo(null));
 
-        messageRepository.delete(message);
+        messageHelper.delete(message);
 
         return messageMapper.toDeleteEvent(message);
     }
