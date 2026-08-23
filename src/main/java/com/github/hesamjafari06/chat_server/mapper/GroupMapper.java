@@ -27,7 +27,7 @@ public class GroupMapper {
         return GroupEntity.builder()
                 .name(request.getName())
                 .description(request.getDescription())
-                .isClosed(request.isClosed())
+                .isClosed(request.isClosedGroup())
                 .conversation(conversation)
                 .build();
     }

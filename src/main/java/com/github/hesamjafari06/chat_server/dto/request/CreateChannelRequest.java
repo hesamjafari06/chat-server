@@ -7,5 +7,5 @@ public class CreateChannelRequest {
     private String name;
     private String publicId;
     private String description;
-    private boolean isPrivate;
+    private boolean privateChannel;
 }

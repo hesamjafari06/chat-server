@@ -6,5 +6,5 @@ import lombok.Getter;
 public class CreateGroupRequest {
     private String name;
     private String description;
-    private boolean isClosed;
+    private boolean closedGroup;
 }

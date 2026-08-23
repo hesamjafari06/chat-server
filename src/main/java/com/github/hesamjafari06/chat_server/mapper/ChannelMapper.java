@@ -29,7 +29,7 @@ public class ChannelMapper {
                 .name(request.getName())
                 .publicId(request.getPublicId())
                 .description(request.getDescription())
-                .isPrivate(request.isPrivate())
+                .isPrivate(request.isPrivateChannel())
                 .conversation(conversation)
                 .build();
     }
