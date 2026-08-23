@@ -12,8 +12,6 @@ import java.security.Principal;
 public interface ConversationService {
     ApiResponse<ConversationResponse> createConversation(String userId);
 
-    ConversationEntity getConversationById(Long id);
-
     ConversationMemberResponse joinConversation(JoinConversationRequest request, Principal principal);
 
     ConversationEntity getConversationByConversationId(String conversationId);

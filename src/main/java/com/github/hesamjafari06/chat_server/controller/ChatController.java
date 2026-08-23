@@ -3,6 +3,7 @@ package com.github.hesamjafari06.chat_server.controller;
 import com.github.hesamjafari06.chat_server.dto.response.ApiResponse;
 import com.github.hesamjafari06.chat_server.dto.response.MessageResponse;
 import com.github.hesamjafari06.chat_server.entity.ConversationEntity;
+import com.github.hesamjafari06.chat_server.helper.ConversationHelper;
 import com.github.hesamjafari06.chat_server.service.ConversationService;
 import com.github.hesamjafari06.chat_server.service.MessageService;
 import lombok.AllArgsConstructor;
@@ -20,15 +21,18 @@ import java.util.List;
 public class ChatController {
 
     private final MessageService messageService;
-    private final ConversationService conversationService;
+    private final ConversationHelper conversationHelper;
 
     @GetMapping("/{chatId}/messages")
     public ApiResponse<List<MessageResponse>> getMessages(
             @PathVariable String chatId
     ) {
 
+//        ConversationEntity conversation =
+//                conversationService
+//                        .getConversationByConversationId(chatId);
         ConversationEntity conversation =
-                conversationService
+                conversationHelper
                         .getConversationByConversationId(chatId);
 
         return ApiResponse.<List<MessageResponse>>builder()

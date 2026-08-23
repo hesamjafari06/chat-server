@@ -6,6 +6,7 @@ import com.github.hesamjafari06.chat_server.entity.*;
 import com.github.hesamjafari06.chat_server.enums.ConversationMemberRole;
 import com.github.hesamjafari06.chat_server.enums.ConversationType;
 import com.github.hesamjafari06.chat_server.exception.*;
+import com.github.hesamjafari06.chat_server.helper.ConversationHelper;
 import com.github.hesamjafari06.chat_server.mapper.ConversationMapper;
 import com.github.hesamjafari06.chat_server.mapper.ConversationMemberMapper;
 import com.github.hesamjafari06.chat_server.repository.ConversationMemberRepository;
@@ -27,6 +28,7 @@ import java.security.Principal;
 public class ConversationServiceImpl implements ConversationService {
 
     private final ConversationRepository conversationRepository;
+    private final ConversationHelper conversationHelper;
     private final ConversationMemberService conversationMemberService;
     private final ConversationMemberRepository conversationMemberRepository;
     private final ConversationMemberMapper conversationMemberMapper;
@@ -36,11 +38,6 @@ public class ConversationServiceImpl implements ConversationService {
     private final UserServiceImpl userService;
     private final GroupService groupService;
 
-
-    @Override
-    public ConversationEntity getConversationById(Long id) {
-        return conversationRepository.findById(id).orElseThrow(ConversationNotFoundException::new);
-    }
 
     @Override
     public ConversationEntity getConversationByConversationId(String conversationId) {
@@ -100,7 +97,9 @@ public class ConversationServiceImpl implements ConversationService {
     @Transactional
     public ConversationMemberResponse joinConversation(JoinConversationRequest request, Principal principal) {
 
-        ConversationEntity conversation = getConversationByConversationId(request.getConversationId());
+//        ConversationEntity conversation = getConversationByConversationId(request.getConversationId());
+        ConversationEntity conversation =
+                conversationHelper.getConversationByConversationId(request.getConversationId());
 
         UserEntity currentUser =
                 userService.findUserByUsername(principal.getName());
@@ -168,8 +167,13 @@ public class ConversationServiceImpl implements ConversationService {
 
         UserEntity currentUser = userService.getCurrentUser();
 
+//        ConversationEntity conversation =
+//                getConversationByConversationId(
+//                        request.getConversationId()
+//                );
+
         ConversationEntity conversation =
-                getConversationByConversationId(
+                conversationHelper.getConversationByConversationId(
                         request.getConversationId()
                 );
 
@@ -230,7 +234,9 @@ public class ConversationServiceImpl implements ConversationService {
         UserEntity user =
                 userService.findUserByUsername(principal.getName());
 
-        ConversationEntity conversation = getConversationByConversationId(request.getConversationId());
+//        ConversationEntity conversation = getConversationByConversationId(request.getConversationId());
+        ConversationEntity conversation =
+                conversationHelper.getConversationByConversationId(request.getConversationId());
 
         ConversationMemberEntity conversationMember =
                 conversationMemberService.getMemberByUserAndConversation(
@@ -258,8 +264,13 @@ public class ConversationServiceImpl implements ConversationService {
         UserEntity user =
                 userService.findUserByUsername(principal.getName());
 
+//        ConversationEntity conversation =
+//                getConversationByConversationId(
+//                        request.getConversationId()
+//                );
+
         ConversationEntity conversation =
-                getConversationByConversationId(
+                conversationHelper.getConversationByConversationId(
                         request.getConversationId()
                 );
 
@@ -315,8 +326,10 @@ public class ConversationServiceImpl implements ConversationService {
         UserEntity user =
                 userService.findUserByUsername(principal.getName());
 
+//        ConversationEntity conversation =
+//                getConversationByConversationId(request.getConversationId());
         ConversationEntity conversation =
-                getConversationByConversationId(request.getConversationId());
+                conversationHelper.getConversationByConversationId(request.getConversationId());
 
         ConversationMemberEntity currentMember =
                 conversationMemberService.getMemberByUserAndConversation(

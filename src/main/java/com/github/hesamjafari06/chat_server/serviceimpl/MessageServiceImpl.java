@@ -13,6 +13,7 @@ import com.github.hesamjafari06.chat_server.entity.UserEntity;
 import com.github.hesamjafari06.chat_server.enums.ConversationMemberRole;
 import com.github.hesamjafari06.chat_server.enums.ConversationType;
 import com.github.hesamjafari06.chat_server.exception.*;
+import com.github.hesamjafari06.chat_server.helper.ConversationHelper;
 import com.github.hesamjafari06.chat_server.mapper.MessageMapper;
 import com.github.hesamjafari06.chat_server.repository.MessageRepository;
 import com.github.hesamjafari06.chat_server.service.ConversationMemberService;
@@ -33,7 +34,7 @@ import java.util.Optional;
 public class MessageServiceImpl implements MessageService {
 
     private final UserService userService;
-    private final ConversationService conversationService;
+    private final ConversationHelper conversationHelper;
     private final MessageRepository messageRepository;
     private final ConversationMemberService conversationMemberService;
     private final MessageMapper messageMapper;
@@ -67,8 +68,12 @@ public class MessageServiceImpl implements MessageService {
         UserEntity currentUser =
                 userService.findUserByUsername(principal.getName());
 
+//        ConversationEntity conversation =
+//                conversationService.getConversationByConversationId(
+//                        request.getConversationId()
+//                );
         ConversationEntity conversation =
-                conversationService.getConversationByConversationId(
+                conversationHelper.getConversationByConversationId(
                         request.getConversationId()
                 );
 
