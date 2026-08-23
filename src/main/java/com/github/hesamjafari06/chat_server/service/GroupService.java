@@ -10,15 +10,5 @@ import com.github.hesamjafari06.chat_server.entity.GroupEntity;
 public interface GroupService {
     ApiResponse<GroupResponse> createGroup(CreateGroupRequest request);
 
-    GroupEntity getGroupById(Long id);
-
-    GroupEntity getGroupByGroupId(String groupId);
-
-    GroupEntity getGroupByConversationId(Long id);
-
-    GroupEntity getGroupByConversation(ConversationEntity conversation);
-
-    void deleteGroup(GroupEntity group);
-
     ApiResponse<GroupResponse> updateGroup(UpdateGroupRequest request);
 }

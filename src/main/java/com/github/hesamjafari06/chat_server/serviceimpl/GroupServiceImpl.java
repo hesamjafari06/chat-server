@@ -9,13 +9,12 @@ import com.github.hesamjafari06.chat_server.enums.ConversationMemberRole;
 import com.github.hesamjafari06.chat_server.exception.ConversationMemberNotFoundException;
 import com.github.hesamjafari06.chat_server.exception.GroupNotFoundException;
 import com.github.hesamjafari06.chat_server.exception.OnlyOwnerChangeGroupException;
+import com.github.hesamjafari06.chat_server.helper.GroupHelper;
 import com.github.hesamjafari06.chat_server.helper.UserHelper;
 import com.github.hesamjafari06.chat_server.mapper.GroupMapper;
 import com.github.hesamjafari06.chat_server.repository.ConversationMemberRepository;
 import com.github.hesamjafari06.chat_server.repository.GroupRepository;
-import com.github.hesamjafari06.chat_server.service.ConversationMemberService;
 import com.github.hesamjafari06.chat_server.service.GroupService;
-import com.github.hesamjafari06.chat_server.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,31 +29,7 @@ public class GroupServiceImpl implements GroupService {
     private final GroupMapper groupMapper;
     private final ConversationMemberRepository conversationMemberRepository;
     private final UserHelper userHelper;
-
-    @Override
-    public GroupEntity getGroupById(Long id) {
-        return groupRepository.findById(id).orElseThrow(GroupNotFoundException::new);
-    }
-
-    @Override
-    public GroupEntity getGroupByGroupId(String groupId) {
-        return groupRepository.findByGroupId(groupId).orElseThrow(GroupNotFoundException::new);
-    }
-
-    @Override
-    public GroupEntity getGroupByConversationId(Long id) {
-        return groupRepository.findByConversationId(id).orElseThrow(GroupNotFoundException::new);
-    }
-
-    @Override
-    public GroupEntity getGroupByConversation(ConversationEntity conversation) {
-        return groupRepository.findByConversation(conversation).orElseThrow(GroupNotFoundException::new);
-    }
-
-    @Override
-    public void deleteGroup(GroupEntity group) {
-        groupRepository.delete(group);
-    }
+    private final GroupHelper grouphelper;
 
     @Override
     public ApiResponse<GroupResponse> createGroup(CreateGroupRequest request) {
@@ -83,7 +58,7 @@ public class GroupServiceImpl implements GroupService {
 
         UserEntity user = userHelper.getCurrentUser();
 
-        GroupEntity group = getGroupByGroupId(request.getGroupId());
+        GroupEntity group = grouphelper.getGroupByGroupId(request.getGroupId());
 
         ConversationMemberEntity member =
                 conversationMemberRepository

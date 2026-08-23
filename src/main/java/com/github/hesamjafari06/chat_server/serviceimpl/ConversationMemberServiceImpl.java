@@ -7,6 +7,7 @@ import com.github.hesamjafari06.chat_server.entity.*;
 import com.github.hesamjafari06.chat_server.enums.ConversationType;
 import com.github.hesamjafari06.chat_server.exception.ConversationMemberNotFoundException;
 import com.github.hesamjafari06.chat_server.helper.ChannelHelper;
+import com.github.hesamjafari06.chat_server.helper.GroupHelper;
 import com.github.hesamjafari06.chat_server.helper.UserHelper;
 import com.github.hesamjafari06.chat_server.mapper.ConversationMapper;
 import com.github.hesamjafari06.chat_server.mapper.ConversationMemberMapper;
@@ -27,7 +28,7 @@ public class ConversationMemberServiceImpl implements ConversationMemberService 
     private final ConversationMemberRepository conversationMemberRepository;
     private final ConversationMapper conversationMapper;
     private final GroupService groupService;
-    private final ChannelService channelService;
+    private final GroupHelper groupHelper;
     private final ChannelHelper channelHelper;
     private final UserHelper userHelper;
 
@@ -91,7 +92,7 @@ public class ConversationMemberServiceImpl implements ConversationMemberService 
 
         if (conversation.getType() == ConversationType.GROUP) {
 
-            return groupService.getGroupByConversation(conversation)
+            return groupHelper.getGroupByConversation(conversation)
                     .getName();
 
         } else if (conversation.getType() == ConversationType.CHANNEL) {

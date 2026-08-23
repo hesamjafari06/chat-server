@@ -6,10 +6,7 @@ import com.github.hesamjafari06.chat_server.entity.*;
 import com.github.hesamjafari06.chat_server.enums.ConversationMemberRole;
 import com.github.hesamjafari06.chat_server.enums.ConversationType;
 import com.github.hesamjafari06.chat_server.exception.*;
-import com.github.hesamjafari06.chat_server.helper.ChannelHelper;
-import com.github.hesamjafari06.chat_server.helper.ConversationHelper;
-import com.github.hesamjafari06.chat_server.helper.ConversationMemberHelper;
-import com.github.hesamjafari06.chat_server.helper.UserHelper;
+import com.github.hesamjafari06.chat_server.helper.*;
 import com.github.hesamjafari06.chat_server.mapper.ConversationMapper;
 import com.github.hesamjafari06.chat_server.mapper.ConversationMemberMapper;
 import com.github.hesamjafari06.chat_server.repository.ConversationMemberRepository;
@@ -41,6 +38,7 @@ public class ConversationServiceImpl implements ConversationService {
     private final ChannelHelper channelHelper;
     private final UserHelper userHelper;
     private final GroupService groupService;
+    private final GroupHelper groupHelper;
 
 
     @Override
@@ -141,7 +139,7 @@ public class ConversationServiceImpl implements ConversationService {
 
         if (conversation.getType().equals(ConversationType.GROUP)) {
 
-            if (groupService.getGroupByConversationId(conversation.getId()).isClosed()) {
+            if (groupHelper.getGroupByConversationId(conversation.getId()).isClosed()) {
 
                 throw new GroupIsClosedException();
 
@@ -283,9 +281,9 @@ public class ConversationServiceImpl implements ConversationService {
 
         if (type == ConversationType.GROUP) {
 
-            GroupEntity group = groupService.getGroupByConversation(conversation);
+            GroupEntity group = groupHelper.getGroupByConversation(conversation);
 
-            groupService.deleteGroup(group);
+            groupHelper.deleteGroup(group);
 
         } else if (type == ConversationType.CHANNEL) {
 
