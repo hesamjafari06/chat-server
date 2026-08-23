@@ -9,6 +9,7 @@ import com.github.hesamjafari06.chat_server.enums.ConversationMemberRole;
 import com.github.hesamjafari06.chat_server.exception.ConversationMemberNotFoundException;
 import com.github.hesamjafari06.chat_server.exception.GroupNotFoundException;
 import com.github.hesamjafari06.chat_server.exception.OnlyOwnerChangeGroupException;
+import com.github.hesamjafari06.chat_server.helper.UserHelper;
 import com.github.hesamjafari06.chat_server.mapper.GroupMapper;
 import com.github.hesamjafari06.chat_server.repository.ConversationMemberRepository;
 import com.github.hesamjafari06.chat_server.repository.GroupRepository;
@@ -28,7 +29,7 @@ public class GroupServiceImpl implements GroupService {
     private final GroupRepository groupRepository;
     private final GroupMapper groupMapper;
     private final ConversationMemberRepository conversationMemberRepository;
-    private final UserService userService;
+    private final UserHelper userHelper;
 
     @Override
     public GroupEntity getGroupById(Long id) {
@@ -67,7 +68,7 @@ public class GroupServiceImpl implements GroupService {
                         .conversation(group.getConversation())
                         .notificationEnabled(true)
                         .role(ConversationMemberRole.OWNER)
-                        .user(userService.getCurrentUser())
+                        .user(userHelper.getCurrentUser())
                         .build()
         );
 
@@ -80,7 +81,7 @@ public class GroupServiceImpl implements GroupService {
     @Transactional
     public ApiResponse<GroupResponse> updateGroup(UpdateGroupRequest request){
 
-        UserEntity user = userService.getCurrentUser();
+        UserEntity user = userHelper.getCurrentUser();
 
         GroupEntity group = getGroupByGroupId(request.getGroupId());
 

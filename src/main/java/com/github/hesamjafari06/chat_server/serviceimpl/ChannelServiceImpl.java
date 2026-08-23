@@ -14,6 +14,7 @@ import com.github.hesamjafari06.chat_server.exception.ChannelNotFoundException;
 import com.github.hesamjafari06.chat_server.exception.ConversationMemberNotFoundException;
 import com.github.hesamjafari06.chat_server.exception.OnlyOwnerChangeChannelException;
 import com.github.hesamjafari06.chat_server.exception.PublicIdAlreadyExistsException;
+import com.github.hesamjafari06.chat_server.helper.UserHelper;
 import com.github.hesamjafari06.chat_server.mapper.ChannelMapper;
 import com.github.hesamjafari06.chat_server.repository.ChannelRepository;
 import com.github.hesamjafari06.chat_server.repository.ConversationMemberRepository;
@@ -32,7 +33,7 @@ import java.util.Objects;
 public class ChannelServiceImpl implements ChannelService {
 
     private final ConversationMemberRepository conversationMemberRepository;
-    private final UserService userService;
+    private final UserHelper userHelper;
     private final ChannelRepository channelRepository;
     private final ChannelMapper channelMapper;
 
@@ -83,7 +84,7 @@ public class ChannelServiceImpl implements ChannelService {
                         .conversation(channel.getConversation())
                         .notificationEnabled(true)
                         .role(ConversationMemberRole.OWNER)
-                        .user(userService.getCurrentUser())
+                        .user(userHelper.getCurrentUser())
                         .build()
         );
 
@@ -98,7 +99,7 @@ public class ChannelServiceImpl implements ChannelService {
     public ApiResponse<ChannelResponse> updateChannel(
             UpdateChannelRequest request) {
 
-        UserEntity user = userService.getCurrentUser();
+        UserEntity user = userHelper.getCurrentUser();
 
         ChannelEntity channel =
                 getChannelByChannelId(request.getChannelId());

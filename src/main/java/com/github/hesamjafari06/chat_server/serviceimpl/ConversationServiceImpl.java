@@ -7,6 +7,7 @@ import com.github.hesamjafari06.chat_server.enums.ConversationMemberRole;
 import com.github.hesamjafari06.chat_server.enums.ConversationType;
 import com.github.hesamjafari06.chat_server.exception.*;
 import com.github.hesamjafari06.chat_server.helper.ConversationHelper;
+import com.github.hesamjafari06.chat_server.helper.UserHelper;
 import com.github.hesamjafari06.chat_server.mapper.ConversationMapper;
 import com.github.hesamjafari06.chat_server.mapper.ConversationMemberMapper;
 import com.github.hesamjafari06.chat_server.repository.ConversationMemberRepository;
@@ -36,6 +37,7 @@ public class ConversationServiceImpl implements ConversationService {
     private final ConversationMapper conversationMapper;
     private final ChannelService channelService;
     private final UserServiceImpl userService;
+    private final UserHelper userHelper;
     private final GroupService groupService;
 
 
@@ -49,7 +51,7 @@ public class ConversationServiceImpl implements ConversationService {
     @Transactional
     public ApiResponse<ConversationResponse> createConversation(String userId) {
 
-        UserEntity currentUser = userService.getCurrentUser();
+        UserEntity currentUser = userHelper.getCurrentUser();
 
         UserEntity targetUser = userService.findUserByUserId(userId);
 
@@ -97,7 +99,6 @@ public class ConversationServiceImpl implements ConversationService {
     @Transactional
     public ConversationMemberResponse joinConversation(JoinConversationRequest request, Principal principal) {
 
-//        ConversationEntity conversation = getConversationByConversationId(request.getConversationId());
         ConversationEntity conversation =
                 conversationHelper.getConversationByConversationId(request.getConversationId());
 
@@ -165,12 +166,7 @@ public class ConversationServiceImpl implements ConversationService {
     @Transactional
     public ApiResponse<ConversationMemberResponse> changeRole(ChangeRoleRequest request) {
 
-        UserEntity currentUser = userService.getCurrentUser();
-
-//        ConversationEntity conversation =
-//                getConversationByConversationId(
-//                        request.getConversationId()
-//                );
+        UserEntity currentUser = userHelper.getCurrentUser();
 
         ConversationEntity conversation =
                 conversationHelper.getConversationByConversationId(
@@ -234,7 +230,6 @@ public class ConversationServiceImpl implements ConversationService {
         UserEntity user =
                 userService.findUserByUsername(principal.getName());
 
-//        ConversationEntity conversation = getConversationByConversationId(request.getConversationId());
         ConversationEntity conversation =
                 conversationHelper.getConversationByConversationId(request.getConversationId());
 
@@ -263,11 +258,6 @@ public class ConversationServiceImpl implements ConversationService {
 
         UserEntity user =
                 userService.findUserByUsername(principal.getName());
-
-//        ConversationEntity conversation =
-//                getConversationByConversationId(
-//                        request.getConversationId()
-//                );
 
         ConversationEntity conversation =
                 conversationHelper.getConversationByConversationId(
@@ -326,8 +316,6 @@ public class ConversationServiceImpl implements ConversationService {
         UserEntity user =
                 userService.findUserByUsername(principal.getName());
 
-//        ConversationEntity conversation =
-//                getConversationByConversationId(request.getConversationId());
         ConversationEntity conversation =
                 conversationHelper.getConversationByConversationId(request.getConversationId());
 

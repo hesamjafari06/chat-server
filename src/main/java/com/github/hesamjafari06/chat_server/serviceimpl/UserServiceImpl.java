@@ -8,6 +8,7 @@ import com.github.hesamjafari06.chat_server.entity.UserEntity;
 import com.github.hesamjafari06.chat_server.exception.UserNotFoundException;
 import com.github.hesamjafari06.chat_server.exception.UsernameAlreadyExistsException;
 import com.github.hesamjafari06.chat_server.exception.WrongPasswordException;
+import com.github.hesamjafari06.chat_server.helper.UserHelper;
 import com.github.hesamjafari06.chat_server.mapper.UserMapper;
 import com.github.hesamjafari06.chat_server.repository.UserRepository;
 import com.github.hesamjafari06.chat_server.security.CustomUserDetails;
@@ -29,6 +30,7 @@ import java.util.Objects;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final UserHelper userHelper;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
@@ -85,7 +87,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public ApiResponse<UserResponse> getSelfUserProfile() {
 
-        UserEntity user = getCurrentUser();
+//        UserEntity user = getCurrentUser();
+        UserEntity user = userHelper.getCurrentUser();
 
         return ApiResponse.<UserResponse>builder()
                 .status("OK")
@@ -106,7 +109,8 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public ApiResponse<UpdateUserResponse> updateUser(UpdateUserRequest request) {
 
-        UserEntity user = getCurrentUser();
+//        UserEntity user = getCurrentUser();
+        UserEntity user = userHelper.getCurrentUser();
 
         if (request.getUsername() != null && !Objects.equals(user.getUsername(), request.getUsername())) {
 
@@ -137,7 +141,8 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public ApiResponse<UserResponse> changePassword(ChangePasswordRequest request) {
 
-        UserEntity user = getCurrentUser();
+//        UserEntity user = getCurrentUser();
+        UserEntity user = userHelper.getCurrentUser();
 
         if (passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())) {
 

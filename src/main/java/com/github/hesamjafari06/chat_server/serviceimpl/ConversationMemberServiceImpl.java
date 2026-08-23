@@ -6,6 +6,7 @@ import com.github.hesamjafari06.chat_server.dto.response.UserResponse;
 import com.github.hesamjafari06.chat_server.entity.*;
 import com.github.hesamjafari06.chat_server.enums.ConversationType;
 import com.github.hesamjafari06.chat_server.exception.ConversationMemberNotFoundException;
+import com.github.hesamjafari06.chat_server.helper.UserHelper;
 import com.github.hesamjafari06.chat_server.mapper.ConversationMapper;
 import com.github.hesamjafari06.chat_server.mapper.ConversationMemberMapper;
 import com.github.hesamjafari06.chat_server.repository.ConversationMemberRepository;
@@ -26,7 +27,7 @@ public class ConversationMemberServiceImpl implements ConversationMemberService 
     private final ConversationMapper conversationMapper;
     private final GroupService groupService;
     private final ChannelService channelService;
-    private final UserService userService;
+    private final UserHelper userHelper;
 
     @Override
     public ConversationMemberEntity getConversationMemberById(Long id) {
@@ -83,7 +84,7 @@ public class ConversationMemberServiceImpl implements ConversationMemberService 
 
     @Override
     public ApiResponse<List<ConversationResponse>> getUserConversations() {
-        UserEntity user = userService.getCurrentUser();
+        UserEntity user = userHelper.getCurrentUser();
 
         List<ConversationResponse> conversations =
                 conversationMemberRepository.findConversationsByUserId(user.getId())
@@ -113,8 +114,7 @@ public class ConversationMemberServiceImpl implements ConversationMemberService 
 
         } else if (conversation.getType() == ConversationType.PRIVATE) {
 
-            UserEntity currentUser =
-                    userService.getCurrentUser();
+            UserEntity currentUser = userHelper.getCurrentUser();
 
             return getMembersByConversation(conversation)
                     .stream()
