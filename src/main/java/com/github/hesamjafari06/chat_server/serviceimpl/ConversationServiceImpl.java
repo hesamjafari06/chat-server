@@ -242,7 +242,7 @@ public class ConversationServiceImpl implements ConversationService {
 
             GroupEntity group = groupHelper.getGroupByConversation(conversation);
 
-            groupHelper.deleteGroup(group);
+            groupHelper.delete(group);
 
         } else if (type == ConversationType.CHANNEL) {
 

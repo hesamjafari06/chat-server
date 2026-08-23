@@ -97,4 +97,11 @@ public class ConversationMemberHelperImpl implements ConversationMemberHelper {
     public List<ConversationEntity> findConversationsByUserId(Long userId) {
         return conversationMemberRepository.findConversationsByUserId(userId);
     }
+
+    @Override
+    public ConversationMemberEntity findAndReturnByConversationIdAndUserId(Long conversationId, Long userId){
+        return conversationMemberRepository
+                .findByConversationIdAndUserId(conversationId, userId)
+                .orElseThrow(ConversationMemberNotFoundException::new);
+    }
 }

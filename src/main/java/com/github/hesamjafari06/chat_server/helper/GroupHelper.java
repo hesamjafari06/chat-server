@@ -11,5 +11,7 @@ public interface GroupHelper {
 
     GroupEntity getGroupByConversation(ConversationEntity conversation);
 
-    void deleteGroup(GroupEntity group);
+    void delete(GroupEntity group);
+
+    void save(GroupEntity group);
 }

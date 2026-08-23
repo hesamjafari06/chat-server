@@ -2,6 +2,7 @@ package com.github.hesamjafari06.chat_server.helperimpl;
 
 import com.github.hesamjafari06.chat_server.entity.ConversationEntity;
 import com.github.hesamjafari06.chat_server.entity.GroupEntity;
+import com.github.hesamjafari06.chat_server.entity.MessageEntity;
 import com.github.hesamjafari06.chat_server.exception.GroupNotFoundException;
 import com.github.hesamjafari06.chat_server.helper.GroupHelper;
 import com.github.hesamjafari06.chat_server.repository.GroupRepository;
@@ -30,7 +31,12 @@ public class GroupHelperImpl  implements GroupHelper {
     }
 
     @Override
-    public void deleteGroup(GroupEntity group) {
+    public void delete(GroupEntity group) {
         groupRepository.delete(group);
+    }
+
+    @Override
+    public void save(GroupEntity group) {
+        groupRepository.save(group);
     }
 }

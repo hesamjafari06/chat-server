@@ -30,4 +30,6 @@ public interface ConversationMemberHelper {
     void deleteAllConversationMembers(ConversationEntity conversation);
 
     List<ConversationEntity> findConversationsByUserId(Long userId);
+
+    ConversationMemberEntity findAndReturnByConversationIdAndUserId(Long conversationId, Long userId);
 }

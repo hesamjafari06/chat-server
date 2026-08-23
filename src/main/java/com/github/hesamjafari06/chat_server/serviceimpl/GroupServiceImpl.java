@@ -9,6 +9,7 @@ import com.github.hesamjafari06.chat_server.enums.ConversationMemberRole;
 import com.github.hesamjafari06.chat_server.exception.ConversationMemberNotFoundException;
 import com.github.hesamjafari06.chat_server.exception.GroupNotFoundException;
 import com.github.hesamjafari06.chat_server.exception.OnlyOwnerChangeGroupException;
+import com.github.hesamjafari06.chat_server.helper.ConversationMemberHelper;
 import com.github.hesamjafari06.chat_server.helper.GroupHelper;
 import com.github.hesamjafari06.chat_server.helper.UserHelper;
 import com.github.hesamjafari06.chat_server.mapper.GroupMapper;
@@ -25,27 +26,20 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class GroupServiceImpl implements GroupService {
 
-    private final GroupRepository groupRepository;
     private final GroupMapper groupMapper;
-    private final ConversationMemberRepository conversationMemberRepository;
+    private final ConversationMemberHelper conversationMemberHelper;
     private final UserHelper userHelper;
-    private final GroupHelper grouphelper;
+    private final GroupHelper groupHelper;
 
     @Override
     public ApiResponse<GroupResponse> createGroup(CreateGroupRequest request) {
 
         GroupEntity group = groupMapper.toEntity(request);
 
-        groupRepository.save(group);
+        groupHelper.save(group);
 
-        conversationMemberRepository.save(
-                ConversationMemberEntity.builder()
-                        .conversation(group.getConversation())
-                        .notificationEnabled(true)
-                        .role(ConversationMemberRole.OWNER)
-                        .user(userHelper.getCurrentUser())
-                        .build()
-        );
+        conversationMemberHelper
+                .save(userHelper.getCurrentUser(), group.getConversation(), ConversationMemberRole.OWNER, true);
 
         return ApiResponse.<GroupResponse>builder()
                 .status("OK")
@@ -58,15 +52,13 @@ public class GroupServiceImpl implements GroupService {
 
         UserEntity user = userHelper.getCurrentUser();
 
-        GroupEntity group = grouphelper.getGroupByGroupId(request.getGroupId());
+        GroupEntity group = groupHelper.getGroupByGroupId(request.getGroupId());
 
         ConversationMemberEntity member =
-                conversationMemberRepository
-                        .findByConversationIdAndUserId(
-                                group.getConversation().getId(),
-                                user.getId()
-                        )
-                        .orElseThrow(ConversationMemberNotFoundException::new);
+                conversationMemberHelper.findAndReturnByConversationIdAndUserId(
+                        group.getConversation().getId(),
+                        user.getId()
+                );
 
         if (!member.getRole().equals(ConversationMemberRole.OWNER)){
             throw new OnlyOwnerChangeGroupException();
