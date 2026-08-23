@@ -32,4 +32,9 @@ public class MessageHelperImpl implements MessageHelper {
     public List<MessageEntity> getConversationMessages(ConversationEntity conversation) {
         return messageRepository.findByConversationOrderBySendAtAsc(conversation);
     }
+
+    @Override
+    public void deleteAllByConversation(ConversationEntity conversation) {
+        messageRepository.deleteAllByConversation(conversation);
+    }
 }

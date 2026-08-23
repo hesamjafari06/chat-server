@@ -50,4 +50,26 @@ public class ConversationMemberHelperImpl implements ConversationMemberHelper {
 
         return member;
     }
+
+    @Override
+    public boolean isConversationMemberJoined(
+            ConversationEntity conversation, UserEntity user) {
+
+        return conversationMemberRepository
+                .existsByConversationIdAndUserId(
+                        conversation.getId(),
+                        user.getId()
+                );
+    }
+
+    @Override
+    public ConversationMemberEntity getMemberByUserAndConversation(
+            ConversationEntity conversation, UserEntity user) {
+
+        return conversationMemberRepository
+                .findByConversationIdAndUserId(
+                        conversation.getId(),
+                        user.getId()
+                ).orElseThrow(ConversationMemberNotFoundException::new);
+    }
 }

@@ -11,5 +11,13 @@ public interface ConversationMemberHelper {
 
     void save(UserEntity user, ConversationEntity conversation, ConversationMemberRole role, boolean notification);
 
-    ConversationMemberEntity saveAndReturn(UserEntity user, ConversationEntity conversation, ConversationMemberRole role, boolean notification);
+    ConversationMemberEntity saveAndReturn(
+            UserEntity user,
+            ConversationEntity conversation,
+            ConversationMemberRole role,
+            boolean notification);
+
+    boolean isConversationMemberJoined(ConversationEntity conversation, UserEntity user);
+
+    ConversationMemberEntity getMemberByUserAndConversation(ConversationEntity conversation, UserEntity user);
 }

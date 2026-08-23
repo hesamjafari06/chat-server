@@ -27,31 +27,9 @@ public class ConversationMemberServiceImpl implements ConversationMemberService 
 
     private final ConversationMemberRepository conversationMemberRepository;
     private final ConversationMapper conversationMapper;
-    private final GroupService groupService;
     private final GroupHelper groupHelper;
     private final ChannelHelper channelHelper;
     private final UserHelper userHelper;
-
-    public boolean isConversationMemberJoined(
-            ConversationEntity conversation, UserEntity user) {
-
-        return conversationMemberRepository
-                .existsByConversationIdAndUserId(
-                        conversation.getId(),
-                        user.getId()
-                );
-    }
-
-    @Override
-    public ConversationMemberEntity getMemberByUserAndConversation(
-            ConversationEntity conversation, UserEntity user) {
-
-        return conversationMemberRepository
-                .findByConversationIdAndUserId(
-                        conversation.getId(),
-                        user.getId()
-                ).orElseThrow(ConversationMemberNotFoundException::new);
-    }
 
     public List<ConversationMemberEntity> getMembersByConversation(ConversationEntity conversation){
         return conversationMemberRepository.findByConversation(conversation);

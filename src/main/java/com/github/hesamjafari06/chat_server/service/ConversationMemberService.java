@@ -10,10 +10,6 @@ import java.util.List;
 
 public interface ConversationMemberService {
 
-    boolean isConversationMemberJoined(ConversationEntity conversation, UserEntity user);
-
-    ConversationMemberEntity getMemberByUserAndConversation(ConversationEntity conversation, UserEntity user);
-
     void deleteConversationMember(ConversationMemberEntity conversationMember);
 
     void deleteAllConversationMembers(ConversationEntity conversation);

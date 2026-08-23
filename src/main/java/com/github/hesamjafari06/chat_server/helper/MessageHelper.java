@@ -13,4 +13,6 @@ public interface MessageHelper {
     Optional<MessageEntity> getMessageByPreviousId(Long id);
 
     List<MessageEntity> getConversationMessages(ConversationEntity conversation);
+
+    void deleteAllByConversation(ConversationEntity conversation);
 }

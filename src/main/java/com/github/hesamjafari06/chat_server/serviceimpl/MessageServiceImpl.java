@@ -14,6 +14,7 @@ import com.github.hesamjafari06.chat_server.enums.ConversationMemberRole;
 import com.github.hesamjafari06.chat_server.enums.ConversationType;
 import com.github.hesamjafari06.chat_server.exception.*;
 import com.github.hesamjafari06.chat_server.helper.ConversationHelper;
+import com.github.hesamjafari06.chat_server.helper.ConversationMemberHelper;
 import com.github.hesamjafari06.chat_server.helper.MessageHelper;
 import com.github.hesamjafari06.chat_server.helper.UserHelper;
 import com.github.hesamjafari06.chat_server.mapper.MessageMapper;
@@ -37,6 +38,7 @@ public class MessageServiceImpl implements MessageService {
 
     private final UserHelper userHelper;
     private final ConversationHelper conversationHelper;
+    private final ConversationMemberHelper conversationMemberHelper;
     private final MessageRepository messageRepository;
     private final ConversationMemberService conversationMemberService;
     private final MessageMapper messageMapper;
@@ -63,10 +65,7 @@ public class MessageServiceImpl implements MessageService {
                 );
 
         ConversationMemberEntity currentMember =
-                conversationMemberService.getMemberByUserAndConversation(
-                        conversation,
-                        currentUser
-                );
+                conversationMemberHelper.getMemberByUserAndConversation(conversation, currentUser);
 
         if (conversation.getType() == ConversationType.CHANNEL
                 && currentMember.getRole() == ConversationMemberRole.MEMBER) {
@@ -132,10 +131,7 @@ public class MessageServiceImpl implements MessageService {
         ConversationEntity conversation = message.getConversation();
 
         ConversationMemberEntity currentMember =
-                conversationMemberService.getMemberByUserAndConversation(
-                        conversation,
-                        user
-                );
+                conversationMemberHelper.getMemberByUserAndConversation(conversation, user);
 
         ConversationMemberEntity targetMember =
                 message.getSender();

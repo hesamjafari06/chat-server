@@ -31,7 +31,7 @@ public class ConversationServiceImpl implements ConversationService {
     private final ConversationMemberService conversationMemberService;
     private final ConversationMemberHelper conversationMemberHelper;
     private final ConversationMemberMapper conversationMemberMapper;
-    private final MessageRepository messageRepository;
+    private final MessageHelper messageHelper;
     private final ConversationMapper conversationMapper;
     private final ChannelHelper channelHelper;
     private final UserHelper userHelper;
@@ -84,7 +84,7 @@ public class ConversationServiceImpl implements ConversationService {
             throw new JoinPrivateConversationException();
         }
 
-        if (conversationMemberService.isConversationMemberJoined(conversation, currentUser)) {
+        if (conversationMemberHelper.isConversationMemberJoined(conversation, currentUser)) {
 
             throw new MemberAlreadyJoinedException();
         }
@@ -143,17 +143,13 @@ public class ConversationServiceImpl implements ConversationService {
             throw new NoRoleInPrivateException();
         }
 
-        if (!conversationMemberService.isConversationMemberJoined(conversation, currentUser)) {
+        if (!conversationMemberHelper.isConversationMemberJoined(conversation, currentUser)) {
 
             throw new MemberIsNotJoinedException();
         }
 
         ConversationMemberEntity currentMember =
-                conversationMemberService
-                        .getMemberByUserAndConversation(
-                                conversation,
-                                currentUser
-                        );
+                conversationMemberHelper.getMemberByUserAndConversation(conversation, currentUser);
 
         if (currentMember.getRole() != ConversationMemberRole.OWNER) {
 
@@ -197,10 +193,7 @@ public class ConversationServiceImpl implements ConversationService {
                 conversationHelper.getConversationByConversationId(request.getConversationId());
 
         ConversationMemberEntity conversationMember =
-                conversationMemberService.getMemberByUserAndConversation(
-                        conversation,
-                        user
-                );
+                conversationMemberHelper.getMemberByUserAndConversation(conversation, user);
 
         if (conversationMember.getRole().equals(ConversationMemberRole.OWNER)) {
 
@@ -229,7 +222,7 @@ public class ConversationServiceImpl implements ConversationService {
         ConversationType type = conversation.getType();
 
         ConversationMemberEntity member =
-                conversationMemberService.getMemberByUserAndConversation(conversation, user);
+                conversationMemberHelper.getMemberByUserAndConversation(conversation, user);
 
         if (type == ConversationType.PRIVATE && request.isKeepConversation()) {
 
@@ -261,7 +254,7 @@ public class ConversationServiceImpl implements ConversationService {
 
         DeleteConversationEvent event = conversationMapper.toDeleteEvent(conversation, false, member);
 
-        messageRepository.deleteAllByConversation(conversation);
+        messageHelper.deleteAllByConversation(conversation);
 
         conversationMemberService.deleteAllConversationMembers(conversation);
 
@@ -281,10 +274,7 @@ public class ConversationServiceImpl implements ConversationService {
                 conversationHelper.getConversationByConversationId(request.getConversationId());
 
         ConversationMemberEntity currentMember =
-                conversationMemberService.getMemberByUserAndConversation(
-                        conversation,
-                        user
-                );
+                conversationMemberHelper.getMemberByUserAndConversation(conversation, user);
 
         if (currentMember.getRole().equals(ConversationMemberRole.MEMBER)) {
             throw new MemberCanNotDeleteMemberException();
