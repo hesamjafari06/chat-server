@@ -28,9 +28,6 @@ public class ChatController {
             @PathVariable String chatId
     ) {
 
-//        ConversationEntity conversation =
-//                conversationService
-//                        .getConversationByConversationId(chatId);
         ConversationEntity conversation =
                 conversationHelper
                         .getConversationByConversationId(chatId);

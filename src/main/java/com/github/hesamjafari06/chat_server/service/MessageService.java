@@ -14,15 +14,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MessageService {
-    MessageEntity getMessageByMessageId(String messageId);
 
     MessageResponse sendMessage(SendMessageRequest request, Principal principal);
 
     MessageResponse updateMessage(UpdateMessageRequest request, Principal principal);
-
-    String getLastMessageContent(ConversationEntity conversation);
-
-    Optional<MessageEntity> getMessageByPreviousId(Long id);
 
     MessageDeleteEvent deleteMessage(DeleteMessageRequest request, Principal principal);
 

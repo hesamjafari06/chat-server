@@ -14,6 +14,7 @@ import com.github.hesamjafari06.chat_server.enums.ConversationMemberRole;
 import com.github.hesamjafari06.chat_server.enums.ConversationType;
 import com.github.hesamjafari06.chat_server.exception.*;
 import com.github.hesamjafari06.chat_server.helper.ConversationHelper;
+import com.github.hesamjafari06.chat_server.helper.MessageHelper;
 import com.github.hesamjafari06.chat_server.helper.UserHelper;
 import com.github.hesamjafari06.chat_server.mapper.MessageMapper;
 import com.github.hesamjafari06.chat_server.repository.MessageRepository;
@@ -39,24 +40,12 @@ public class MessageServiceImpl implements MessageService {
     private final MessageRepository messageRepository;
     private final ConversationMemberService conversationMemberService;
     private final MessageMapper messageMapper;
+    private final MessageHelper messageHelper;
+
 
     @Override
-    public MessageEntity getMessageByMessageId(String messageId) {
-        return messageRepository.findByMessageId(messageId).orElseThrow(MessageNotFoundException::new);
-    }
-
-    public Optional<MessageEntity> getMessageByPreviousId(Long id) {
-        return messageRepository.findByPreviousMessageId(id);
-    }
-
-    @Override
-    public String getLastMessageContent(ConversationEntity conversation) {
-        return messageRepository.findContentById(conversation.getLastMessageId()).orElse(null);
-    }
-
     public List<MessageResponse> getConversationMessages(ConversationEntity conversation) {
-        return messageRepository.findByConversationOrderBySendAtAsc(conversation)
-                .stream().map(messageMapper::toResponse).toList();
+        return messageHelper.getConversationMessages(conversation).stream().map(messageMapper::toResponse).toList();
     }
 
     @Override
@@ -89,7 +78,7 @@ public class MessageServiceImpl implements MessageService {
 
         if (request.getReplyTo() != null) {
 
-            replyMessage = getMessageByMessageId(request.getReplyTo());
+            replyMessage = messageHelper.getMessageByMessageId(request.getReplyTo());
 
             if (!replyMessage.getConversation().equals(conversation)) {
                 throw new ReplyOtherConversationException();
@@ -118,7 +107,7 @@ public class MessageServiceImpl implements MessageService {
 
         UserEntity user = userHelper.findUserByUsername(principal.getName());
 
-        MessageEntity message = getMessageByMessageId(request.getMessageId());
+        MessageEntity message = messageHelper.getMessageByMessageId(request.getMessageId());
 
         ConversationMemberEntity member = message.getSender();
 
@@ -138,7 +127,7 @@ public class MessageServiceImpl implements MessageService {
 
         UserEntity user = userHelper.findUserByUsername(principal.getName());
 
-        MessageEntity message = getMessageByMessageId(request.getMessageId());
+        MessageEntity message = messageHelper.getMessageByMessageId(request.getMessageId());
 
         ConversationEntity conversation = message.getConversation();
 
@@ -166,7 +155,7 @@ public class MessageServiceImpl implements MessageService {
             }
         }
 
-        getMessageByPreviousId(message.getId())
+        messageHelper.getMessageByPreviousId(message.getId())
                 .ifPresent(nextMessage ->
                         nextMessage.setPreviousMessageId(
                                 message.getPreviousMessageId()
