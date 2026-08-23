@@ -18,5 +18,13 @@ public class ConversationHelperImpl implements ConversationHelper {
                 .orElseThrow(ConversationNotFoundException::new);
     }
 
+    @Override
+    public void save(ConversationEntity conversation) {
+        conversationRepository.save(conversation);
+    }
 
+    @Override
+    public void delete(ConversationEntity conversation) {
+        conversationRepository.delete(conversation);
+    }
 }

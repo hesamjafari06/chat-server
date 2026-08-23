@@ -27,7 +27,6 @@ import java.security.Principal;
 @RequiredArgsConstructor
 public class ConversationServiceImpl implements ConversationService {
 
-    private final ConversationRepository conversationRepository;
     private final ConversationHelper conversationHelper;
     private final ConversationMemberService conversationMemberService;
     private final ConversationMemberRepository conversationMemberRepository;
@@ -37,15 +36,7 @@ public class ConversationServiceImpl implements ConversationService {
     private final ConversationMapper conversationMapper;
     private final ChannelHelper channelHelper;
     private final UserHelper userHelper;
-    private final GroupService groupService;
     private final GroupHelper groupHelper;
-
-
-    @Override
-    public ConversationEntity getConversationByConversationId(String conversationId) {
-        return conversationRepository.findByConversationId(conversationId)
-                .orElseThrow(ConversationNotFoundException::new);
-    }
 
     @Override
     @Transactional
@@ -65,7 +56,7 @@ public class ConversationServiceImpl implements ConversationService {
                         .type(ConversationType.PRIVATE)
                         .build();
 
-        conversationRepository.save(conversation);
+        conversationHelper.save(conversation);
 
 
         conversationMemberRepository.save(
@@ -299,7 +290,7 @@ public class ConversationServiceImpl implements ConversationService {
 
         conversationMemberService.deleteAllConversationMembers(conversation);
 
-        conversationRepository.delete(conversation);
+        conversationHelper.delete(conversation);
 
 
         return event;

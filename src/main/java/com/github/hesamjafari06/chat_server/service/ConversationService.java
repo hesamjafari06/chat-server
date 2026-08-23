@@ -14,8 +14,6 @@ public interface ConversationService {
 
     ConversationMemberResponse joinConversation(JoinConversationRequest request, Principal principal);
 
-    ConversationEntity getConversationByConversationId(String conversationId);
-
     ApiResponse<ConversationMemberResponse> changeRole(ChangeRoleRequest request);
 
     LeaveConversationEvent leaveConversation(LeaveConversationRequest request, Principal principal);
