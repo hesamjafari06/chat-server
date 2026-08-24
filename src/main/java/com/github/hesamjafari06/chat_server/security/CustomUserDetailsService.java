@@ -1,5 +1,6 @@
 package com.github.hesamjafari06.chat_server.security;
 
+import com.github.hesamjafari06.chat_server.helper.UserHelper;
 import com.github.hesamjafari06.chat_server.mapper.UserMapper;
 import com.github.hesamjafari06.chat_server.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,14 +13,12 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final UserRepository userRepository;
+    private final UserHelper userHelper;
     private final UserMapper userMapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userMapper.toUserDetails(
-                userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"))
-        );
+
+        return userMapper.toUserDetails(userHelper.findUserByUsername(username));
     }
 }
