@@ -31,5 +31,5 @@ public interface ConversationMemberHelper {
 
     List<ConversationEntity> findConversationsByUserId(Long userId);
 
-    ConversationMemberEntity findAndReturnByConversationIdAndUserId(Long conversationId, Long userId);
+    ConversationMemberEntity findByConversationIdAndUserId(Long conversationId, Long userId);
 }

@@ -6,15 +6,11 @@ import com.github.hesamjafari06.chat_server.dto.response.ApiResponse;
 import com.github.hesamjafari06.chat_server.dto.response.GroupResponse;
 import com.github.hesamjafari06.chat_server.entity.*;
 import com.github.hesamjafari06.chat_server.enums.ConversationMemberRole;
-import com.github.hesamjafari06.chat_server.exception.ConversationMemberNotFoundException;
-import com.github.hesamjafari06.chat_server.exception.GroupNotFoundException;
 import com.github.hesamjafari06.chat_server.exception.OnlyOwnerChangeGroupException;
 import com.github.hesamjafari06.chat_server.helper.ConversationMemberHelper;
 import com.github.hesamjafari06.chat_server.helper.GroupHelper;
 import com.github.hesamjafari06.chat_server.helper.UserHelper;
 import com.github.hesamjafari06.chat_server.mapper.GroupMapper;
-import com.github.hesamjafari06.chat_server.repository.ConversationMemberRepository;
-import com.github.hesamjafari06.chat_server.repository.GroupRepository;
 import com.github.hesamjafari06.chat_server.service.GroupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -55,7 +51,7 @@ public class GroupServiceImpl implements GroupService {
         GroupEntity group = groupHelper.getGroupByGroupId(request.getGroupId());
 
         ConversationMemberEntity member =
-                conversationMemberHelper.findAndReturnByConversationIdAndUserId(
+                conversationMemberHelper.findByConversationIdAndUserId(
                         group.getConversation().getId(),
                         user.getId()
                 );

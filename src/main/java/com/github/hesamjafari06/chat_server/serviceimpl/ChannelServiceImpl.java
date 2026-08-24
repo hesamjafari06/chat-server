@@ -4,24 +4,19 @@ import com.github.hesamjafari06.chat_server.dto.request.CreateChannelRequest;
 import com.github.hesamjafari06.chat_server.dto.request.UpdateChannelRequest;
 import com.github.hesamjafari06.chat_server.dto.response.ApiResponse;
 import com.github.hesamjafari06.chat_server.dto.response.ChannelResponse;
-import com.github.hesamjafari06.chat_server.dto.response.UserResponse;
 import com.github.hesamjafari06.chat_server.entity.ChannelEntity;
-import com.github.hesamjafari06.chat_server.entity.ConversationEntity;
 import com.github.hesamjafari06.chat_server.entity.ConversationMemberEntity;
 import com.github.hesamjafari06.chat_server.entity.UserEntity;
 import com.github.hesamjafari06.chat_server.enums.ConversationMemberRole;
-import com.github.hesamjafari06.chat_server.exception.ChannelNotFoundException;
-import com.github.hesamjafari06.chat_server.exception.ConversationMemberNotFoundException;
 import com.github.hesamjafari06.chat_server.exception.OnlyOwnerChangeChannelException;
 import com.github.hesamjafari06.chat_server.exception.PublicIdAlreadyExistsException;
 import com.github.hesamjafari06.chat_server.helper.ChannelHelper;
+import com.github.hesamjafari06.chat_server.helper.ConversationMemberHelper;
 import com.github.hesamjafari06.chat_server.helper.UserHelper;
 import com.github.hesamjafari06.chat_server.mapper.ChannelMapper;
 import com.github.hesamjafari06.chat_server.repository.ChannelRepository;
 import com.github.hesamjafari06.chat_server.repository.ConversationMemberRepository;
 import com.github.hesamjafari06.chat_server.service.ChannelService;
-import com.github.hesamjafari06.chat_server.service.ConversationMemberService;
-import com.github.hesamjafari06.chat_server.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,37 +28,26 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class ChannelServiceImpl implements ChannelService {
 
-    private final ConversationMemberRepository conversationMemberRepository;
+    private final ConversationMemberHelper conversationMemberHelper;
     private final UserHelper userHelper;
-    private final ChannelRepository channelRepository;
     private final ChannelHelper channelHelper;
     private final ChannelMapper channelMapper;
-
-    @Override
-    public void deleteChannel(ChannelEntity channel) {
-        channelRepository.delete(channel);
-    }
 
     @Override
     @Transactional
     public ApiResponse<ChannelResponse> createChannel(CreateChannelRequest request) {
 
-        if (channelRepository.existsByPublicId(request.getPublicId())){
+        if (channelHelper.existsByPublicId(request.getPublicId())){
 
             throw new PublicIdAlreadyExistsException();
         }
 
         ChannelEntity channel = channelMapper.toEntity(request);
-        channelRepository.save(channel);
 
-        conversationMemberRepository.save(
-                ConversationMemberEntity.builder()
-                        .conversation(channel.getConversation())
-                        .notificationEnabled(true)
-                        .role(ConversationMemberRole.OWNER)
-                        .user(userHelper.getCurrentUser())
-                        .build()
-        );
+        channelHelper.save(channel);
+
+        conversationMemberHelper
+                .save(userHelper.getCurrentUser(), channel.getConversation(), ConversationMemberRole.OWNER, true);
 
         return ApiResponse.<ChannelResponse>builder()
                 .status("OK")
@@ -80,13 +64,10 @@ public class ChannelServiceImpl implements ChannelService {
 
         ChannelEntity channel = channelHelper.getChannelByChannelId(request.getChannelId());
 
-        ConversationMemberEntity member =
-                conversationMemberRepository
-                        .findByConversationIdAndUserId(
-                                channel.getConversation().getId(),
-                                user.getId()
-                        )
-                        .orElseThrow(ConversationMemberNotFoundException::new);
+        ConversationMemberEntity member = conversationMemberHelper.findByConversationIdAndUserId(
+                channel.getConversation().getId(),
+                user.getId()
+        );
 
         if (member.getRole() != ConversationMemberRole.OWNER) {
 
@@ -96,8 +77,7 @@ public class ChannelServiceImpl implements ChannelService {
         if (request.getPublicId() != null &&
                 !Objects.equals(channel.getPublicId(), request.getPublicId())) {
 
-            if (channelRepository.existsByPublicId(
-                    request.getPublicId())) {
+            if (channelHelper.existsByPublicId(request.getPublicId())) {
 
                 throw new PublicIdAlreadyExistsException();
             }
@@ -131,7 +111,7 @@ public class ChannelServiceImpl implements ChannelService {
     public ApiResponse<List<ChannelResponse>> searchChannel(String publicId){
 
         List<ChannelResponse> channels =
-                channelRepository.findByPublicIdContaining(publicId)
+                channelHelper.findByPublicIdContaining(publicId)
                         .stream()
                         .map(channelMapper::toResponse)
                         .toList();

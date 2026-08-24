@@ -99,7 +99,7 @@ public class ConversationMemberHelperImpl implements ConversationMemberHelper {
     }
 
     @Override
-    public ConversationMemberEntity findAndReturnByConversationIdAndUserId(Long conversationId, Long userId){
+    public ConversationMemberEntity findByConversationIdAndUserId(Long conversationId, Long userId){
         return conversationMemberRepository
                 .findByConversationIdAndUserId(conversationId, userId)
                 .orElseThrow(ConversationMemberNotFoundException::new);
