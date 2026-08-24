@@ -52,4 +52,9 @@ public class MessageHelperImpl implements MessageHelper {
     public List<MessageEntity> findByReplyTo(MessageEntity message) {
         return messageRepository.findByReplyTo(message);
     }
+
+    @Override
+    public String findContentById(Long id) {
+        return messageRepository.findContentById(id).orElse(null);
+    }
 }

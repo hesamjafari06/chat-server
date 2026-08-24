@@ -21,4 +21,6 @@ public interface MessageHelper {
     List<MessageEntity> findByReplyTo(MessageEntity message);
 
     void delete(MessageEntity message);
+
+    String findContentById(Long id);
 }

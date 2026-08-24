@@ -5,6 +5,7 @@ import com.github.hesamjafari06.chat_server.dto.response.ChannelResponse;
 import com.github.hesamjafari06.chat_server.entity.ChannelEntity;
 import com.github.hesamjafari06.chat_server.entity.ConversationEntity;
 import com.github.hesamjafari06.chat_server.enums.ConversationType;
+import com.github.hesamjafari06.chat_server.helper.ConversationHelper;
 import com.github.hesamjafari06.chat_server.repository.ConversationRepository;
 import com.github.hesamjafari06.chat_server.service.ConversationService;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ChannelMapper {
 
-    private final ConversationRepository conversationRepository;
+    private final ConversationHelper conversationHelper;
 
     public ChannelEntity toEntity(CreateChannelRequest request){
 
@@ -23,7 +24,7 @@ public class ChannelMapper {
                 .type(ConversationType.CHANNEL)
                 .build();
 
-        conversationRepository.save(conversation);
+        conversationHelper.save(conversation);
 
         return ChannelEntity.builder()
                 .name(request.getName())
