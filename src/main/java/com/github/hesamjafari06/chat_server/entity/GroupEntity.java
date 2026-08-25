@@ -34,7 +34,7 @@ public class GroupEntity {
     private String description;
 
     @Column(nullable = false)
-    private boolean isClosed;
+    private boolean isClosed = false;
 
     @Column(nullable = false, updatable = false)
     private Instant createdAt;

@@ -38,7 +38,7 @@ public class ChannelEntity {
     private String description;
 
     @Column(nullable = false)
-    private boolean isPrivate;
+    private boolean isPrivate = false;
 
     @PrePersist
     public void onCreate(){
