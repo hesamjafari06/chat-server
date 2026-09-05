@@ -1,5 +1,6 @@
 package com.github.hesamjafari06.chat_server.mapper;
 
+import com.github.hesamjafari06.chat_server.dto.UserProfileDto;
 import com.github.hesamjafari06.chat_server.dto.UserSearchDto;
 import com.github.hesamjafari06.chat_server.payload.request.CreateUserRequest;
 import com.github.hesamjafari06.chat_server.payload.response.UserResponse;
@@ -40,6 +41,18 @@ public class UserMapper {
         return UserSearchResponse.builder()
                 .userId(user.getUserId())
                 .username(user.getUsername())
+                .build();
+    }
+
+    public UserResponse profileDtoToResponse(UserProfileDto user){
+
+        return UserResponse.builder()
+                .userId(user.getUserId())
+                .username(user.getUsername())
+                .birthDate(user.getBirthDate())
+                .createdAt(
+                        user.getCreatedAt().toString().substring(0, 10)
+                )
                 .build();
     }
 

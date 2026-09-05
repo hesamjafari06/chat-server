@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
 
         return ApiResponse.<UserResponse>builder()
                 .status("OK")
-                .data(userMapper.toUserResponse(userHelper.findUserByUserId(uid)))
+                .data(userMapper.profileDtoToResponse(userHelper.findUserProfileByUserId(uid)))
                 .build();
     }
 

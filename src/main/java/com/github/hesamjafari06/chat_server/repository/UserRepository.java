@@ -1,5 +1,6 @@
 package com.github.hesamjafari06.chat_server.repository;
 
+import com.github.hesamjafari06.chat_server.dto.UserProfileDto;
 import com.github.hesamjafari06.chat_server.dto.UserSearchDto;
 import com.github.hesamjafari06.chat_server.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,7 +18,15 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     Optional<UserEntity> findByUsername(String username);
 
+
     Optional<UserEntity> findByUserId(String userId);
+
+    @Query("""
+    SELECT new com.github.hesamjafari06.chat_server.dto.UserProfileDto(u.userId, u.username, u.birthDate, u.createdAt)
+    FROM UserEntity u
+    WHERE u.userId = :userId
+""")
+    Optional<UserProfileDto> findProfileByUserId(@Param("userId") String userId);
 
     @Query("""
     SELECT new com.github.hesamjafari06.chat_server.dto.UserSearchDto(u.userId, u.username)

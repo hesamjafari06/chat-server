@@ -1,5 +1,6 @@
 package com.github.hesamjafari06.chat_server.helper;
 
+import com.github.hesamjafari06.chat_server.dto.UserProfileDto;
 import com.github.hesamjafari06.chat_server.dto.UserSearchDto;
 import com.github.hesamjafari06.chat_server.entity.UserEntity;
 
@@ -11,6 +12,8 @@ public interface UserHelper {
     UserEntity findUserByUsername(String username);
 
     UserEntity findUserByUserId(String userId);
+
+    UserProfileDto findUserProfileByUserId(String userId);
 
     boolean existsByUsername(String username);
 

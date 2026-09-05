@@ -1,5 +1,6 @@
 package com.github.hesamjafari06.chat_server.helperimpl;
 
+import com.github.hesamjafari06.chat_server.dto.UserProfileDto;
 import com.github.hesamjafari06.chat_server.dto.UserSearchDto;
 import com.github.hesamjafari06.chat_server.entity.UserEntity;
 import com.github.hesamjafari06.chat_server.exception.UserNotFoundException;
@@ -38,6 +39,10 @@ public class UserHelperImpl implements UserHelper {
     @Override
     public UserEntity findUserByUserId(String userId) {
         return userRepository.findByUserId(userId).orElseThrow(UserNotFoundException::new);
+    }
+
+    public UserProfileDto findUserProfileByUserId(String userId) {
+        return userRepository.findProfileByUserId(userId).orElseThrow(UserNotFoundException::new);
     }
 
     @Override
