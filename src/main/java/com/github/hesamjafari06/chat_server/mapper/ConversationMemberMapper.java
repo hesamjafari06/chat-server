@@ -1,8 +1,8 @@
 package com.github.hesamjafari06.chat_server.mapper;
 
-import com.github.hesamjafari06.chat_server.dto.response.ConversationMemberResponse;
-import com.github.hesamjafari06.chat_server.dto.response.DeleteMemberEvent;
-import com.github.hesamjafari06.chat_server.dto.response.LeaveConversationEvent;
+import com.github.hesamjafari06.chat_server.payload.response.ConversationMemberResponse;
+import com.github.hesamjafari06.chat_server.payload.response.DeleteMemberEvent;
+import com.github.hesamjafari06.chat_server.payload.response.LeaveConversationEvent;
 import com.github.hesamjafari06.chat_server.entity.ConversationMemberEntity;
 import org.springframework.stereotype.Component;
 

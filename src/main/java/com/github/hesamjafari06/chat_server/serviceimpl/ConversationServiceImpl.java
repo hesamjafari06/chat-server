@@ -1,7 +1,7 @@
 package com.github.hesamjafari06.chat_server.serviceimpl;
 
-import com.github.hesamjafari06.chat_server.dto.request.*;
-import com.github.hesamjafari06.chat_server.dto.response.*;
+import com.github.hesamjafari06.chat_server.payload.request.*;
+import com.github.hesamjafari06.chat_server.payload.response.*;
 import com.github.hesamjafari06.chat_server.entity.*;
 import com.github.hesamjafari06.chat_server.enums.ConversationMemberRole;
 import com.github.hesamjafari06.chat_server.enums.ConversationType;
@@ -9,13 +9,8 @@ import com.github.hesamjafari06.chat_server.exception.*;
 import com.github.hesamjafari06.chat_server.helper.*;
 import com.github.hesamjafari06.chat_server.mapper.ConversationMapper;
 import com.github.hesamjafari06.chat_server.mapper.ConversationMemberMapper;
-import com.github.hesamjafari06.chat_server.repository.ConversationMemberRepository;
-import com.github.hesamjafari06.chat_server.repository.ConversationRepository;
-import com.github.hesamjafari06.chat_server.repository.MessageRepository;
-import com.github.hesamjafari06.chat_server.service.ChannelService;
 import com.github.hesamjafari06.chat_server.service.ConversationMemberService;
 import com.github.hesamjafari06.chat_server.service.ConversationService;
-import com.github.hesamjafari06.chat_server.service.GroupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

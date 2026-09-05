@@ -1,15 +1,12 @@
 package com.github.hesamjafari06.chat_server.controller;
 
-import com.github.hesamjafari06.chat_server.dto.response.ApiResponse;
-import com.github.hesamjafari06.chat_server.dto.response.ConversationResponse;
-import com.github.hesamjafari06.chat_server.dto.response.UserResponse;
+import com.github.hesamjafari06.chat_server.payload.response.ApiResponse;
+import com.github.hesamjafari06.chat_server.payload.response.ConversationResponse;
+import com.github.hesamjafari06.chat_server.payload.response.UserResponse;
 import com.github.hesamjafari06.chat_server.service.ConversationService;
 import com.github.hesamjafari06.chat_server.service.UserService;
-import com.github.hesamjafari06.chat_server.serviceimpl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/profile")

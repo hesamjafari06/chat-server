@@ -1,7 +1,7 @@
 package com.github.hesamjafari06.chat_server.mapper;
 
-import com.github.hesamjafari06.chat_server.dto.request.CreateUserRequest;
-import com.github.hesamjafari06.chat_server.dto.response.UserResponse;
+import com.github.hesamjafari06.chat_server.payload.request.CreateUserRequest;
+import com.github.hesamjafari06.chat_server.payload.response.UserResponse;
 import com.github.hesamjafari06.chat_server.entity.UserEntity;
 import com.github.hesamjafari06.chat_server.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;

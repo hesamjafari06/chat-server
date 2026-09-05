@@ -1,6 +1,5 @@
 package com.github.hesamjafari06.chat_server.repository;
 
-import com.github.hesamjafari06.chat_server.dto.response.MessageResponse;
 import com.github.hesamjafari06.chat_server.entity.ConversationEntity;
 import com.github.hesamjafari06.chat_server.entity.MessageEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

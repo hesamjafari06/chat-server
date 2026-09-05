@@ -1,12 +1,11 @@
 package com.github.hesamjafari06.chat_server.controller;
 
-import com.github.hesamjafari06.chat_server.dto.request.CreateChannelRequest;
-import com.github.hesamjafari06.chat_server.dto.request.CreateGroupRequest;
-import com.github.hesamjafari06.chat_server.dto.response.ApiResponse;
-import com.github.hesamjafari06.chat_server.dto.response.ChannelResponse;
-import com.github.hesamjafari06.chat_server.dto.response.ConversationResponse;
-import com.github.hesamjafari06.chat_server.dto.response.GroupResponse;
-import com.github.hesamjafari06.chat_server.enums.CreateConversationType;
+import com.github.hesamjafari06.chat_server.payload.request.CreateChannelRequest;
+import com.github.hesamjafari06.chat_server.payload.request.CreateGroupRequest;
+import com.github.hesamjafari06.chat_server.payload.response.ApiResponse;
+import com.github.hesamjafari06.chat_server.payload.response.ChannelResponse;
+import com.github.hesamjafari06.chat_server.payload.response.ConversationResponse;
+import com.github.hesamjafari06.chat_server.payload.response.GroupResponse;
 import com.github.hesamjafari06.chat_server.enums.SearchType;
 import com.github.hesamjafari06.chat_server.service.ChannelService;
 import com.github.hesamjafari06.chat_server.service.ConversationMemberService;

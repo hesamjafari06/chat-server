@@ -1,7 +1,7 @@
 package com.github.hesamjafari06.chat_server.exception;
 
-import com.github.hesamjafari06.chat_server.dto.response.ApiResponse;
-import com.github.hesamjafari06.chat_server.dto.response.ErrorResponse;
+import com.github.hesamjafari06.chat_server.payload.response.ApiResponse;
+import com.github.hesamjafari06.chat_server.payload.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

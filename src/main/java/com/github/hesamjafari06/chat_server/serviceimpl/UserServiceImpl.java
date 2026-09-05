@@ -1,22 +1,17 @@
 package com.github.hesamjafari06.chat_server.serviceimpl;
 
-import com.github.hesamjafari06.chat_server.dto.request.*;
-import com.github.hesamjafari06.chat_server.dto.response.ApiResponse;
-import com.github.hesamjafari06.chat_server.dto.response.UpdateUserResponse;
-import com.github.hesamjafari06.chat_server.dto.response.UserResponse;
+import com.github.hesamjafari06.chat_server.payload.request.*;
+import com.github.hesamjafari06.chat_server.payload.response.ApiResponse;
+import com.github.hesamjafari06.chat_server.payload.response.UpdateUserResponse;
+import com.github.hesamjafari06.chat_server.payload.response.UserResponse;
 import com.github.hesamjafari06.chat_server.entity.UserEntity;
-import com.github.hesamjafari06.chat_server.exception.UserNotFoundException;
 import com.github.hesamjafari06.chat_server.exception.UsernameAlreadyExistsException;
 import com.github.hesamjafari06.chat_server.exception.WrongPasswordException;
 import com.github.hesamjafari06.chat_server.helper.UserHelper;
 import com.github.hesamjafari06.chat_server.mapper.UserMapper;
-import com.github.hesamjafari06.chat_server.repository.UserRepository;
-import com.github.hesamjafari06.chat_server.security.CustomUserDetails;
 import com.github.hesamjafari06.chat_server.security.JwtService;
 import com.github.hesamjafari06.chat_server.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

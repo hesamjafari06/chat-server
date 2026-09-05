@@ -1,8 +1,8 @@
 package com.github.hesamjafari06.chat_server.controller;
 
-import com.github.hesamjafari06.chat_server.dto.request.CreateUserRequest;
-import com.github.hesamjafari06.chat_server.dto.response.ApiResponse;
-import com.github.hesamjafari06.chat_server.dto.response.UserResponse;
+import com.github.hesamjafari06.chat_server.payload.request.CreateUserRequest;
+import com.github.hesamjafari06.chat_server.payload.response.ApiResponse;
+import com.github.hesamjafari06.chat_server.payload.response.UserResponse;
 import com.github.hesamjafari06.chat_server.exception.AlreadyAuthenticatedException;
 import com.github.hesamjafari06.chat_server.service.UserService;
 import lombok.RequiredArgsConstructor;

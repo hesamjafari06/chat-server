@@ -1,11 +1,9 @@
 package com.github.hesamjafari06.chat_server.service;
 
-import com.github.hesamjafari06.chat_server.dto.request.CreateGroupRequest;
-import com.github.hesamjafari06.chat_server.dto.request.UpdateGroupRequest;
-import com.github.hesamjafari06.chat_server.dto.response.ApiResponse;
-import com.github.hesamjafari06.chat_server.dto.response.GroupResponse;
-import com.github.hesamjafari06.chat_server.entity.ConversationEntity;
-import com.github.hesamjafari06.chat_server.entity.GroupEntity;
+import com.github.hesamjafari06.chat_server.payload.request.CreateGroupRequest;
+import com.github.hesamjafari06.chat_server.payload.request.UpdateGroupRequest;
+import com.github.hesamjafari06.chat_server.payload.response.ApiResponse;
+import com.github.hesamjafari06.chat_server.payload.response.GroupResponse;
 
 public interface GroupService {
     ApiResponse<GroupResponse> createGroup(CreateGroupRequest request);

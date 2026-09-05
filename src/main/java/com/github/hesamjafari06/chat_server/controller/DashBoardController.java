@@ -1,11 +1,10 @@
 package com.github.hesamjafari06.chat_server.controller;
 
-import com.github.hesamjafari06.chat_server.dto.request.ChangePasswordRequest;
-import com.github.hesamjafari06.chat_server.dto.request.UpdateUserRequest;
-import com.github.hesamjafari06.chat_server.dto.response.ApiResponse;
-import com.github.hesamjafari06.chat_server.dto.response.UpdateUserResponse;
-import com.github.hesamjafari06.chat_server.dto.response.UserResponse;
-import com.github.hesamjafari06.chat_server.service.UserService;
+import com.github.hesamjafari06.chat_server.payload.request.ChangePasswordRequest;
+import com.github.hesamjafari06.chat_server.payload.request.UpdateUserRequest;
+import com.github.hesamjafari06.chat_server.payload.response.ApiResponse;
+import com.github.hesamjafari06.chat_server.payload.response.UpdateUserResponse;
+import com.github.hesamjafari06.chat_server.payload.response.UserResponse;
 import com.github.hesamjafari06.chat_server.serviceimpl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

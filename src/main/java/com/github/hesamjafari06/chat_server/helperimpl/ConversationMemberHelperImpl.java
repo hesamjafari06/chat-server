@@ -1,6 +1,5 @@
 package com.github.hesamjafari06.chat_server.helperimpl;
 
-import com.github.hesamjafari06.chat_server.dto.response.ConversationResponse;
 import com.github.hesamjafari06.chat_server.entity.ConversationEntity;
 import com.github.hesamjafari06.chat_server.entity.ConversationMemberEntity;
 import com.github.hesamjafari06.chat_server.entity.UserEntity;

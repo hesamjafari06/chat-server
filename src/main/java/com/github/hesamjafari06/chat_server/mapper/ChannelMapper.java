@@ -1,13 +1,11 @@
 package com.github.hesamjafari06.chat_server.mapper;
 
-import com.github.hesamjafari06.chat_server.dto.request.CreateChannelRequest;
-import com.github.hesamjafari06.chat_server.dto.response.ChannelResponse;
+import com.github.hesamjafari06.chat_server.payload.request.CreateChannelRequest;
+import com.github.hesamjafari06.chat_server.payload.response.ChannelResponse;
 import com.github.hesamjafari06.chat_server.entity.ChannelEntity;
 import com.github.hesamjafari06.chat_server.entity.ConversationEntity;
 import com.github.hesamjafari06.chat_server.enums.ConversationType;
 import com.github.hesamjafari06.chat_server.helper.ConversationHelper;
-import com.github.hesamjafari06.chat_server.repository.ConversationRepository;
-import com.github.hesamjafari06.chat_server.service.ConversationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

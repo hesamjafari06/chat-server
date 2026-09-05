@@ -1,12 +1,11 @@
 package com.github.hesamjafari06.chat_server.mapper;
 
-import com.github.hesamjafari06.chat_server.dto.request.CreateGroupRequest;
-import com.github.hesamjafari06.chat_server.dto.response.GroupResponse;
+import com.github.hesamjafari06.chat_server.payload.request.CreateGroupRequest;
+import com.github.hesamjafari06.chat_server.payload.response.GroupResponse;
 import com.github.hesamjafari06.chat_server.entity.ConversationEntity;
 import com.github.hesamjafari06.chat_server.entity.GroupEntity;
 import com.github.hesamjafari06.chat_server.enums.ConversationType;
 import com.github.hesamjafari06.chat_server.helper.ConversationHelper;
-import com.github.hesamjafari06.chat_server.repository.ConversationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

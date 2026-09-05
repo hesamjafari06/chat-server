@@ -1,8 +1,8 @@
 package com.github.hesamjafari06.chat_server.controller;
 
-import com.github.hesamjafari06.chat_server.dto.request.LoginRequest;
-import com.github.hesamjafari06.chat_server.dto.response.ApiResponse;
-import com.github.hesamjafari06.chat_server.dto.response.LoginResponse;
+import com.github.hesamjafari06.chat_server.payload.request.LoginRequest;
+import com.github.hesamjafari06.chat_server.payload.response.ApiResponse;
+import com.github.hesamjafari06.chat_server.payload.response.LoginResponse;
 import com.github.hesamjafari06.chat_server.exception.AlreadyAuthenticatedException;
 import com.github.hesamjafari06.chat_server.exception.InvalidLoginException;
 import com.github.hesamjafari06.chat_server.security.JwtService;

@@ -1,12 +1,10 @@
 package com.github.hesamjafari06.chat_server.mapper;
 
-import com.github.hesamjafari06.chat_server.dto.request.DeleteConversationEvent;
-import com.github.hesamjafari06.chat_server.dto.response.ConversationResponse;
+import com.github.hesamjafari06.chat_server.payload.request.DeleteConversationEvent;
+import com.github.hesamjafari06.chat_server.payload.response.ConversationResponse;
 import com.github.hesamjafari06.chat_server.entity.ConversationEntity;
 import com.github.hesamjafari06.chat_server.entity.ConversationMemberEntity;
 import com.github.hesamjafari06.chat_server.helper.MessageHelper;
-import com.github.hesamjafari06.chat_server.repository.MessageRepository;
-import com.github.hesamjafari06.chat_server.service.MessageService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

@@ -1,16 +1,11 @@
 package com.github.hesamjafari06.chat_server.mapper;
 
-import com.github.hesamjafari06.chat_server.dto.request.SendMessageRequest;
-import com.github.hesamjafari06.chat_server.dto.response.MessageDeleteEvent;
-import com.github.hesamjafari06.chat_server.dto.response.MessageResponse;
+import com.github.hesamjafari06.chat_server.payload.request.SendMessageRequest;
+import com.github.hesamjafari06.chat_server.payload.response.MessageDeleteEvent;
+import com.github.hesamjafari06.chat_server.payload.response.MessageResponse;
 import com.github.hesamjafari06.chat_server.entity.ConversationEntity;
 import com.github.hesamjafari06.chat_server.entity.ConversationMemberEntity;
 import com.github.hesamjafari06.chat_server.entity.MessageEntity;
-import com.github.hesamjafari06.chat_server.entity.UserEntity;
-import com.github.hesamjafari06.chat_server.exception.MessageNotFoundException;
-import com.github.hesamjafari06.chat_server.repository.MessageRepository;
-import com.github.hesamjafari06.chat_server.service.ConversationService;
-import com.github.hesamjafari06.chat_server.service.MessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

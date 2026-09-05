@@ -1,11 +1,10 @@
 package com.github.hesamjafari06.chat_server.serviceimpl;
 
-import com.github.hesamjafari06.chat_server.dto.request.DeleteMessageRequest;
-import com.github.hesamjafari06.chat_server.dto.request.SendMessageRequest;
-import com.github.hesamjafari06.chat_server.dto.request.UpdateMessageRequest;
-import com.github.hesamjafari06.chat_server.dto.response.ApiResponse;
-import com.github.hesamjafari06.chat_server.dto.response.MessageDeleteEvent;
-import com.github.hesamjafari06.chat_server.dto.response.MessageResponse;
+import com.github.hesamjafari06.chat_server.payload.request.DeleteMessageRequest;
+import com.github.hesamjafari06.chat_server.payload.request.SendMessageRequest;
+import com.github.hesamjafari06.chat_server.payload.request.UpdateMessageRequest;
+import com.github.hesamjafari06.chat_server.payload.response.MessageDeleteEvent;
+import com.github.hesamjafari06.chat_server.payload.response.MessageResponse;
 import com.github.hesamjafari06.chat_server.entity.ConversationEntity;
 import com.github.hesamjafari06.chat_server.entity.ConversationMemberEntity;
 import com.github.hesamjafari06.chat_server.entity.MessageEntity;
@@ -18,11 +17,7 @@ import com.github.hesamjafari06.chat_server.helper.ConversationMemberHelper;
 import com.github.hesamjafari06.chat_server.helper.MessageHelper;
 import com.github.hesamjafari06.chat_server.helper.UserHelper;
 import com.github.hesamjafari06.chat_server.mapper.MessageMapper;
-import com.github.hesamjafari06.chat_server.repository.MessageRepository;
-import com.github.hesamjafari06.chat_server.service.ConversationMemberService;
-import com.github.hesamjafari06.chat_server.service.ConversationService;
 import com.github.hesamjafari06.chat_server.service.MessageService;
-import com.github.hesamjafari06.chat_server.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.security.Principal;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

@@ -1,7 +1,7 @@
 package com.github.hesamjafari06.chat_server.controller;
 
-import com.github.hesamjafari06.chat_server.dto.request.*;
-import com.github.hesamjafari06.chat_server.dto.response.*;
+import com.github.hesamjafari06.chat_server.payload.request.*;
+import com.github.hesamjafari06.chat_server.payload.response.*;
 import com.github.hesamjafari06.chat_server.service.ConversationService;
 import com.github.hesamjafari06.chat_server.service.MessageService;
 import lombok.RequiredArgsConstructor;

@@ -1,0 +1,16 @@
+package com.github.hesamjafari06.chat_server.payload.response;
+
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@Builder
+public class GroupResponse {
+    private String groupId;
+    private String conversationId;
+    private String name;
+    private String description;
+    private boolean isClosed;
+}

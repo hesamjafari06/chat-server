@@ -1,22 +1,15 @@
 package com.github.hesamjafari06.chat_server.serviceimpl;
 
-import com.github.hesamjafari06.chat_server.dto.response.ApiResponse;
-import com.github.hesamjafari06.chat_server.dto.response.ConversationResponse;
-import com.github.hesamjafari06.chat_server.dto.response.UserResponse;
+import com.github.hesamjafari06.chat_server.payload.response.ApiResponse;
+import com.github.hesamjafari06.chat_server.payload.response.ConversationResponse;
 import com.github.hesamjafari06.chat_server.entity.*;
 import com.github.hesamjafari06.chat_server.enums.ConversationType;
-import com.github.hesamjafari06.chat_server.exception.ConversationMemberNotFoundException;
 import com.github.hesamjafari06.chat_server.helper.ChannelHelper;
 import com.github.hesamjafari06.chat_server.helper.ConversationMemberHelper;
 import com.github.hesamjafari06.chat_server.helper.GroupHelper;
 import com.github.hesamjafari06.chat_server.helper.UserHelper;
 import com.github.hesamjafari06.chat_server.mapper.ConversationMapper;
-import com.github.hesamjafari06.chat_server.mapper.ConversationMemberMapper;
-import com.github.hesamjafari06.chat_server.repository.ConversationMemberRepository;
-import com.github.hesamjafari06.chat_server.service.ChannelService;
 import com.github.hesamjafari06.chat_server.service.ConversationMemberService;
-import com.github.hesamjafari06.chat_server.service.GroupService;
-import com.github.hesamjafari06.chat_server.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

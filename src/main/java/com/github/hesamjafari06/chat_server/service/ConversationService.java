@@ -1,11 +1,8 @@
 package com.github.hesamjafari06.chat_server.service;
 
 
-import com.github.hesamjafari06.chat_server.dto.request.*;
-import com.github.hesamjafari06.chat_server.dto.response.*;
-import com.github.hesamjafari06.chat_server.entity.ConversationEntity;
-import com.github.hesamjafari06.chat_server.enums.ConversationType;
-import com.github.hesamjafari06.chat_server.exception.ConversationNotFoundException;
+import com.github.hesamjafari06.chat_server.payload.request.*;
+import com.github.hesamjafari06.chat_server.payload.response.*;
 
 import java.security.Principal;
 

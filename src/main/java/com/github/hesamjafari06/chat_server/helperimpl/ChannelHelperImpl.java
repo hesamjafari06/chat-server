@@ -1,6 +1,5 @@
 package com.github.hesamjafari06.chat_server.helperimpl;
 
-import com.github.hesamjafari06.chat_server.dto.response.ChannelResponse;
 import com.github.hesamjafari06.chat_server.entity.ChannelEntity;
 import com.github.hesamjafari06.chat_server.entity.ConversationEntity;
 import com.github.hesamjafari06.chat_server.exception.ChannelNotFoundException;
