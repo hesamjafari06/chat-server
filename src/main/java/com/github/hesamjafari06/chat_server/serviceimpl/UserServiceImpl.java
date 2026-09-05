@@ -9,6 +9,7 @@ import com.github.hesamjafari06.chat_server.exception.UsernameAlreadyExistsExcep
 import com.github.hesamjafari06.chat_server.exception.WrongPasswordException;
 import com.github.hesamjafari06.chat_server.helper.UserHelper;
 import com.github.hesamjafari06.chat_server.mapper.UserMapper;
+import com.github.hesamjafari06.chat_server.payload.response.UserSearchResponse;
 import com.github.hesamjafari06.chat_server.security.JwtService;
 import com.github.hesamjafari06.chat_server.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -124,15 +125,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ApiResponse<List<UserResponse>> searchUser(String username){
+    public ApiResponse<List<UserSearchResponse>> searchUser(String username){
 
-        List<UserResponse> users =
+        List<UserSearchResponse> users =
                 userHelper.findByUsernameContainingIgnoreCase(username)
                         .stream()
-                        .map(userMapper::toUserResponse)
+                        .map(userMapper::searchDtoToResponse)
                         .toList();
 
-        return ApiResponse.<List<UserResponse>>builder()
+        return ApiResponse.<List<UserSearchResponse>>builder()
                 .status("OK")
                 .data(users)
                 .build();

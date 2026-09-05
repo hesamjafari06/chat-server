@@ -1,8 +1,10 @@
 package com.github.hesamjafari06.chat_server.mapper;
 
+import com.github.hesamjafari06.chat_server.dto.UserSearchDto;
 import com.github.hesamjafari06.chat_server.payload.request.CreateUserRequest;
 import com.github.hesamjafari06.chat_server.payload.response.UserResponse;
 import com.github.hesamjafari06.chat_server.entity.UserEntity;
+import com.github.hesamjafari06.chat_server.payload.response.UserSearchResponse;
 import com.github.hesamjafari06.chat_server.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,6 +32,14 @@ public class UserMapper {
                 .createdAt(
                         user.getCreatedAt().toString().substring(0, 10)
                 )
+                .build();
+    }
+
+    public UserSearchResponse searchDtoToResponse(UserSearchDto user){
+
+        return UserSearchResponse.builder()
+                .userId(user.getUserId())
+                .username(user.getUsername())
                 .build();
     }
 

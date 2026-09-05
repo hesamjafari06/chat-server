@@ -1,5 +1,6 @@
 package com.github.hesamjafari06.chat_server.helperimpl;
 
+import com.github.hesamjafari06.chat_server.dto.UserSearchDto;
 import com.github.hesamjafari06.chat_server.entity.UserEntity;
 import com.github.hesamjafari06.chat_server.exception.UserNotFoundException;
 import com.github.hesamjafari06.chat_server.helper.UserHelper;
@@ -49,7 +50,7 @@ public class UserHelperImpl implements UserHelper {
         userRepository.save(user);
     }
 
-    public List<UserEntity> findByUsernameContainingIgnoreCase(String query) {
+    public List<UserSearchDto> findByUsernameContainingIgnoreCase(String query) {
         return userRepository.findByUsernameContainingIgnoreCase(query);
     }
 }
