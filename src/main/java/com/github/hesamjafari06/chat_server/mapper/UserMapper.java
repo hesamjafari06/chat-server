@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+
 @Component
 @RequiredArgsConstructor
 public class UserMapper {
@@ -20,7 +22,7 @@ public class UserMapper {
         return UserEntity.builder()
                 .username(request.getUsername())
                 .password(request.getPassword())
-                .birthDate(request.getBirthDate())
+                .birthDate(LocalDate.of(request.getYear(), request.getMonth(), request.getDay()))
                 .build();
     }
 
@@ -29,7 +31,9 @@ public class UserMapper {
         return UserResponse.builder()
                 .userId(user.getUserId())
                 .username(user.getUsername())
-                .birthDate(user.getBirthDate())
+                .year(user.getBirthDate().getYear())
+                .month(user.getBirthDate().getMonthValue())
+                .day(user.getBirthDate().getDayOfMonth())
                 .createdAt(
                         user.getCreatedAt().toString().substring(0, 10)
                 )
@@ -49,7 +53,9 @@ public class UserMapper {
         return UserResponse.builder()
                 .userId(user.getUserId())
                 .username(user.getUsername())
-                .birthDate(user.getBirthDate())
+                .year(user.getBirthDate().getYear())
+                .month(user.getBirthDate().getMonthValue())
+                .day(user.getBirthDate().getDayOfMonth())
                 .createdAt(
                         user.getCreatedAt().toString().substring(0, 10)
                 )

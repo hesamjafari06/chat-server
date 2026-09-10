@@ -8,5 +8,7 @@ import java.time.LocalDate;
 public class CreateUserRequest {
     private String username;
     private String password;
-    private LocalDate birthDate;
+    private int year;
+    private int month;
+    private int day;
 }

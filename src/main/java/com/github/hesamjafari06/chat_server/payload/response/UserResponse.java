@@ -12,6 +12,8 @@ import java.time.LocalDate;
 public class UserResponse {
     private String userId;
     private String username;
-    private LocalDate birthDate;
+    private int year;
+    private int month;
+    private int day;
     private String createdAt;
 }
