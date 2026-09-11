@@ -1,5 +1,6 @@
 package com.github.hesamjafari06.chat_server.helper;
 
+import com.github.hesamjafari06.chat_server.dto.ChannelSearchDto;
 import com.github.hesamjafari06.chat_server.entity.ChannelEntity;
 import com.github.hesamjafari06.chat_server.entity.ConversationEntity;
 
@@ -19,5 +20,5 @@ public interface ChannelHelper {
 
     void save(ChannelEntity channel);
 
-    List<ChannelEntity> findByPublicIdContaining(String publicId);
+    List<ChannelSearchDto> findByPublicIdContaining(String publicId);
 }

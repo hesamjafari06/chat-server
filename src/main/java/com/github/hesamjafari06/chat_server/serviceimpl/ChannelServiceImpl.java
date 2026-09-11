@@ -14,6 +14,7 @@ import com.github.hesamjafari06.chat_server.helper.ChannelHelper;
 import com.github.hesamjafari06.chat_server.helper.ConversationMemberHelper;
 import com.github.hesamjafari06.chat_server.helper.UserHelper;
 import com.github.hesamjafari06.chat_server.mapper.ChannelMapper;
+import com.github.hesamjafari06.chat_server.payload.response.ChannelSearchResponse;
 import com.github.hesamjafari06.chat_server.service.ChannelService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -106,15 +107,15 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     @Override
-    public ApiResponse<List<ChannelResponse>> searchChannel(String publicId){
+    public ApiResponse<List<ChannelSearchResponse>> searchChannel(String publicId){
 
-        List<ChannelResponse> channels =
+        List<ChannelSearchResponse> channels =
                 channelHelper.findByPublicIdContaining(publicId)
                         .stream()
-                        .map(channelMapper::toResponse)
+                        .map(channelMapper::searchDtoToResponse)
                         .toList();
 
-        return ApiResponse.<List<ChannelResponse>>builder()
+        return ApiResponse.<List<ChannelSearchResponse>>builder()
                 .status("OK")
                 .data(channels)
                 .build();

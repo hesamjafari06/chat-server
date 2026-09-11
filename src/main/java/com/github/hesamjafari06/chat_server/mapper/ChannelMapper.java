@@ -1,11 +1,13 @@
 package com.github.hesamjafari06.chat_server.mapper;
 
+import com.github.hesamjafari06.chat_server.dto.ChannelSearchDto;
 import com.github.hesamjafari06.chat_server.payload.request.CreateChannelRequest;
 import com.github.hesamjafari06.chat_server.payload.response.ChannelResponse;
 import com.github.hesamjafari06.chat_server.entity.ChannelEntity;
 import com.github.hesamjafari06.chat_server.entity.ConversationEntity;
 import com.github.hesamjafari06.chat_server.enums.ConversationType;
 import com.github.hesamjafari06.chat_server.helper.ConversationHelper;
+import com.github.hesamjafari06.chat_server.payload.response.ChannelSearchResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -42,6 +44,15 @@ public class ChannelMapper {
                 .description(channel.getDescription())
                 .isPrivate(channel.isPrivate())
                 .conversationId(channel.getConversation().getConversationId())
+                .build();
+    }
+
+    public ChannelSearchResponse searchDtoToResponse(ChannelSearchDto channel){
+
+        return ChannelSearchResponse.builder()
+                .channelId(channel.getChannelId())
+                .name(channel.getName())
+                .publicId(channel.getPublicId())
                 .build();
     }
 }
