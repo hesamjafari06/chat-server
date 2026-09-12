@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -102,5 +103,13 @@ public class ConversationMemberHelperImpl implements ConversationMemberHelper {
         return conversationMemberRepository
                 .findByConversationIdAndUserId(conversationId, userId)
                 .orElseThrow(ConversationMemberNotFoundException::new);
+    }
+
+    @Override
+    public Optional<ConversationMemberEntity> findPrivateConversationMember(
+            String requesterId,
+            String targetUserId
+    ){
+        return conversationMemberRepository.findPrivateConversationMember(requesterId, targetUserId);
     }
 }

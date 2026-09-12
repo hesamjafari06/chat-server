@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
+import java.util.Optional;
 
 
 @Service
@@ -43,6 +44,29 @@ public class ConversationServiceImpl implements ConversationService {
         if (currentUser.getId().equals(targetUser.getId())) {
 
             throw new InvalidConversationException();
+        }
+
+        Optional<ConversationMemberEntity> member =
+                conversationMemberHelper.findPrivateConversationMember(currentUser.getUserId(), userId);
+
+        if (member.isPresent()) {
+            ConversationMemberEntity conversationMember =
+                    member.get();
+
+            conversationMember.setSoftDeleted(false);
+
+            ConversationEntity conversation =
+                    conversationMember.getConversation();
+
+            return ApiResponse.<ConversationResponse>builder()
+                    .status("OK")
+                    .data(
+                            conversationMapper.toResponse(
+                                    conversation,
+                                    conversationMemberService.getConversationName(conversation))
+                    )
+                    .build();
+
         }
 
         ConversationEntity conversation =
@@ -223,7 +247,7 @@ public class ConversationServiceImpl implements ConversationService {
 
             DeleteConversationEvent event = conversationMapper.toDeleteEvent(conversation, true, member);
 
-            conversationMemberHelper.deleteConversationMember(member);
+            member.setSoftDeleted(true);
 
             return event;
         }

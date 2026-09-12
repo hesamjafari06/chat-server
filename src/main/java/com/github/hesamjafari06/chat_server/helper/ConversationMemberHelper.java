@@ -6,6 +6,7 @@ import com.github.hesamjafari06.chat_server.entity.UserEntity;
 import com.github.hesamjafari06.chat_server.enums.ConversationMemberRole;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ConversationMemberHelper {
 
@@ -32,4 +33,6 @@ public interface ConversationMemberHelper {
     List<ConversationEntity> findConversationsByUserId(Long userId);
 
     ConversationMemberEntity findByConversationIdAndUserId(Long conversationId, Long userId);
+
+    Optional<ConversationMemberEntity> findPrivateConversationMember(String requesterId, String targetUserId);
 }

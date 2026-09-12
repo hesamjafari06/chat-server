@@ -42,6 +42,8 @@ public class ConversationMemberEntity {
     @Column(nullable = false, updatable = false)
     private Instant createdAt;
 
+    private boolean SoftDeleted = false;
+
     @PrePersist
     public void onCreate(){
         Instant now = Instant.now();
