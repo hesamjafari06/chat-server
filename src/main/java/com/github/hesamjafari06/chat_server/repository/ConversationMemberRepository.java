@@ -24,10 +24,11 @@ public interface ConversationMemberRepository extends JpaRepository<Conversation
     void deleteAllByConversation(ConversationEntity conversation);
 
     @Query("""
-                SELECT cm.conversation
-                FROM ConversationMemberEntity cm
-                WHERE cm.user.id = :userId
-            """)
+    SELECT cm.conversation
+    FROM ConversationMemberEntity cm
+    WHERE cm.user.id = :userId
+      AND cm.SoftDeleted = false
+""")
     List<ConversationEntity> findConversationsByUserId(Long userId);
 
     @Query("""
