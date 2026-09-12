@@ -44,5 +44,16 @@ public interface ConversationMemberRepository extends JpaRepository<Conversation
             @Param("requesterId") String requesterId,
             @Param("targetUserId") String targetUserId
     );
+
+    @Query("""
+    SELECT cm
+    FROM ConversationMemberEntity cm
+    WHERE cm.conversation = :conversation
+      AND cm.user.userId <> :userId
+""")
+    Optional<ConversationMemberEntity> findOtherMember(
+            @Param("conversation") ConversationEntity conversation,
+            @Param("userId") String userId
+    );
 }
 

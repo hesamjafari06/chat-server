@@ -112,4 +112,10 @@ public class ConversationMemberHelperImpl implements ConversationMemberHelper {
     ){
         return conversationMemberRepository.findPrivateConversationMember(requesterId, targetUserId);
     }
+
+    @Override
+    public ConversationMemberEntity findOtherMember(ConversationEntity conversation, String userId) {
+        return conversationMemberRepository.findOtherMember(conversation, userId)
+                .orElseThrow(ConversationMemberNotFoundException::new);
+    }
 }

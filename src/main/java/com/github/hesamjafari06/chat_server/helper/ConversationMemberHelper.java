@@ -35,4 +35,6 @@ public interface ConversationMemberHelper {
     ConversationMemberEntity findByConversationIdAndUserId(Long conversationId, Long userId);
 
     Optional<ConversationMemberEntity> findPrivateConversationMember(String requesterId, String targetUserId);
+
+    ConversationMemberEntity findOtherMember(ConversationEntity conversation, String userId);
 }

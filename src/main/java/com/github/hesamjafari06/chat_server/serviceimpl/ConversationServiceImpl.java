@@ -245,11 +245,17 @@ public class ConversationServiceImpl implements ConversationService {
 
         if (type == ConversationType.PRIVATE && request.isKeepConversation()) {
 
-            DeleteConversationEvent event = conversationMapper.toDeleteEvent(conversation, true, member);
+            ConversationMemberEntity otherMember =
+                    conversationMemberHelper.findOtherMember(conversation, user.getUserId());
 
-            member.setSoftDeleted(true);
+            if (!otherMember.isSoftDeleted()) {
 
-            return event;
+                DeleteConversationEvent event = conversationMapper.toDeleteEvent(conversation, false, member);
+
+                member.setSoftDeleted(true);
+
+                return event;
+            }
         }
 
         if (type != ConversationType.PRIVATE && member.getRole() != ConversationMemberRole.OWNER) {
@@ -271,7 +277,7 @@ public class ConversationServiceImpl implements ConversationService {
         }
 
 
-        DeleteConversationEvent event = conversationMapper.toDeleteEvent(conversation, false, member);
+        DeleteConversationEvent event = conversationMapper.toDeleteEvent(conversation, true, member);
 
         messageHelper.deleteAllByConversation(conversation);
 
