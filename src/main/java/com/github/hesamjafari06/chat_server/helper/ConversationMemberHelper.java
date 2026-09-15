@@ -28,6 +28,8 @@ public interface ConversationMemberHelper {
 
     List<ConversationMemberEntity> getMembersByConversation(ConversationEntity conversation);
 
+    List<ConversationMemberEntity> findActiveMembers(ConversationEntity conversation);
+
     void deleteAllConversationMembers(ConversationEntity conversation);
 
     List<ConversationEntity> findConversationsByUserId(Long userId);

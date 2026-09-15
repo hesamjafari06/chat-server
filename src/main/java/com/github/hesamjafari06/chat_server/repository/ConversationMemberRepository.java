@@ -56,5 +56,16 @@ public interface ConversationMemberRepository extends JpaRepository<Conversation
             @Param("conversation") ConversationEntity conversation,
             @Param("userId") String userId
     );
+
+    @Query("""
+    SELECT cm
+    FROM ConversationMemberEntity cm
+    JOIN FETCH cm.user
+    WHERE cm.conversation = :conversation
+      AND cm.SoftDeleted = false
+""")
+    List<ConversationMemberEntity> findActiveMembers(
+            ConversationEntity conversation
+    );
 }
 

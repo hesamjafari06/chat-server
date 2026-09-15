@@ -32,10 +32,20 @@ public class ChatWebSocketController {
                 );
 
         messagingTemplate.convertAndSend(
-                "/topic/chat/"
-                        + request.getConversationId(),
+                "/topic/chat/" + request.getConversationId(),
                 response
         );
+
+//        HomeUpdateEvent event = HomeUpdateEvent.builder()
+//                .conversationId(response.getConversationId())
+//                .lastMessage(response.getContent())
+//                .build();
+//
+//        messagingTemplate.convertAndSendToUser(
+//                principal.getName(),
+//                "/queue/home",
+//                event
+//        );
     }
 
     @MessageMapping("/delete.message")

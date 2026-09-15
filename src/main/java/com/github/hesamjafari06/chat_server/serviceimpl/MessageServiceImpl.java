@@ -3,6 +3,7 @@ package com.github.hesamjafari06.chat_server.serviceimpl;
 import com.github.hesamjafari06.chat_server.payload.request.DeleteMessageRequest;
 import com.github.hesamjafari06.chat_server.payload.request.SendMessageRequest;
 import com.github.hesamjafari06.chat_server.payload.request.UpdateMessageRequest;
+import com.github.hesamjafari06.chat_server.payload.response.HomeUpdateEvent;
 import com.github.hesamjafari06.chat_server.payload.response.MessageDeleteEvent;
 import com.github.hesamjafari06.chat_server.payload.response.MessageResponse;
 import com.github.hesamjafari06.chat_server.entity.ConversationEntity;
@@ -19,6 +20,7 @@ import com.github.hesamjafari06.chat_server.helper.UserHelper;
 import com.github.hesamjafari06.chat_server.mapper.MessageMapper;
 import com.github.hesamjafari06.chat_server.service.MessageService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +32,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class MessageServiceImpl implements MessageService {
 
+    private final SimpMessagingTemplate messagingTemplate;
     private final UserHelper userHelper;
     private final ConversationHelper conversationHelper;
     private final ConversationMemberHelper conversationMemberHelper;
@@ -40,6 +43,28 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public List<MessageResponse> getConversationMessages(ConversationEntity conversation) {
         return messageHelper.getConversationMessages(conversation).stream().map(messageMapper::toResponse).toList();
+    }
+
+    private void updateHome(
+            ConversationEntity conversation,
+            HomeUpdateEvent event
+    ) {
+
+        List<ConversationMemberEntity> members =
+                conversationMemberHelper
+                        .findActiveMembers(conversation);
+
+        for (ConversationMemberEntity member : members) {
+
+            String username =
+                    member.getUser().getUsername();
+
+            messagingTemplate.convertAndSendToUser(
+                    username,
+                    "/queue/home",
+                    event
+            );
+        }
     }
 
     @Override
@@ -89,7 +114,16 @@ public class MessageServiceImpl implements MessageService {
 
         conversation.setLastMessageId(message.getId());
 
-        return messageMapper.toResponse(message);
+        MessageResponse response = messageMapper.toResponse(message);
+
+        HomeUpdateEvent event = HomeUpdateEvent.builder()
+                .conversationId(conversation.getConversationId())
+                .lastMessage(response.getContent())
+                .build();
+
+        updateHome(conversation, event);
+
+        return response;
     }
 
     @Override
