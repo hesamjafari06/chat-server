@@ -1,6 +1,7 @@
 package com.github.hesamjafari06.chat_server.config;
 
 import com.github.hesamjafari06.chat_server.security.WebSocketAuthInterceptor;
+import com.github.hesamjafari06.chat_server.security.WebSocketHandshakeInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.ChannelRegistration;
@@ -16,13 +17,15 @@ public class WebSocketConfig
         implements WebSocketMessageBrokerConfigurer {
 
     private final WebSocketAuthInterceptor webSocketAuthInterceptor;
+    private final WebSocketHandshakeInterceptor webSocketHandshakeInterceptor;
 
     @Override
     public void registerStompEndpoints(
             StompEndpointRegistry registry) {
 
         registry.addEndpoint("/ws")
-                .setAllowedOriginPatterns("*");
+                .setAllowedOriginPatterns("*")
+                .addInterceptors(webSocketHandshakeInterceptor);
     }
 
     @Override

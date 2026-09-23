@@ -40,22 +40,43 @@ public class WebSocketAuthInterceptor implements ChannelInterceptor {
 
         if (StompCommand.CONNECT.equals(command)) {
 
+            String token = null;
+
+            // 1. Check STOMP Authorization header
             String authorization =
                     accessor.getFirstNativeHeader("Authorization");
 
             System.out.println("AUTH HEADER = " + authorization);
 
-            if (authorization == null ||
-                    !authorization.startsWith("Bearer ")) {
+            if (authorization != null && !authorization.isBlank()) {
+                if (authorization.startsWith("Bearer ")) {
+                    token = authorization.substring(7).trim();
+                } else {
+                    token = authorization.trim();
+                }
+            }
 
+            // 2. Check custom STOMP "token" header
+            if (token == null) {
+                String tokenHeader = accessor.getFirstNativeHeader("token");
+                if (tokenHeader != null && !tokenHeader.isBlank()) {
+                    token = tokenHeader.startsWith("Bearer ") ? tokenHeader.substring(7).trim() : tokenHeader.trim();
+                }
+            }
+
+            // 3. Fallback: Check handshake session attributes (from URL query param: ?token=...)
+            if (token == null && accessor.getSessionAttributes() != null) {
+                token = (String) accessor.getSessionAttributes().get("token");
+                System.out.println("AUTH QUERY PARAM TOKEN = " + token);
+            }
+
+            if (token == null || token.isBlank()) {
                 throw new IllegalArgumentException(
                         "Missing Authorization"
                 );
             }
 
             try {
-
-                String token = authorization.substring(7);
 
                 String username =
                         jwtService.extractUsername(token);
